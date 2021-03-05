@@ -108,3 +108,9 @@ src/config/config.local.json
 
 # build
 /build
+
+# Visual Studio Code
+.vscode
+
+# macOS files
+.DS_Store
