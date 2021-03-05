@@ -1,0 +1,4 @@
+{
+    "environment": "dev",
+    "apiBaseURL": "https://geolett.dev.geonorge.no/api"
+}
