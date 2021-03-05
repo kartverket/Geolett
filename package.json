@@ -25,6 +25,7 @@
     ]
   },
   "dependencies": {
+    "@kartverket/geonorge-web-components": "^0.1.44",
     "connected-react-router": "^6.9.1",
     "copy-webpack-plugin": "^8.0.0",
     "cross-env": "^7.0.3",
