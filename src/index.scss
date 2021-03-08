@@ -1,0 +1,134 @@
+@import "./style/abstracts/_all.scss";
+@import "./style/_select-dropdown.scss";
+@import "./style/overrides.scss";
+@import "react-redux-toastr/src/styles/index";
+
+*,
+*::before,
+*::after {
+   box-sizing: border-box;
+}
+
+body {
+   margin: 0;
+   font-family: $default-font;
+   background-color: $body-background;
+   color: $color-default-text;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   font-size: 14px;
+   line-height: 20px;
+   overflow-y: scroll;
+}
+
+.fixed-menu-margin {
+   margin-top: 140px;
+   @media (min-width: 360px) {
+      margin-top: 103px;
+   }
+   @media (min-width: 600px) {
+      margin-top: 62px;
+   }
+}
+
+h1 {
+   font-family: "Raleway", sans-serif;
+   font-size: 48pt;
+   font-weight: 100;
+   margin: 0;
+   @media screen and (max-width: 600px) {
+      font-size: 20pt;
+      font-weight: 600;
+   }
+
+   &::after {
+      content: "";
+      display: block;
+      width: 100px;
+      border-bottom: 5px solid #fe5000;
+      margin: 25px 0 30px 0;
+   }
+}
+
+input[type="radio"] {
+   visibility: hidden;
+}
+
+
+code {
+   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.form-container {
+   margin: 30px 0;
+}
+
+.validationErrors {
+   color: #de0000;
+   margin: 5px 10px 15px 0px;
+   list-style: none;
+   padding: 0;
+}
+@media screen and (max-width: 600px) {
+   H2 {
+      font-size: 1.3em;
+   }
+   table {
+      border: 0;
+   }
+   table tr {
+      background-color: #f8f8f8;
+      box-shadow: 1px 1px 5px 1px #888888;
+      padding: 0.35em;
+   }
+   table caption {
+      font-size: 1em;
+   }
+
+   table thead {
+      border: none;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+   }
+
+   table tr {
+      border-bottom: 3px solid #ddd;
+      display: block;
+      margin-bottom: 0.625em;
+   }
+
+   table td {
+      border-bottom: 1px solid #ddd;
+      display: block;
+      font-size: 1em;
+      font-weight: 600;
+   }
+
+   table td::before {
+      /*
+     * aria-label has no advantage, it won't be read inside a table
+     content: attr(aria-label);
+     */
+      content: attr(data-label);
+      text-transform: uppercase;
+      margin-right: 5px;
+      font-weight: 300;
+   }
+
+   table td:last-child {
+      border-bottom: 0;
+   }
+   table td ul {
+      margin: 0;
+      padding-left: 10px;
+      list-style: disc;
+      li {
+         display: inline-block;
+      }
+   }
+}
