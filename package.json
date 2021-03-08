@@ -31,7 +31,7 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@kartverket/geonorge-web-components": "^0.1.44",
     "connected-react-router": "^6.9.1",
-    "copy-webpack-plugin": "^8.0.0",
+    "copy-webpack-plugin": "6.2.1",
     "cross-env": "^7.0.3",
     "history": "^5.0.0",
     "react": "^17.0.1",
