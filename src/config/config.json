@@ -1,4 +1,4 @@
 {
     "environment": "dev",
-    "apiBaseURL": "https://geolett.dev.geonorge.no/api"
+    "apiBaseURL": "https://register.dev.geonorge.no/geolett/api"
 }

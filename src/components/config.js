@@ -13,7 +13,7 @@ async function load() {
         config[prop_1] = newconfig[prop_1];
     }
 
-    await loadConfigFromApi(`${config.apiBaseURL}/config`);
+    await loadConfigFromApi(`${config.apiBaseURL}/Setup`);
 
     return config;
 }
