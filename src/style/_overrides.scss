@@ -1,0 +1,75 @@
+.modal.modal-static .modal-dialog {
+   transform: none !important;
+}
+
+.EasyMDEContainer {
+   border: 1px solid #ced4da;
+   border-radius: 0.25rem;
+   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+   .CodeMirror {
+      border: 1px solid #ced4da;
+      border-right: 0 none;
+      border-left: 0 none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      line-height: 150%;
+   }
+
+   .CodeMirror-scroll {
+      min-height: 10px!important;
+   }
+
+   .editor-preview{
+      overflow: hidden;
+   }
+
+   .editor-toolbar {
+      border-top: 1px solid transparent;
+      border-left: 1px solid transparent;
+      border-right: 1px solid transparent;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+   }
+
+   &:focus,
+   &:focus-within {
+      outline: none;
+      border-color: #80bdff;
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+   }
+}
+
+.redux-toastr .toastr {
+   &:hover {
+      opacity: .94 !important;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4) !important;
+   }
+
+   &:focus {
+      outline: 0;
+   }
+
+   .close-toastr {
+      margin-right: 6px;
+   }
+   
+   .rrt-middle-container .rrt-title {
+      font-size: 16px !important;
+      font-weight: normal !important;
+      line-height: 50px;
+      margin: 0 !important;
+   } 
+}
+
+button.btn {
+   border-radius: 0;
+   &.btn-primary {
+      background-color: #7da1c4;
+      border-color: #7da1c4;
+   }
+   &:hover {
+      background-color: #fe5000;
+   }
+}
