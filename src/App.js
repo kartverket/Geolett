@@ -15,6 +15,7 @@ import OidcCallback from 'components/routes/OidcCallback';
 import OidcSignoutCallback from 'components/routes/OidcSignoutCallback';
 import Home from 'components/routes/Home';
 import NotFound from 'components/routes/NotFound';
+import RegisterItems from 'components/routes/RegisterItems';
 
 // Actions
 import { updateConfig } from 'actions/ConfigActions';
@@ -71,7 +72,7 @@ class App extends Component {
                   <ConnectedRouter history={history}>
                      <NavigationBar userManager={userManager} />
                      <Switch>
-                        <Route exact={true} path="/" render={(props) => (<Home {...props} />)} />
+                        <Route exact={true} path="/" render={(props) => (<RegisterItems {...props} />)} />
                         <Route exact path="/signin-oidc" render={() => (<OidcCallback userManager={userManager}/>)} />
                         <Route exact path="/signout-callback-oidc" render={() => (<OidcSignoutCallback userManager={userManager}/>)} />
                         <Route render={() => (<NotFound />)} />
