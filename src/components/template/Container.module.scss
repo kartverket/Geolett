@@ -1,0 +1,12 @@
+@import "../../style/abstracts/_all.scss";
+
+:local(.container) {
+   padding: 16px;
+   margin: 0 auto;
+
+   @media (min-width: $screen-sm) {
+      padding: 24px;
+      max-width: 1200px;
+   }
+}
+
