@@ -2,7 +2,7 @@ export const config = {};
 export const apiUrls = {};
 
 async function load() {
-    const result = await fetch('/config.json');
+    const result = await fetch(`${process.env.PUBLIC_URL}/config.json`);
     const newconfig = await result.json();
 
     for (let prop in config) {
