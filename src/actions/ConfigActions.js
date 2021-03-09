@@ -9,9 +9,9 @@ export const translate = (resourceKey, language) => (dispatch, getState) => {
   const translations = store.config.translations;
   language = language ? language : store.selectedLanguage;
 
-  const translationsForLanguage = translations.find(translation => {
+  const translationsForLanguage = translations && translations.length ? translations.find(translation => {
     return translation.culture === language;
-  });
+  }) : null;
 
   return translationsForLanguage && translationsForLanguage.texts && translationsForLanguage.texts[resourceKey]
     ? translationsForLanguage.texts[resourceKey]
