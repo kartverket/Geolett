@@ -30,10 +30,8 @@ import { faCheckSquare, faTrashAlt, faEdit, faPlusCircle, faMinusCircle, faInfoC
 library.add(fab, faCheckSquare, faTrashAlt, faEdit,faPlusCircle,faMinusCircle,faInfoCircle)
 
 
-console.log(userManagerPromise)
 const initialState = {};
 const storePromise = configureStore(initialState, userManagerPromise);
-console.log(storePromise)
 
 let store = null;
 let userManager = null;
@@ -49,7 +47,6 @@ class App extends Component {
 
    componentDidMount() {
       storePromise.then((storeConfig) => {
-         console.log(storeConfig)
          store = storeConfig;
          store.dispatch(updateConfig(this.props.config));
 
@@ -60,7 +57,6 @@ class App extends Component {
          }
       });
       userManagerPromise.then(userManagerConfig => {
-         console.log("USmanagaer then")
          userManager = userManagerConfig;
          this.setState({
             storeIsLoaded: true
