@@ -4,7 +4,7 @@
   "private": true,
   "repository": "https://github.com/kartverket/Geolett.git",
   "scripts": {
-    "start": "cross-env HTTPS=true PORT=44358 react-app-rewired start",
+    "start": "cross-env PUBLIC_URL=/geolett HTTPS=true PORT=44358 react-app-rewired start",
     "build": "react-app-rewired build",
     "eject": "react-scripts eject"
   },
