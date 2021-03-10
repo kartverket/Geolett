@@ -8,13 +8,13 @@ export const fetchRegisterItems = () => async (dispatch) => {
    dispatch({ type: FETCH_REGISTER_ITEMS, payload: response.data });
 }
 
-export const fetchRegisterItem = (id) => async (dispatch) => {
-   const apiUrl = apiUrls.measure.get.format({ id })
+export const fetchRegisterItem = id => async (dispatch) => {
+   const apiUrl = apiUrls.registerItem.get.format({ id })
    const response = await appApi().get(apiUrl);
    dispatch({ type: FETCH_SELECTED_REGISTER_ITEM, payload: response.data });
 }
 
-export const createMeasure = (registerItem, user) => async (dispatch) => {
+export const createRegisterItem = (registerItem, user) => async (dispatch) => {
    const apiUrl = apiUrls.registerItem.create;
    const response = await appApi(user).post(apiUrl, registerItem);
 
