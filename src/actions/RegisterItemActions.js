@@ -1,4 +1,4 @@
-import { FETCH_REGISTER_ITEMS, FETCH_SELECTED_REGISTER_ITEM, CREATE_REGISTER_ITEM, UPDATE_REGISTER_ITEM, DELETE_REGISTER_ITEM } from 'constants/types';
+import { FETCH_REGISTER_ITEMS, FETCH_REGISTER_ITEM, CREATE_REGISTER_ITEM, UPDATE_REGISTER_ITEM, DELETE_REGISTER_ITEM } from 'constants/types';
 import { apiUrls } from 'components/config';
 import appApi from 'config/appApi';
 
@@ -11,7 +11,7 @@ export const fetchRegisterItems = () => async (dispatch) => {
 export const fetchRegisterItem = id => async (dispatch) => {
    const apiUrl = apiUrls.registerItem.get.format({ id })
    const response = await appApi().get(apiUrl);
-   dispatch({ type: FETCH_SELECTED_REGISTER_ITEM, payload: response.data });
+   dispatch({ type: FETCH_REGISTER_ITEM, payload: response.data });
 }
 
 export const createRegisterItem = (registerItem, user) => async (dispatch) => {
