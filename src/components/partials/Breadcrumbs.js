@@ -7,36 +7,24 @@ import { useSelector } from "react-redux";
 // Stylesheets
 import style from 'components/partials/Breadcrumbs.module.scss'
 
-const SelectedMeasureBreadcrumb = () => {
-   const selectedMeasure = useSelector(state => state.measures.selectedMeasure);
-
-   return selectedMeasure ? (
-      <span>{selectedMeasure.no} - {selectedMeasure.name}</span>
-   ) : '';
-};
-
-const SelectedActivityBreadcrumb = () => {
-   const selectedActivity = useSelector(state => state.activities.selectedActivity);
-
-   return selectedActivity ? (
-      <span>{selectedActivity.no} - {selectedActivity.name}</span>
+const SelectedRegisterItemBreadcrumb = () => {
+   const selectedRegisterItem = useSelector(state => state.selectedRegisterItem);
+   return selectedRegisterItem ? (
+      <span>{selectedRegisterItem.name}</span>
    ) : '';
 };
 
 const routes = [
-   { path: '/', breadcrumb: 'Tiltaksplan' },
-   { path: '/tiltak/:measureId', breadcrumb: SelectedMeasureBreadcrumb },
-   { path: '/tiltak/:measureId/ny-aktivitet', breadcrumb: 'Ny aktivitet' },
-   { path: '/tiltak/:measureId/aktivitet/:activityId', breadcrumb: SelectedActivityBreadcrumb }
+   { path: '/', breadcrumb: 'Geolett' },
+   { path: '/registerItem/:registerItemId', breadcrumb: SelectedRegisterItemBreadcrumb },
+   { path: '/registerItem/:registerItemId/ny-registerItem', breadcrumb: 'Ny registerItem' },
 ];
 
 const options = {
    excludePaths: [
-      '/tiltak',
-      '/tiltak/:measureId/aktivitet'
+      '/registerItem'
    ]
 };
-
 
 const Breadcrumbs = ({ breadcrumbs }) => {
    const translations = useSelector(state => state.config.translations);
@@ -49,7 +37,6 @@ const Breadcrumbs = ({ breadcrumbs }) => {
    return (
       <div className={style.breadcrumbs}>
          <span>{breadcrumbTranslation} </span>
-
          <div>
             {breadcrumbs.map(({ match, breadcrumb }, index) => {
                return (
