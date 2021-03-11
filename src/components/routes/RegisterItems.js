@@ -22,7 +22,7 @@ class RegisterItems extends Component {
          ? registerItems.map(registerItem => {
             return (
                <div>
-                  <Link to={`registerItem/${registerItem.id}`}>
+                  <Link to={`/registerItem/${registerItem.id}`}>
                      {registerItem.title}
                   </Link>
                </div>
@@ -33,7 +33,6 @@ class RegisterItems extends Component {
    render() {
       return (
          <Container>
-            <h1>{this.props.translate('MeasureActivitiesTitle')}</h1>
             {this.renderRegisterItems(this.props.registerItems)}
          </Container>
       )
@@ -48,8 +47,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-   fetchRegisterItems,
-   translate
+   fetchRegisterItems
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterItems);

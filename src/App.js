@@ -16,6 +16,7 @@ import OidcSignoutCallback from 'components/routes/OidcSignoutCallback';
 import Home from 'components/routes/Home';
 import NotFound from 'components/routes/NotFound';
 import RegisterItems from 'components/routes/RegisterItems';
+import RegisterItem from 'components/routes/RegisterItem';
 
 // Actions
 import { updateConfig } from 'actions/ConfigActions';
@@ -75,6 +76,7 @@ class App extends Component {
                         <Route exact={true} path="/" render={(props) => (<RegisterItems {...props} />)} />
                         <Route exact={true} path="/geolett" render={(props) => (<RegisterItems {...props} />)} />
                         <Route exact={true} path="/home" render={(props) => (<Home {...props} />)} />
+                        <Route exact={true} path="/registerItem/:registerItemId" render={(props) => (<RegisterItem {...props} />)} />
                         <Route exact path="/signin-oidc" render={() => (<OidcCallback userManager={userManager}/>)} />
                         <Route exact path="/signout-callback-oidc" render={() => (<OidcSignoutCallback userManager={userManager}/>)} />
                         <Route render={() => (<NotFound />)} />
