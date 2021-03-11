@@ -73,12 +73,12 @@ class App extends Component {
                   <ConnectedRouter history={history}>
                      <NavigationBar userManager={userManager} />
                      <Switch>
-                        <Route exact={true} path="/" render={(props) => (<RegisterItems {...props} />)} />
-                        <Route exact={true} path="/geolett" render={(props) => (<RegisterItems {...props} />)} />
-                        <Route exact={true} path="/home" render={(props) => (<Home {...props} />)} />
-                        <Route exact={true} path="/registerItem/:registerItemId" render={(props) => (<RegisterItem {...props} />)} />
+                        <Route exact path="/" render={(props) => (<RegisterItems {...props} />)} />
                         <Route exact path="/signin-oidc" render={() => (<OidcCallback userManager={userManager}/>)} />
                         <Route exact path="/signout-callback-oidc" render={() => (<OidcSignoutCallback userManager={userManager}/>)} />
+                        <Route exact path="/geolett" render={(props) => (<RegisterItems {...props} />)} />
+                        <Route exact path="/registerItem/" render={(props) => (<RegisterItems {...props} />)} />
+                        <Route exact path="/registerItem/:registerItemId/" render={(props) => (<RegisterItem {...props} />)} />
                         <Route render={() => (<NotFound />)} />
                      </Switch>
                   </ConnectedRouter>
