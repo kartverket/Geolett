@@ -20,8 +20,8 @@ class RegisterItems extends Component {
       return registerItems && registerItems.length
          ? registerItems.map(registerItem => {
             return (
-               <div>
-                  <Link to={`/registerItem/${registerItem.id}`}>
+               <div key={registerItem.id}>
+                  <Link to={`${process.env.PUBLIC_URL}/registeritem/${registerItem.id}/`}>
                      {registerItem.title}
                   </Link>
                </div>
