@@ -1,11 +1,9 @@
 // Dependencies
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 // Components
 import Container from 'components/template/Container';
-import { translate } from 'actions/ConfigActions';
 
 // Actions
 import { fetchRegisterItem } from 'actions/RegisterItemActions';
