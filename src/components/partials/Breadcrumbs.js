@@ -10,7 +10,7 @@ import style from 'components/partials/Breadcrumbs.module.scss'
 const SelectedRegisterItemBreadcrumb = () => {
    const selectedRegisterItem = useSelector(state => state.selectedRegisterItem);
    return selectedRegisterItem ? (
-      <span>{selectedRegisterItem.name}</span>
+      <span>{selectedRegisterItem.title}</span>
    ) : '';
 };
 
