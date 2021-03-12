@@ -9,6 +9,9 @@ import Container from 'components/template/Container';
 // Actions
 import { fetchRegisterItems } from 'actions/RegisterItemActions';
 
+// Stylesheets
+import style from 'components/routes/RegisterItems.module.scss'
+
 
 class RegisterItems extends Component {
 
@@ -17,24 +20,37 @@ class RegisterItems extends Component {
    }
 
    renderRegisterItems(registerItems) {
-      return registerItems && registerItems.length
-         ? registerItems.map(registerItem => {
-            return (
-               <div key={registerItem.id}>
-                  <Link to={`${process.env.PUBLIC_URL}/registeritem/${registerItem.id}/`}>
-                     {registerItem.title}
+      const registerItemRows = registerItems && registerItems.length
+         ? registerItems.filter(registerItem => {return registerItem;}).map(registerItem => {
+            return (<tr key={registerItem.id}>
+                  <td>
+                  <Link to={`${process.env.PUBLIC_URL}/${registerItem.id}/`}>
+                     {registerItem.contextType}
                   </Link>
-               </div>
-            )
-         }) : '';
+                  </td>
+                  <td>
+                     {registerItem.title}
+                  </td>
+               </tr>)
+         }) : null;
+      return registerItemRows ? (<tbody>{registerItemRows}</tbody>) : '';
    }
 
    render() {
-      return (
+      return this.props.registerItems && this.props.registerItems.length ? (
          <Container>
-            {this.renderRegisterItems(this.props.registerItems)}
+            <table className={style.registerItemsTable}>
+               <thead>
+                  <tr>
+                     <th>Konteksttype</th>
+                     <th>Tittel</th>
+                  </tr>
+               </thead>
+               {this.renderRegisterItems(this.props.registerItems)}
+            </table>
+            
          </Container>
-      )
+      ) : ''
    }
 }
 
