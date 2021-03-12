@@ -74,11 +74,10 @@ class App extends Component {
                      <NavigationBar userManager={userManager} />
                      <Switch>
                         <Route exact path="/" render={(props) => (<RegisterItems {...props} />)} />
+                        <Route exact path="/geolett" render={(props) => (<RegisterItems {...props} />)} />
+                        <Route exact path="/geolett/:registerItemId/" render={(props) => (<RegisterItem {...props} />)} />
                         <Route exact path="/signin-oidc" render={() => (<OidcCallback userManager={userManager}/>)} />
                         <Route exact path="/signout-callback-oidc" render={() => (<OidcSignoutCallback userManager={userManager}/>)} />
-                        <Route exact path="/geolett" render={(props) => (<RegisterItems {...props} />)} />
-                        <Route exact path="/registerItem/" render={(props) => (<RegisterItems {...props} />)} />
-                        <Route exact path="/registerItem/:registerItemId/" render={(props) => (<RegisterItem {...props} />)} />
                         <Route render={() => (<NotFound />)} />
                      </Switch>
                   </ConnectedRouter>
