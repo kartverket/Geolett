@@ -31,6 +31,9 @@ class RegisterItems extends Component {
                   <td>
                      {registerItem.title}
                   </td>
+                  <td>
+                     {registerItem.owner && registerItem.owner.name ? registerItem.owner.name : ''}
+                  </td>
                </tr>)
          }) : null;
       return registerItemRows ? (<tbody>{registerItemRows}</tbody>) : '';
@@ -44,6 +47,7 @@ class RegisterItems extends Component {
                   <tr>
                      <th>Konteksttype</th>
                      <th>Tittel</th>
+                     <th>Eier</th>
                   </tr>
                </thead>
                {this.renderRegisterItems(this.props.registerItems)}
