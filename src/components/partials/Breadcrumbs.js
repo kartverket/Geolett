@@ -15,9 +15,10 @@ const SelectedRegisterItemBreadcrumb = () => {
 };
 
 const routes = [
-   { path: '/', breadcrumb: 'Geolett' },
-   { path: '/registerItem/:registerItemId', breadcrumb: SelectedRegisterItemBreadcrumb },
-   { path: '/registerItem/:registerItemId/ny-registerItem', breadcrumb: 'Ny registerItem' },
+   { path: '/', breadcrumb: 'Registrene' },
+   { path: '/geolett', breadcrumb: 'Geolett' },
+   { path: '/geolett/:registerItemId', breadcrumb: SelectedRegisterItemBreadcrumb },
+   { path: '/geolett/:registerItemId/ny-registerItem', breadcrumb: 'Ny registerItem' },
 ];
 
 const options = {
