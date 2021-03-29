@@ -19,13 +19,13 @@ export const updateAuthInfo = () => (dispatch, getState) => {
       : null;
 
     if (accessToken && expiresAt) {
-      const authInfoApiUrl = store && store.config && store.config.apiBaseURL ? `${store.config.apiBaseURL}/authzinfo` : null;
+      const authInfoApiUrl = store && store.config && store.config.apiBaseURL ? `${store.config.apiBaseURL}/Authzinfo` : null;
       fetch(authInfoApiUrl, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + accessToken
+          'Authorization': 'Bearer ' + accessToken
         }
       }).then((res) => res.json()).then((authInfo) => {
         Cookies.set('authInfo', authInfo, { expires: new Date(expiresAt) });
