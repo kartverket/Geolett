@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 // Components
 import Container from 'components/template/Container';
+import RegisterItemDetails from 'components/partials/RegisterItemDetails';
 
 // Actions
 import { fetchRegisterItems } from 'actions/RegisterItemActions';
@@ -42,6 +43,9 @@ class RegisterItems extends Component {
    render() {
       return this.props.registerItems && this.props.registerItems.length ? (
          <Container>
+            <h1>Konteksttyper</h1>
+            <RegisterItemDetails newRegisterItem />
+
             <table className={style.registerItemsTable}>
                <thead>
                   <tr>
