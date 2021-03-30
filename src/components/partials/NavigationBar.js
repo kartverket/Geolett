@@ -43,13 +43,13 @@ class NavigationBar extends Component {
   initMainNavigation() {
     const userManager = this.props.userManager;
     MainNavigation.setup('main-navigation', {
-      onSignInClick: () => {
+    /*  onSignInClick: () => {
         userManager.signinRedirect();
-      },
-      onSignOutClick: () => {
+      },*/
+     /* onSignOutClick: () => {
         userManager.signoutRedirect({ 'id_token_hint': this.props.oidc.user.id_token });
         userManager.removeUser();
-      },
+      },*/
       onNorwegianLanguageSelect: () => {
         this.props.updateSelectedLanguage('nb-NO');
       },
@@ -64,8 +64,10 @@ class NavigationBar extends Component {
 
   render() {
     const environment = getEnvironmentVariable('environment');
+    const signinurl = getEnvironmentVariable('signinurl');
+    const signouturl = getEnvironmentVariable('signouturl');
     const language = this.props.selectedLanguage === 'en-US' ? 'en' : 'no';
-    return <main-navigation language={language} isLoggedIn={this.props.oidc.user ? true : false} environment={environment}></main-navigation>;
+    return <main-navigation signinurl={signinurl} signouturl={signouturl} language={language} isLoggedIn={this.props.oidc.user ? true : false} environment={environment}></main-navigation>;
   }
 }
 
