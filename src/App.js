@@ -13,7 +13,6 @@ import userManagerPromise from 'utils/userManager';
 // Routes
 import OidcCallback from 'components/routes/OidcCallback';
 import OidcSignoutCallback from 'components/routes/OidcSignoutCallback';
-import Home from 'components/routes/Home';
 import NotFound from 'components/routes/NotFound';
 import RegisterItems from 'components/routes/RegisterItems';
 import RegisterItem from 'components/routes/RegisterItem';
@@ -53,7 +52,7 @@ class App extends Component {
          store = storeConfig;
          store.dispatch(fetchAuthToken());
          store.dispatch(updateConfig(this.props.config));
-         
+
          if (!this.state.userManagerIsLoaded) {
             this.setState({
                userManagerIsLoaded: true
