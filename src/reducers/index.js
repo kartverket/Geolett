@@ -5,6 +5,7 @@ import { reducer as oidcReducer } from 'redux-oidc';
 
 // Reducers
 import AuthInfoReducer from 'reducers/AuthInfoReducer';
+import AuthTokenReducer from 'reducers/AuthTokenReducer';
 import ConfigReducer from 'reducers/ConfigReducer';
 import OrganizationsReducer from 'reducers/OrganizationsReducer';
 import RegisterItemsReducer from 'reducers/RegisterItemsReducer';
@@ -14,6 +15,7 @@ const reducers = history => combineReducers({
   router: connectRouter(history),
   oidc: oidcReducer,
   authInfo: AuthInfoReducer,
+  authToken: AuthTokenReducer,
   config: ConfigReducer,
   organizations: OrganizationsReducer,
   registerItems: RegisterItemsReducer,
