@@ -66,8 +66,9 @@ class NavigationBar extends Component {
     const environment = getEnvironmentVariable('environment');
     const signinurl = getEnvironmentVariable('signinurl');
     const signouturl = getEnvironmentVariable('signouturl');
+    const isLoggedIn = this.props.authToken && this.props.authToken.access_token && this.props.authToken.access_token.length ? true : false;
     const language = this.props.selectedLanguage === 'en-US' ? 'en' : 'no';
-    return <main-navigation signinurl={signinurl} signouturl={signouturl} language={language} isLoggedIn={this.props.oidc.user ? true : false} environment={environment}></main-navigation>;
+    return <main-navigation signinurl={signinurl} signouturl={signouturl} language={language} isLoggedIn={isLoggedIn} environment={environment}></main-navigation>;
   }
 }
 
@@ -75,6 +76,7 @@ const mapStateToProps = state => ({
   oidc: state.oidc,
   config: state.config,
   authInfo: state.authInfo,
+  authToken: state.authToken,
   selectedLanguage: state.selectedLanguage
 });
 

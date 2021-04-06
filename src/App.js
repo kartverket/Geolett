@@ -20,6 +20,7 @@ import RegisterItem from 'components/routes/RegisterItem';
 
 // Actions
 import { updateConfig } from 'actions/ConfigActions';
+import { fetchAuthToken } from 'actions/AuthenticationActions';
 
 // Partials
 import NavigationBar from 'components/partials/NavigationBar';
@@ -50,8 +51,9 @@ class App extends Component {
    componentDidMount() {
       storePromise.then((storeConfig) => {
          store = storeConfig;
+         store.dispatch(fetchAuthToken());
          store.dispatch(updateConfig(this.props.config));
-
+         
          if (!this.state.userManagerIsLoaded) {
             this.setState({
                userManagerIsLoaded: true
