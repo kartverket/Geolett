@@ -43,13 +43,6 @@ class NavigationBar extends Component {
   initMainNavigation() {
     const userManager = this.props.userManager;
     MainNavigation.setup('main-navigation', {
-    /*  onSignInClick: () => {
-        userManager.signinRedirect();
-      },*/
-     /* onSignOutClick: () => {
-        userManager.signoutRedirect({ 'id_token_hint': this.props.oidc.user.id_token });
-        userManager.removeUser();
-      },*/
       onNorwegianLanguageSelect: () => {
         this.props.updateSelectedLanguage('nb-NO');
       },
