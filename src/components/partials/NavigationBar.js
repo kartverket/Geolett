@@ -42,7 +42,6 @@ class NavigationBar extends Component {
   }
 
   initMainNavigation() {
-    const userManager = this.props.userManager;
     MainNavigation.setup('main-navigation', {
       onNorwegianLanguageSelect: () => {
         this.props.updateSelectedLanguage('nb-NO');
