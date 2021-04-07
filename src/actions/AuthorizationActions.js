@@ -3,7 +3,7 @@ import { UPDATE_AUTH_INFO } from 'constants/types';
 
 export const updateAuthInfo = () => (dispatch, getState) => {
   const store = getState();
-  const token = store.authToken && store.authToken.access_token || null;
+  const token = store.authToken && store.authToken.access_token ? store.authToken.access_token : null;
   const savedAuthInfo = store && store.authInfo && Object.keys(store.authInfo).length
     ? store.authInfo
     : null;

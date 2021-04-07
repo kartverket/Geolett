@@ -82,7 +82,7 @@ class RegisterItemDetails extends Component {
 
    saveRegisterItem() {
       const registerItem = this.state.registerItem;
-      const token = this.props.authToken && this.props.authToken.access_token || null;
+      const token = this.props.authToken && this.props.authToken.access_token ? this.props.authToken.access_token : null;
 
       if (this.state.selectedOwner.length) {
          registerItem.owner.id = this.state.selectedOwner[0].id
