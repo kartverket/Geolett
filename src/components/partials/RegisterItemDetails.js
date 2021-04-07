@@ -82,13 +82,14 @@ class RegisterItemDetails extends Component {
 
    saveRegisterItem() {
       const registerItem = this.state.registerItem;
+      const token = this.props.authToken && this.props.authToken.access_token || null;
 
       if (this.state.selectedOwner.length) {
          registerItem.owner.id = this.state.selectedOwner[0].id
       }
 
       this.props.newRegisterItem
-         ? this.props.createRegisterItem(registerItem, this.props.user)
+         ? this.props.createRegisterItem(registerItem, token)
             .then(() => {
                this.closeModal();
                this.setState({ validationErrors: [] });
@@ -98,7 +99,7 @@ class RegisterItemDetails extends Component {
                toastr.error('Kunne ikke opprette konteksttype');            
                this.setState({ validationErrors: response.data });
             })            
-         : this.props.updateRegisterItem(registerItem, this.props.user)
+         : this.props.updateRegisterItem(registerItem, token)
             .then(() => {
                this.closeModal();
                this.setState({ validationErrors: [] });
@@ -181,6 +182,7 @@ const mapStateToProps = state => {
       organizations: state.organizations,
       user: state.oidc.user,
       authInfo: state.authInfo,
+      authToken: state.authToken
    });
 };
 

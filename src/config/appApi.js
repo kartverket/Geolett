@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const createInstance = (user) => {
+const createInstance = (token) => {
   const instance = axios.create({
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': user && user.access_token ? `Bearer ${user.access_token}` : ''
+      'Authorization': token && token.length ? `Bearer ${token}` : ''
     }
   });
   return instance;
