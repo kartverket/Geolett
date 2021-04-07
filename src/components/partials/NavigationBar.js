@@ -30,8 +30,9 @@ class NavigationBar extends Component {
     if (!this.state.mainNavigationIsInitialized) {
       this.initMainNavigation();
     }
-    const wasLoggedIn = prevProps.oidc.user;
-    const isLoggedIn = this.props.oidc.user;
+    const wasLoggedIn = prevProps.authToken && prevProps.authToken.access_token && prevProps.authToken.access_token.length ? true : false;
+    const isLoggedIn = this.props.authToken && this.props.authToken.access_token && this.props.authToken.access_token.length ? true : false;
+
     const hadAuthInfo = prevProps.authInfo && prevProps.authInfo.organizationNumber;
     const hasAuthInfo = this.props.authInfo && this.props.authInfo.organizationNumber;
     if ((isLoggedIn !== wasLoggedIn) || (hasAuthInfo !== hadAuthInfo)) {
