@@ -1,0 +1,217 @@
+@import "../../style/abstracts/_all.scss";
+
+:local(.form) {
+   label {
+      font-weight: 600;
+   }
+
+   :local(.star) {
+      width: 18px;
+      height: 18px;
+      margin-right: 2px;
+      vertical-align: -3px;
+   }
+
+   :local(.trafficLight) {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: block;
+
+      &.light-1 {
+         background-color: #de0000;
+      }
+
+      &.light-2 {
+         background-color: #ff9900;
+      }
+
+      &.light-3 {
+         background-color: #009900;
+      }
+   }
+
+   label {
+      display: block;
+   }
+   :local(.comboInput) {
+      display: inline-block;
+      position: relative;
+      border-radius: 0.25rem;
+      margin-bottom: 15px;
+
+      &.fullWidth {
+         display: block;
+      }
+      
+      :local(svg.editIcon) {
+         display: none;
+         position: absolute;
+         right: 0px;
+         top: 0px;
+         background-color: #ddd;
+         height: 100%;
+         width: 30px;
+         padding: 6px;
+      }
+
+      &:hover {
+         :local(svg.editIcon) {
+            display: inline-block;
+         }
+      }
+      &:focus-within {
+         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+         :local(svg.editIcon) {
+            display: inline-block;
+         }
+         button {
+            box-shadow: none;
+         }
+         .EasyMDEContainer {
+            box-shadow: none;
+         }
+      }
+
+      > input,
+      > span {
+         font-family: $default-font;
+         font-weight: normal;
+         display: block;
+         width: 480px;
+         &:focus + svg {
+            display: inline-block;
+         }
+      }
+
+      textarea {
+         padding-right: 38px;
+         &:focus {
+            box-shadow: none;
+         }
+      }
+
+      :local(.defaultSelect) {
+         > button {
+            min-width: 100px !important;
+            &::after {
+               display: none;
+            }
+         }
+
+         > div {
+            min-width: 100px !important;
+         }
+      }
+
+      :local(.statusSelect) {
+         > button {
+            min-width: 200px !important;
+            &::after {
+               display: none;
+            }
+         }
+
+         > div {
+            min-width: 200px !important;
+         }
+      }
+
+      :local(.trafficLightSelect) {
+         > button {
+            min-width: 150px !important;
+
+            &::before {
+               content: "";
+               width: 16px;
+               height: 16px;
+               border-radius: 50%;
+               display: inline-block;
+               vertical-align: -2px;
+               margin-right: 6px;
+            }
+
+            &[data-value="1"]::before {
+               background-color: #de0000;
+            }
+
+            &[data-value="2"]::before {
+               background-color: #ff9900;
+            }
+
+            &[data-value="3"]::before {
+               background-color: #009900;
+            }
+         }
+
+         > div > span {
+            &::before {
+               content: "";
+               width: 16px;
+               height: 16px;
+               border-radius: 50%;
+               display: inline-block;
+               vertical-align: -2px;
+               margin-right: 6px;
+            }
+
+            &:nth-child(1)::before {
+               background-color: #de0000;
+            }
+
+            &:nth-child(2)::before {
+               background-color: #ff9900;
+            }
+
+            &:nth-child(3)::before {
+               background-color: #009900;
+            }
+         }
+      }
+
+      &:hover,
+      &:focus {
+         :local(.defaultSelect) {
+            > button {
+               &::after {
+                  display: inline-block;
+               }
+            }
+         }
+      }
+   }
+   :local(.mdePreview) {
+      border: 1px solid transparent;
+      div {
+         background: #fff;
+         border: none;
+      }
+   }
+   .editor-preview-full {
+      position: relative;
+   }
+}
+:local(.buttonGroup) {
+   button {
+      margin-right: 10px;
+   }
+}
+
+:local(.visibl) {
+   visibility: visible;
+}
+
+:local(.hiddn) {
+   visibility: hidden;
+}
+:local(.flex) {
+  display: flex;
+  justify-content: space-between;
+  @media screen and (max-width: 600px) {
+   flex-direction: column;
+   }
+}
+:local(.block) {
+   margin: 20px 0;
+  
+}
