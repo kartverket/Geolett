@@ -42,6 +42,8 @@ class RegisterItemDetails extends Component {
 
     this.getMdeInstance = this.getMdeInstance.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDatasetChange = this.handleDatasetChange.bind(this);
+    this.handleDatasetTypeReferenceChange = this.handleDatasetTypeReferenceChange.bind(this);
     this.handleOwnerSelect = this.handleOwnerSelect.bind(this);
     this.saveRegisterItem = this.saveRegisterItem.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -73,6 +75,29 @@ class RegisterItemDetails extends Component {
     const parsed = parseInt(value);
 
     registerItem[name] = isNaN(parsed) ? value : parsed;
+
+    this.setState({ registerItem });
+  }
+
+  handleDatasetChange(data) {
+    const registerItem = this.state.registerItem;
+    const { name, value } = data.target ? data.target : data;
+    const parsed = parseInt(value);
+
+    registerItem.dataSet = registerItem.dataSet || {};
+    registerItem.dataSet[name] = isNaN(parsed) ? value : parsed;
+
+    this.setState({ registerItem });
+  }
+
+  handleDatasetTypeReferenceChange(data) {
+    const registerItem = this.state.registerItem;
+    const { name, value } = data.target ? data.target : data;
+    const parsed = parseInt(value);
+
+    registerItem.dataSet = registerItem.dataSet || {};
+    registerItem.dataSet.typeReference = registerItem.dataSet.typeReference || {};
+    registerItem.dataSet.typeReference[name] = isNaN(parsed) ? value : parsed;
 
     this.setState({ registerItem });
   }
@@ -254,117 +279,164 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
 
-        {
-          registerItem.dataSet
-            ? (<React.Fragment>
-              <h2>Datasett:</h2>
-              <Form.Group controlId="labelDataSetTitle" className={formsStyle.form}>
-                <Form.Label>{this.props.translate('labelDataSetTitle', null, 'Tittel')}</Form.Label>
-                {this.state.editable
-                  ? (
-                    <div className={formsStyle.comboInput}>
-                      <Form.Control name="dataSetTitle" value={registerItem.dataSet.title} onChange={this.handleChange} />
-                    </div>
-                  )
-                  : (
-                    <div>{registerItem.dataSet.title}</div>
-                  )}
-              </Form.Group>
 
-              <Form.Group controlId="labelDataSetNamespace" className={formsStyle.form}>
-                <Form.Label>{this.props.translate('labelDataSetNamespace', null, 'Navnerom')}</Form.Label>
-                {this.state.editable
-                  ? (
-                    <div className={formsStyle.comboInput}>
-                      <Form.Control name="dataSetNamespace" value={registerItem.dataSet.namespace} onChange={this.handleChange} />
-                    </div>
-                  )
-                  : (
-                    <div>{registerItem.dataSet.namespace}</div>
-                  )}
-              </Form.Group>
+        <React.Fragment>
+          <h2>Datasett:</h2>
+          <Form.Group controlId="labelDataSetTitle" className={formsStyle.form}>
+            <Form.Label>{this.props.translate('labelDataSetTitle', null, 'Tittel')}</Form.Label>
+            {this.state.editable
+              ? (
+                <div className={formsStyle.comboInput}>
+                  <Form.Control
+                    name="title"
+                    value={registerItem.dataSet && registerItem.dataSet.title ? registerItem.dataSet.title : ''}
+                    onChange={this.handleDatasetChange} />
+                </div>
+              )
+              : (
+                <div>{registerItem.dataSet && registerItem.dataSet.title ? registerItem.dataSet.title : ''}</div>
+              )}
+          </Form.Group>
 
-              <Form.Group controlId="labelDataSetBufferText" className={formsStyle.form}>
-                <Form.Label>{this.props.translate('labelDataSetBufferText', null, 'Buffertekst')}</Form.Label>
-                {this.state.editable
-                  ? (
-                    <div className={formsStyle.comboInput}>
-                      <Form.Control name="dataSetBufferText" value={registerItem.dataSet.bufferText} onChange={this.handleChange} />
-                    </div>
-                  )
-                  : (
-                    <div>{registerItem.dataSet.bufferText}</div>
-                  )}
-              </Form.Group>
+          <Form.Group controlId="labelDataSetNamespace" className={formsStyle.form}>
+            <Form.Label>{this.props.translate('labelDataSetNamespace', null, 'Navnerom')}</Form.Label>
+            {this.state.editable
+              ? (
+                <div className={formsStyle.comboInput}>
+                  <Form.Control
+                    name="namespace"
+                    value={registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}
+                    onChange={this.handleDatasetChange} />
+                </div>
+              )
+              : (
+                <div>{registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}</div>
+              )}
+          </Form.Group>
 
-
-              <Form.Group controlId="labelDataSetBufferDistance" className={formsStyle.form}>
-                <Form.Label>{this.props.translate('labelDataSetBufferDistance', null, 'Buffer')}</Form.Label>
-                {this.state.editable
-                  ? (
-                    <div className={formsStyle.comboInput}>
-                      <Form.Control name="dataSetBufferDistance" value={registerItem.dataSet.bufferDistance} onChange={this.handleChange} />
-                    </div>
-                  )
-                  : (
-                    <div>{registerItem.dataSet.bufferDistance}</div>
-                  )}
-              </Form.Group>
+          <Form.Group controlId="labelDataSetBufferText" className={formsStyle.form}>
+            <Form.Label>{this.props.translate('labelDataSetBufferText', null, 'Buffertekst')}</Form.Label>
+            {this.state.editable
+              ? (
+                <div className={formsStyle.comboInput}>
+                  <Form.Control
+                    name="bufferText"
+                    value={registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}
+                    onChange={this.handleDatasetChange} />
+                </div>
+              )
+              : (
+                <div>{registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}</div>
+              )}
+          </Form.Group>
 
 
-              <Form.Group controlId="labelDataSetUrlMetadata" className={formsStyle.form}>
-                {this.state.editable
-                  ? (
-                    <React.Fragment>
-                      <Form.Label>{this.props.translate('labelDataSetUrlMetadata', null, 'Metadata')}</Form.Label>
-                      <div className={formsStyle.comboInput}>
-                        <Form.Control name="dataSetUrlMetadata" value={registerItem.dataSet.urlMetadata} onChange={this.handleChange} />
-                      </div>
-                    </React.Fragment>
-                  )
-                  : (
-                    <div><a href={registerItem.dataSet.urlMetadata}>Lenke til metadata</a></div>
-                  )}
-              </Form.Group>
+          <Form.Group controlId="labelDataSetBufferDistance" className={formsStyle.form}>
+            <Form.Label>{this.props.translate('labelDataSetBufferDistance', null, 'Buffer')}</Form.Label>
+            {this.state.editable
+              ? (
+                <div className={formsStyle.comboInput}>
+                  <Form.Control
+                    name="bufferDistance"
+                    value={registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}
+                    onChange={this.handleDatasetChange} />
+                </div>
+              )
+              : (
+                <div>{registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}</div>
+              )}
+          </Form.Group>
 
 
-              <Form.Group controlId="labelDataSetUrlGmlSchema" className={formsStyle.form}>
-                {this.state.editable
-                  ? (
-                    <React.Fragment>
-                      <Form.Label>{this.props.translate('labelDataSetUrlGmlSchema', null, 'GML-skjema')}</Form.Label>
-                      <div className={formsStyle.comboInput}>
-                        <Form.Control name="dataSetUrlGmlSchema" value={registerItem.dataSet.urlGmlSchema} onChange={this.handleChange} />
-                      </div>
-                    </React.Fragment>
-                  )
-                  : (
-                    <div><a href={registerItem.dataSet.urlGmlSchema}>Lenke til metadata</a></div>
-                  )}
-              </Form.Group>
-
-              <h3>Referanse til type</h3>
-              <div>attribute: {registerItem.dataSet.typeReference.attribute}</div>
-              <div>codeValue: {registerItem.dataSet.typeReference.codeValue}</div>
-              <div>type: {registerItem.dataSet.typeReference.type}</div>
-              <ul>
+          <Form.Group controlId="labelDataSetUrlMetadata" className={formsStyle.form}>
+            {this.state.editable
+              ? (
+                <React.Fragment>
+                  <Form.Label>{this.props.translate('labelDataSetUrlMetadata', null, 'Metadata')}</Form.Label>
+                  <div className={formsStyle.comboInput}>
+                    <Form.Control
+                      name="dataSetUrlMetadata"
+                      value={registerItem.dataSet && registerItem.dataSet.urlMetadata ? registerItem.dataSet.urlMetadata : ''}
+                      onChange={this.handleDatasetChange} />
+                  </div>
+                </React.Fragment>
+              )
+              : (
+                <div><a href={registerItem.dataSet && registerItem.dataSet.urlMetadata ? registerItem.dataSet.urlMetadata : ''}>Lenke til metadata</a></div>
+              )}
+          </Form.Group>
 
 
-              </ul>
-            </React.Fragment>)
-            : ''
-        }
+          <Form.Group controlId="labelDataSetUrlGmlSchema" className={formsStyle.form}>
+            {this.state.editable
+              ? (
+                <React.Fragment>
+                  <Form.Label>{this.props.translate('labelDataSetUrlGmlSchema', null, 'GML-skjema')}</Form.Label>
+                  <div className={formsStyle.comboInput}>
+                    <Form.Control
+                      name="dataSetUrlGmlSchema"
+                      value={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}
+                      onChange={this.handleDatasetChange} />
+                  </div>
+                </React.Fragment>
+              )
+              : (
+                <div><a href={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}>Lenke til metadata</a></div>
+              )}
+          </Form.Group>
 
-        {
-          registerItem.owner
-            ? (
-              <React.Fragment>
-                <h2>Eier:</h2>
+          <h3>Referanse til type</h3>
+          <Form.Group controlId="labelDataSetTypeReferenceAttribute" className={formsStyle.form}>
+            <Form.Label>{this.props.translate('labelDataSetTypeReferenceAttribute', null, 'Attributt')}</Form.Label>
+            {this.state.editable
+              ? (
+                <div className={formsStyle.comboInput}>
+                  <Form.Control
+                    name="attribute"
+                    value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.attribute ? registerItem.dataSet.typeReference.attribute : ''}
+                    onChange={this.handleDatasetTypeReferenceChange} />
+                </div>
+              )
+              : (
+                <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.attribute ? registerItem.dataSet.typeReference.attribute : ''}</div>
+              )}
+          </Form.Group>
 
-              </React.Fragment>
-            )
-            : ''
-        }
+          <Form.Group controlId="labelDataSetTypeReferenceCodeValue" className={formsStyle.form}>
+            <Form.Label>{this.props.translate('labelDataSetTypeReferenceCodeValue', null, 'Kodeverdi')}</Form.Label>
+            {this.state.editable
+              ? (
+                <div className={formsStyle.comboInput}>
+                  <Form.Control
+                    name="codeValue"
+                    value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.codeValue ? registerItem.dataSet.typeReference.codeValue : ''}
+                    onChange={this.handleDatasetTypeReferenceChange} />
+                </div>
+              )
+              : (
+                <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.codeValue ? registerItem.dataSet.typeReference.codeValue : ''}</div>
+              )}
+          </Form.Group>
+
+          <Form.Group controlId="labelDataSetTypeReferenceType" className={formsStyle.form}>
+            <Form.Label>{this.props.translate('labelDataSetTypeReferenceType', null, 'Objekttype')}</Form.Label>
+            {this.state.editable
+              ? (
+                <div className={formsStyle.comboInput}>
+                  <Form.Control
+                    name="type"
+                    value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}
+                    onChange={this.handleDatasetTypeReferenceChange} />
+                </div>
+              )
+              : (
+                <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}</div>
+              )}
+          </Form.Group>
+        </React.Fragment>
+
+
+        <h2>Eier:</h2>
 
         <Form.Group controlId="formName">
           <Form.Label>Eier</Form.Label>
