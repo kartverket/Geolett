@@ -42,6 +42,7 @@ class RegisterItemDetails extends Component {
 
     this.getMdeInstance = this.getMdeInstance.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleOwnerSelect = this.handleOwnerSelect.bind(this);
     this.saveRegisterItem = this.saveRegisterItem.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -83,8 +84,6 @@ class RegisterItemDetails extends Component {
   }
 
 
-
-
   handleDelete() {
     this.props.deleteActivity(this.state.activity, this.props.user)
       .then(() => {
@@ -94,13 +93,22 @@ class RegisterItemDetails extends Component {
 
 
   saveRegisterItem() {
-    this.props.updateActivity(this.state.activity, this.props.user)
-      .then(_ => {
+    const registerItem = this.state.registerItem;
+    const token = this.props.authToken && this.props.authToken.access_token ? this.props.authToken.access_token : null;
+
+    if (this.state.selectedOwner.length && this.state.selectedOwner[0].organizationId) {
+      registerItem.owner = {
+        id: this.state.selectedOwner[0].organizationId
+      }
+    }
+
+    this.props.updateRegisterItem(registerItem, token)
+      .then(() => {
         this.setState({ validationErrors: [] });
-        toastr.success('Aktiviteten ble oppdatert');
+        toastr.success('Konteksttypen ble oppdatert');
       })
       .catch(({ response }) => {
-        toastr.error('Kunne ikke oppdatere aktivitet');
+        toastr.error('Kunne ikke oppdatere konteksttype');
         this.setState({ validationErrors: response.data });
         window.scroll(0, 0);
       });
@@ -445,6 +453,7 @@ class RegisterItemDetails extends Component {
 
 const mapStateToProps = state => ({
   authInfo: state.authInfo,
+  authToken: state.authToken,
   registerItem: state.selectedRegisterItem,
   organizations: state.organizations.map(organization => {
     return {
