@@ -51,6 +51,14 @@ h1 {
    }
 }
 
+h2 {
+   font-size: 1.85em;
+}
+
+h3 {
+   font-size: 1.4em;
+}
+
 input[type="radio"] {
    visibility: hidden;
 }
@@ -71,9 +79,6 @@ code {
    padding: 0;
 }
 @media screen and (max-width: 600px) {
-   H2 {
-      font-size: 1.3em;
-   }
    table {
       border: 0;
    }
