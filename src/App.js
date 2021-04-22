@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import { OidcProvider } from 'redux-oidc';
-
+import ReduxToastr from 'react-redux-toastr';
 
 // Utils
 import configureStore, { history } from 'utils/configureStore';
@@ -81,6 +81,17 @@ class App extends Component {
                         <Route exact path="/signout-callback-oidc" render={() => (<OidcSignoutCallback userManager={userManager}/>)} />
                         <Route render={() => (<NotFound />)} />
                      </Switch>
+                     <ReduxToastr
+                        timeOut={2000}
+                        newestOnTop={false}
+                        preventDuplicates
+                        position="top-right"
+                        getState={(state) => state.toastr}
+                        transitionIn="fadeIn"
+                        transitionOut="fadeOut"
+                        progressBar
+                        closeOnToastrClick
+                     />
                   </ConnectedRouter>
                </OidcProvider>
             </Provider>

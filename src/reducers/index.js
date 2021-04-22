@@ -2,6 +2,7 @@
 import {combineReducers} from 'redux';
 import {connectRouter} from 'connected-react-router';
 import { reducer as oidcReducer } from 'redux-oidc';
+import { reducer as toastrReducer } from 'react-redux-toastr'
 
 // Reducers
 import AuthInfoReducer from 'reducers/AuthInfoReducer';
@@ -14,6 +15,7 @@ import SelectedRegisterItemReducer from 'reducers/SelectedRegisterItemReducer';
 const reducers = history => combineReducers({
   router: connectRouter(history),
   oidc: oidcReducer,
+  toastr: toastrReducer,
   authInfo: AuthInfoReducer,
   authToken: AuthTokenReducer,
   config: ConfigReducer,
