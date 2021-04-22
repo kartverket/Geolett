@@ -198,7 +198,7 @@ class RegisterItemDetails extends Component {
           <Form.Label>{this.props.translate('labelContextType', null, 'Konteksttype')}</Form.Label>
           {this.state.editable
             ? (
-              <div className={formsStyle.comboInput}>
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                 <Form.Control name="contextType" value={registerItem.contextType} onChange={this.handleChange} />
               </div>
             )
@@ -211,7 +211,7 @@ class RegisterItemDetails extends Component {
           <Form.Label>{this.props.translate('labelTitle', null, 'Tittel')}</Form.Label>
           {this.state.editable
             ? (
-              <div className={formsStyle.comboInput}>
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                 <Form.Control name="title" value={registerItem.title} onChange={this.handleChange} />
               </div>
             )
@@ -245,8 +245,8 @@ class RegisterItemDetails extends Component {
           <Form.Label>{this.props.translate('labelDescription', null, 'Forklarende tekst')}</Form.Label>
           {this.state.editable
             ? (
-              <div className={formsStyle.comboInput}>
-                <Form.Control name="description" value={registerItem.description} onChange={this.handleChange} />
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control as="textarea" rows={4} name="description" value={registerItem.description} onChange={this.handleChange} />
               </div>
             )
             : (
@@ -258,7 +258,7 @@ class RegisterItemDetails extends Component {
           <Form.Label>{this.props.translate('labelDialogText', null, 'Dialogtekst')}</Form.Label>
           {this.state.editable
             ? (
-              <div className={formsStyle.comboInput}>
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                 <Form.Control name="dialogText" value={registerItem.dialogText} onChange={this.handleChange} />
               </div>
             )
@@ -271,7 +271,7 @@ class RegisterItemDetails extends Component {
           <Form.Label>{this.props.translate('labelGuidance', null, 'Veiledning')}</Form.Label>
           {this.state.editable
             ? (
-              <div className={formsStyle.comboInput}>
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                 <Form.Control name="guidance" value={registerItem.guidance} onChange={this.handleChange} />
               </div>
             )
@@ -284,7 +284,7 @@ class RegisterItemDetails extends Component {
           <Form.Label>{this.props.translate('labelOtherComment', null, 'Andre kommentarer')}</Form.Label>
           {this.state.editable
             ? (
-              <div className={formsStyle.comboInput}>
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                 <Form.Control name="otherComment" value={registerItem.otherComment} onChange={this.handleChange} />
               </div>
             )
@@ -297,8 +297,8 @@ class RegisterItemDetails extends Component {
           <Form.Label>{this.props.translate('labelPossibleMeasures', null, 'Mulige tiltak')}</Form.Label>
           {this.state.editable
             ? (
-              <div className={formsStyle.comboInput}>
-                <Form.Control name="possibleMeasures" value={registerItem.possibleMeasures} onChange={this.handleChange} />
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control as="textarea" rows={4} name="possibleMeasures" value={registerItem.possibleMeasures} onChange={this.handleChange} />
               </div>
             )
             : (
@@ -310,7 +310,7 @@ class RegisterItemDetails extends Component {
           <Form.Label>{this.props.translate('labelTechnicalComment', null, 'Teknisk kommentar')}</Form.Label>
           {this.state.editable
             ? (
-              <div className={formsStyle.comboInput}>
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                 <Form.Control name="technicalComment" value={registerItem.technicalComment} onChange={this.handleChange} />
               </div>
             )
@@ -327,7 +327,7 @@ class RegisterItemDetails extends Component {
             <Form.Label>{this.props.translate('labelDataSetTitle', null, 'Tittel')}</Form.Label>
             {this.state.editable
               ? (
-                <div className={formsStyle.comboInput}>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                   <Form.Control
                     name="title"
                     value={registerItem.dataSet && registerItem.dataSet.title ? registerItem.dataSet.title : ''}
@@ -343,7 +343,7 @@ class RegisterItemDetails extends Component {
             <Form.Label>{this.props.translate('labelDataSetNamespace', null, 'Navnerom')}</Form.Label>
             {this.state.editable
               ? (
-                <div className={formsStyle.comboInput}>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                   <Form.Control
                     name="namespace"
                     value={registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}
@@ -359,7 +359,7 @@ class RegisterItemDetails extends Component {
             <Form.Label>{this.props.translate('labelDataSetBufferText', null, 'Buffertekst')}</Form.Label>
             {this.state.editable
               ? (
-                <div className={formsStyle.comboInput}>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                   <Form.Control
                     name="bufferText"
                     value={registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}
@@ -376,9 +376,10 @@ class RegisterItemDetails extends Component {
             <Form.Label>{this.props.translate('labelDataSetBufferDistance', null, 'Buffer')}</Form.Label>
             {this.state.editable
               ? (
-                <div className={formsStyle.comboInput}>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                   <Form.Control
                     name="bufferDistance"
+                    type="number"
                     value={registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}
                     onChange={this.handleDatasetChange} />
                 </div>
@@ -394,7 +395,7 @@ class RegisterItemDetails extends Component {
               ? (
                 <React.Fragment>
                   <Form.Label>{this.props.translate('labelDataSetUrlMetadata', null, 'Metadata')}</Form.Label>
-                  <div className={formsStyle.comboInput}>
+                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control
                       name="dataSetUrlMetadata"
                       value={registerItem.dataSet && registerItem.dataSet.urlMetadata ? registerItem.dataSet.urlMetadata : ''}
@@ -413,7 +414,7 @@ class RegisterItemDetails extends Component {
               ? (
                 <React.Fragment>
                   <Form.Label>{this.props.translate('labelDataSetUrlGmlSchema', null, 'GML-skjema')}</Form.Label>
-                  <div className={formsStyle.comboInput}>
+                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control
                       name="dataSetUrlGmlSchema"
                       value={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}
@@ -431,7 +432,7 @@ class RegisterItemDetails extends Component {
             <Form.Label>{this.props.translate('labelDataSetTypeReferenceAttribute', null, 'Attributt')}</Form.Label>
             {this.state.editable
               ? (
-                <div className={formsStyle.comboInput}>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                   <Form.Control
                     name="attribute"
                     value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.attribute ? registerItem.dataSet.typeReference.attribute : ''}
@@ -447,7 +448,7 @@ class RegisterItemDetails extends Component {
             <Form.Label>{this.props.translate('labelDataSetTypeReferenceCodeValue', null, 'Kodeverdi')}</Form.Label>
             {this.state.editable
               ? (
-                <div className={formsStyle.comboInput}>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                   <Form.Control
                     name="codeValue"
                     value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.codeValue ? registerItem.dataSet.typeReference.codeValue : ''}
@@ -463,7 +464,7 @@ class RegisterItemDetails extends Component {
             <Form.Label>{this.props.translate('labelDataSetTypeReferenceType', null, 'Objekttype')}</Form.Label>
             {this.state.editable
               ? (
-                <div className={formsStyle.comboInput}>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                   <Form.Control
                     name="type"
                     value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}
