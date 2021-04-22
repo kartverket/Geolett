@@ -129,12 +129,17 @@ class RegisterItemDetails extends Component {
 
     this.props.updateRegisterItem(registerItem, token)
       .then(() => {
-        this.setState({ validationErrors: [] });
+        this.setState({
+          validationErrors: [],
+          editable: false
+        });
         toastr.success('Konteksttypen ble oppdatert');
       })
       .catch(({ response }) => {
         toastr.error('Kunne ikke oppdatere konteksttype');
-        this.setState({ validationErrors: response.data });
+        this.setState({
+          validationErrors: response.data
+        });
         window.scroll(0, 0);
       });
   }
