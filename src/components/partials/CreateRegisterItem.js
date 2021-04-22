@@ -16,7 +16,7 @@ import { fetchOrganizations } from 'actions/OrganizationsActions';
 import { createRegisterItem, updateRegisterItem, fetchRegisterItems } from 'actions/RegisterItemActions';
 
 // Helpers
-import { canAddRegisterItem, canEditRegisterItem } from 'helpers/authorizationHelpers';
+import { canAddRegisterItem } from 'helpers/authorizationHelpers';
 
 // Stylesheets
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -29,14 +29,8 @@ class RegisterItemDetails extends Component {
       this.state = {
          dataFetched: false,
          modalOpen: false,
-         registerItem: props.newRegisterItem
-            ? new RegisterItem()
-            : props.selectedRegisterItem,
-         selectedOwner: props.newRegisterItem
-            ? []
-            : [
-               props.selectedRegisterItem.owner
-            ],
+         registerItem: new RegisterItem(),
+         selectedOwner: [],
          validationErrors: []
       };
 
@@ -72,7 +66,7 @@ class RegisterItemDetails extends Component {
 
    handleChange(data) {
       const registerItem = this.state.registerItem;
-      const { name, value } = data.target ? data.target : data;   
+      const { name, value } = data.target ? data.target : data;
       const parsed = parseInt(value);
 
       registerItem[name] = isNaN(parsed) ? value : parsed;
@@ -88,36 +82,22 @@ class RegisterItemDetails extends Component {
          registerItem.owner.id = this.state.selectedOwner[0].id
       }
 
-      this.props.newRegisterItem
-         ? this.props.createRegisterItem(registerItem, token)
-            .then(() => {
-               this.closeModal();
-               this.setState({ validationErrors: [] });
-               this.props.fetchRegisterItems();
-               toastr.success('En ny konteksttype ble lagt til');
-            })
-            .catch(({ response }) => {   
-               toastr.error('Kunne ikke opprette konteksttype');            
-               this.setState({ validationErrors: response.data });
-            })            
-         : this.props.updateRegisterItem(registerItem, token)
-            .then(() => {
-               this.closeModal();
-               this.setState({ validationErrors: [] });
-               toastr.success('Konteksttypen ble oppdatert');
-            })
-            .catch(({ response }) => {
-               toastr.error('Kunne ikke oppdatere konteksttype');
-               this.setState({ validationErrors: response.data });
-            });
+      this.props.createRegisterItem(registerItem, token)
+         .then(() => {
+            this.closeModal();
+            this.setState({ validationErrors: [] });
+            this.props.fetchRegisterItems();
+            toastr.success('En ny konteksttype ble lagt til');
+         })
+         .catch(({ response }) => {
+            toastr.error('Kunne ikke opprette konteksttype');
+            this.setState({ validationErrors: response.data });
+         })
+
    }
 
-   showAddRegisterItemContent(){
-      return this.state.registerItem && this.props.newRegisterItem && canAddRegisterItem(this.props.authInfo);
-   }
-
-   showEditRegisterItemContent() {
-      return this.state.registerItem && !this.props.newRegisterItem && canEditRegisterItem(this.props.authInfo);
+   showAddRegisterItemContent() {
+      return this.state.registerItem && canAddRegisterItem(this.props.authInfo);
    }
 
    render() {
@@ -125,9 +105,9 @@ class RegisterItemDetails extends Component {
          return '';
       }
 
-      return this.showAddRegisterItemContent() || this.showEditRegisterItemContent() ? (
+      return this.showAddRegisterItemContent() ? (
          <React.Fragment>
-            <Button variant="primary" className="marginB-20" onClick={this.openModal}>{this.props.newRegisterItem ? 'Opprett konteksttype' : 'Rediger konteksttype'}</Button>
+            <Button variant="primary" className="marginB-20" onClick={this.openModal}>Opprett konteksttype</Button>
             <Modal
                show={this.state.modalOpen}
                onHide={this.closeModal}
@@ -137,7 +117,7 @@ class RegisterItemDetails extends Component {
                animation={false}
             >
                <Modal.Header closeButton>
-                  <Modal.Title>{this.props.newRegisterItem ? 'Ny konteksttype' : `${this.state.registerItem.contextType}`}</Modal.Title>
+                  <Modal.Title>Ny konteksttype</Modal.Title>
                </Modal.Header>
 
                <Modal.Body>
@@ -165,7 +145,7 @@ class RegisterItemDetails extends Component {
                   </Form.Group>
 
 
-                  
+
                </Modal.Body>
 
                <Modal.Footer>
