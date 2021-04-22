@@ -13,7 +13,7 @@ import { RegisterItem } from 'models/registerItem';
 
 // Actions
 import { fetchOrganizations } from 'actions/OrganizationsActions';
-import { createRegisterItem, updateRegisterItem } from 'actions/RegisterItemActions';
+import { createRegisterItem, updateRegisterItem, fetchRegisterItems } from 'actions/RegisterItemActions';
 
 // Helpers
 import { canAddRegisterItem, canEditRegisterItem } from 'helpers/authorizationHelpers';
@@ -93,6 +93,7 @@ class RegisterItemDetails extends Component {
             .then(() => {
                this.closeModal();
                this.setState({ validationErrors: [] });
+               this.props.fetchRegisterItems();
                toastr.success('En ny konteksttype ble lagt til');
             })
             .catch(({ response }) => {   
@@ -189,7 +190,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
    fetchOrganizations,
    createRegisterItem,
-   updateRegisterItem
+   updateRegisterItem,
+   fetchRegisterItems
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterItemDetails);
