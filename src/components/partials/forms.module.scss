@@ -38,12 +38,11 @@
       display: inline-block;
       position: relative;
       border-radius: 0.25rem;
-      margin-bottom: 15px;
 
       &.fullWidth {
          display: block;
       }
-      
+
       :local(svg.editIcon) {
          display: none;
          position: absolute;
@@ -204,13 +203,16 @@
    visibility: hidden;
 }
 :local(.flex) {
-  display: flex;
-  justify-content: space-between;
-  @media screen and (max-width: 600px) {
-   flex-direction: column;
+   display: flex;
+   justify-content: space-between;
+   align-items: flex-end;
+   @media screen and (max-width: 600px) {
+      flex-direction: column;
+   }
+   :local(.form) {
+      flex: 1;
    }
 }
 :local(.block) {
    margin: 20px 0;
-  
 }
