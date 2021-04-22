@@ -177,7 +177,7 @@ class RegisterItemDetails extends Component {
         {linkListElements}
       </ul>) : '';
     return (<div>
-      <h2>Lenker:</h2>
+
       {linkList}
     </div>)
   }
@@ -190,20 +190,9 @@ class RegisterItemDetails extends Component {
     }
     return registerItem ? (
       <React.Fragment>
-        <ValidationErrors errors={this.state.validationErrors} />
+        <h1>{registerItem.contextType}</h1>
 
-        <Form.Group controlId="labelDescription" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDescription', null, 'Forklarende tekst')}</Form.Label>
-          {this.state.editable
-            ? (
-              <div className={formsStyle.comboInput}>
-                <Form.Control name="description" value={registerItem.description} onChange={this.handleChange} />
-              </div>
-            )
-            : (
-              <div>{registerItem.description}</div>
-            )}
-        </Form.Group>
+        <ValidationErrors errors={this.state.validationErrors} />
 
         <Form.Group controlId="labelContextType" className={formsStyle.form}>
           <Form.Label>{this.props.translate('labelContextType', null, 'Konteksttype')}</Form.Label>
@@ -215,6 +204,53 @@ class RegisterItemDetails extends Component {
             )
             : (
               <div>{registerItem.contextType}</div>
+            )}
+        </Form.Group>
+
+        <Form.Group controlId="labelTitle" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelTitle', null, 'Tittel')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={formsStyle.comboInput}>
+                <Form.Control name="title" value={registerItem.title} onChange={this.handleChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.title}</div>
+            )}
+        </Form.Group>
+
+        <Form.Group controlId="labelOwner" className={formsStyle.form}>
+          <Form.Label>Eier</Form.Label>
+          {
+            this.state.editable
+              ? (
+                <Typeahead
+                  id="basic-typeahead-single"
+                  labelKey="name"
+                  onChange={this.handleOwnerSelect}
+                  options={this.props.organizations}
+                  selected={this.state.selectedOwner}
+                  placeholder="Legg til eier..."
+                />
+              )
+              : (
+                <React.Fragment>
+                  {registerItem.owner.name} ({registerItem.owner.orgNumber})
+                </React.Fragment>
+              )}
+        </Form.Group>
+
+        <Form.Group controlId="labelDescription" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDescription', null, 'Forklarende tekst')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={formsStyle.comboInput}>
+                <Form.Control name="description" value={registerItem.description} onChange={this.handleChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.description}</div>
             )}
         </Form.Group>
 
@@ -441,32 +477,6 @@ class RegisterItemDetails extends Component {
         </React.Fragment>
 
 
-        <h2>Eier:</h2>
-
-        <Form.Group controlId="formName">
-          <Form.Label>Eier</Form.Label>
-          {
-            this.state.editable
-              ? (
-                <Typeahead
-                  id="basic-typeahead-single"
-                  labelKey="name"
-                  onChange={this.handleOwnerSelect}
-                  options={this.props.organizations}
-                  selected={this.state.selectedOwner}
-                  placeholder="Legg til eier..."
-                />
-              )
-              : (
-                <ul>
-                  <li>name: {registerItem.owner.name}</li>
-                  <li>orgNumber: {registerItem.owner.orgNumber}</li>
-                </ul>
-              )}
-
-        </Form.Group>
-
-
         {this.renderLinks(registerItem.links)}
 
         <div className={formsStyle.btngroup}>
@@ -518,8 +528,8 @@ class RegisterItemDetails extends Component {
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.closeModal}>{this.props.translate('btnCancel')} </Button>
-            <Button variant="danger" onClick={this.handleDelete}>{this.props.translate('btnDelete')} </Button>
+            <Button variant="secondary" onClick={this.closeModal}>{this.props.translate('btnCancel', null, 'Avbryt')} </Button>
+            <Button variant="danger" onClick={this.handleDelete}>{this.props.translate('btnDelete', null, 'Slett')} </Button>
           </Modal.Footer>
         </Modal>
 

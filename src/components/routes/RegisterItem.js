@@ -39,7 +39,6 @@ class RegisterItem extends Component {
         const registerItem = this.props.registerItem;
         return registerItem && Object.keys(registerItem).length ? (
             <Container>
-                <h1>{registerItem.title}</h1>
                 <RegisterItemDetails />
             </Container>
         ) : ''
