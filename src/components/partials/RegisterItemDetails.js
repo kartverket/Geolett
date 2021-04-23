@@ -5,7 +5,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { toastr } from 'react-redux-toastr'
 import Modal from 'react-bootstrap/Modal';
-import { Typeahead } from 'react-bootstrap-typeahead';
+import { Typeahead, withAsync } from 'react-bootstrap-typeahead';
+
 import { withRouter } from 'react-router-dom';
 
 // Components
@@ -18,10 +19,13 @@ import { translate } from 'actions/ConfigActions';
 
 // Helpers
 import { canDeleteRegisterItem, canEditRegisterItem } from 'helpers/authorizationHelpers';
+import { getEnvironmentVariable } from 'helpers/environmentVariableHelpers.js';
 
 // Stylesheets
 import formsStyle from 'components/partials/forms.module.scss';
 
+
+const AsyncTypeahead = withAsync(Typeahead);
 
 class RegisterItemDetails extends Component {
 
@@ -39,11 +43,14 @@ class RegisterItemDetails extends Component {
       newLinkUrl: '',
       dataFetched: false,
       modalOpen: false,
-      validationErrors: []
+      validationErrors: [],
+      datasetSearchIsLoading: false,
+      datasetOptions: []
     };
 
     this.getMdeInstance = this.getMdeInstance.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDatasetSelect = this.handleDatasetSelect.bind(this);
     this.handleDatasetChange = this.handleDatasetChange.bind(this);
     this.handleDatasetTypeReferenceChange = this.handleDatasetTypeReferenceChange.bind(this);
     this.handleChangeLink = this.handleChangeLink.bind(this);
@@ -201,6 +208,46 @@ class RegisterItemDetails extends Component {
   closeModal() {
     this.setState({ modalOpen: false });
   }
+
+  handleOnDatasetSearch(query) {
+    this.setState({ datasetSearchIsLoading: true });
+    const kartkatalogApiUrl = getEnvironmentVariable('kartkatalogApiUrl');
+    fetch(`${kartkatalogApiUrl}/search?text=${query}&facets[0]name=type&facets[0]value=dataset&limit=25`)
+      .then(resp => resp.json())
+      .then(json => this.setState({
+        datasetSearchIsLoading: false,
+        datasetOptions: json.Results.map(dataset => {
+          return {
+            title: dataset.Title,
+            urlMetadata: dataset.ShowDetailsUrl
+          }
+        }),
+      }));
+  }
+
+  handleDatasetSelect(datasetArray) {
+    const dataset = Array.isArray(datasetArray) & datasetArray.length
+      ? datasetArray[0]
+      : {
+        title: '',
+        urlMetadata: ''
+      };
+    const registerItem = this.state.registerItem;
+    registerItem.dataSet = registerItem.dataSet || {};
+    registerItem.dataSet.title = dataset.title;
+    registerItem.dataSet.urlMetadata = dataset.urlMetadata;
+    this.setState({ registerItem });
+  }
+
+  getSelectedDatasetOption() {
+    const registerItem = this.state.registerItem || null;
+    const dataset = registerItem && registerItem.dataSet || null;
+    return dataset ? [{
+      title: dataset.title,
+      urlMetadata: dataset.urlMetadata
+    }] : [];
+  }
+
 
 
   renderLinks(links) {
@@ -406,161 +453,148 @@ class RegisterItemDetails extends Component {
             )}
         </Form.Group>
 
-        <React.Fragment>
-          <h2>Datasett</h2>
-          <Form.Group controlId="labelDataSetTitle" className={formsStyle.form}>
-            <Form.Label>{this.props.translate('labelDataSetTitle', null, 'Tittel')}</Form.Label>
-            {this.state.editable
-              ? (
+
+        <h2>Datasett</h2>
+        {
+          this.state.editable
+            ? (
+              <AsyncTypeahead
+                id="dataset-search"
+                isLoading={this.state.datasetSearchIsLoading}
+                labelKey={option => `${option.title}`}
+                onSearch={(query) => this.handleOnDatasetSearch(query)}
+                onChange={this.handleDatasetSelect}
+                options={this.state.datasetOptions}
+                defaultSelected={this.getSelectedDatasetOption()}
+                placeholder="Søk etter datasett"
+              />
+            )
+            : (
+              <Form.Group controlId="labelDataSetTitle" className={formsStyle.form}>
+                <a href={registerItem.dataSet && registerItem.dataSet.urlMetadata ? registerItem.dataSet.urlMetadata : ''}>
+                  <h3>{registerItem.dataSet && registerItem.dataSet.title ? registerItem.dataSet.title : ''}</h3>
+                </a>
+              </Form.Group>
+            )
+        }
+
+        <Form.Group controlId="labelDataSetNamespace" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDataSetNamespace', null, 'Navnerom')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control
+                  name="namespace"
+                  value={registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}
+                  onChange={this.handleDatasetChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}</div>
+            )}
+        </Form.Group>
+
+        <Form.Group controlId="labelDataSetBufferText" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDataSetBufferText', null, 'Buffertekst')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control
+                  name="bufferText"
+                  value={registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}
+                  onChange={this.handleDatasetChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}</div>
+            )}
+        </Form.Group>
+
+
+        <Form.Group controlId="labelDataSetBufferDistance" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDataSetBufferDistance', null, 'Buffer')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control
+                  name="bufferDistance"
+                  type="number"
+                  value={registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}
+                  onChange={this.handleDatasetChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}</div>
+            )}
+        </Form.Group>
+
+        <Form.Group controlId="labelDataSetUrlGmlSchema" className={formsStyle.form}>
+          {this.state.editable
+            ? (
+              <React.Fragment>
+                <Form.Label>{this.props.translate('labelDataSetUrlGmlSchema', null, 'GML-skjema')}</Form.Label>
                 <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                   <Form.Control
-                    name="title"
-                    value={registerItem.dataSet && registerItem.dataSet.title ? registerItem.dataSet.title : ''}
+                    name="urlGmlSchema"
+                    value={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}
                     onChange={this.handleDatasetChange} />
                 </div>
-              )
-              : (
-                <div>{registerItem.dataSet && registerItem.dataSet.title ? registerItem.dataSet.title : ''}</div>
-              )}
-          </Form.Group>
+              </React.Fragment>
+            )
+            : (
+              <div><a href={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}>Lenke til GML-skjema</a></div>
+            )}
+        </Form.Group>
 
-          <Form.Group controlId="labelDataSetNamespace" className={formsStyle.form}>
-            <Form.Label>{this.props.translate('labelDataSetNamespace', null, 'Navnerom')}</Form.Label>
-            {this.state.editable
-              ? (
-                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                  <Form.Control
-                    name="namespace"
-                    value={registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}
-                    onChange={this.handleDatasetChange} />
-                </div>
-              )
-              : (
-                <div>{registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}</div>
-              )}
-          </Form.Group>
+        <h3>Referanse til type</h3>
+        <Form.Group controlId="labelDataSetTypeReferenceAttribute" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDataSetTypeReferenceAttribute', null, 'Attributt')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control
+                  name="attribute"
+                  value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.attribute ? registerItem.dataSet.typeReference.attribute : ''}
+                  onChange={this.handleDatasetTypeReferenceChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.attribute ? registerItem.dataSet.typeReference.attribute : ''}</div>
+            )}
+        </Form.Group>
 
-          <Form.Group controlId="labelDataSetBufferText" className={formsStyle.form}>
-            <Form.Label>{this.props.translate('labelDataSetBufferText', null, 'Buffertekst')}</Form.Label>
-            {this.state.editable
-              ? (
-                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                  <Form.Control
-                    name="bufferText"
-                    value={registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}
-                    onChange={this.handleDatasetChange} />
-                </div>
-              )
-              : (
-                <div>{registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}</div>
-              )}
-          </Form.Group>
+        <Form.Group controlId="labelDataSetTypeReferenceCodeValue" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDataSetTypeReferenceCodeValue', null, 'Kodeverdi')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control
+                  name="codeValue"
+                  value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.codeValue ? registerItem.dataSet.typeReference.codeValue : ''}
+                  onChange={this.handleDatasetTypeReferenceChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.codeValue ? registerItem.dataSet.typeReference.codeValue : ''}</div>
+            )}
+        </Form.Group>
 
+        <Form.Group controlId="labelDataSetTypeReferenceType" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDataSetTypeReferenceType', null, 'Objekttype')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control
+                  name="type"
+                  value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}
+                  onChange={this.handleDatasetTypeReferenceChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}</div>
+            )}
+        </Form.Group>
 
-          <Form.Group controlId="labelDataSetBufferDistance" className={formsStyle.form}>
-            <Form.Label>{this.props.translate('labelDataSetBufferDistance', null, 'Buffer')}</Form.Label>
-            {this.state.editable
-              ? (
-                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                  <Form.Control
-                    name="bufferDistance"
-                    type="number"
-                    value={registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}
-                    onChange={this.handleDatasetChange} />
-                </div>
-              )
-              : (
-                <div>{registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}</div>
-              )}
-          </Form.Group>
-
-
-          <Form.Group controlId="labelDataSetUrlMetadata" className={formsStyle.form}>
-            {this.state.editable
-              ? (
-                <React.Fragment>
-                  <Form.Label>{this.props.translate('labelDataSetUrlMetadata', null, 'Metadata')}</Form.Label>
-                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                    <Form.Control
-                      name="urlMetadata"
-                      value={registerItem.dataSet && registerItem.dataSet.urlMetadata ? registerItem.dataSet.urlMetadata : ''}
-                      onChange={this.handleDatasetChange} />
-                  </div>
-                </React.Fragment>
-              )
-              : (
-                <div><a href={registerItem.dataSet && registerItem.dataSet.urlMetadata ? registerItem.dataSet.urlMetadata : ''}>Lenke til metadata</a></div>
-              )}
-          </Form.Group>
-
-
-          <Form.Group controlId="labelDataSetUrlGmlSchema" className={formsStyle.form}>
-            {this.state.editable
-              ? (
-                <React.Fragment>
-                  <Form.Label>{this.props.translate('labelDataSetUrlGmlSchema', null, 'GML-skjema')}</Form.Label>
-                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                    <Form.Control
-                      name="urlGmlSchema"
-                      value={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}
-                      onChange={this.handleDatasetChange} />
-                  </div>
-                </React.Fragment>
-              )
-              : (
-                <div><a href={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}>Lenke til GML-skjema</a></div>
-              )}
-          </Form.Group>
-
-          <h3>Referanse til type</h3>
-          <Form.Group controlId="labelDataSetTypeReferenceAttribute" className={formsStyle.form}>
-            <Form.Label>{this.props.translate('labelDataSetTypeReferenceAttribute', null, 'Attributt')}</Form.Label>
-            {this.state.editable
-              ? (
-                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                  <Form.Control
-                    name="attribute"
-                    value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.attribute ? registerItem.dataSet.typeReference.attribute : ''}
-                    onChange={this.handleDatasetTypeReferenceChange} />
-                </div>
-              )
-              : (
-                <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.attribute ? registerItem.dataSet.typeReference.attribute : ''}</div>
-              )}
-          </Form.Group>
-
-          <Form.Group controlId="labelDataSetTypeReferenceCodeValue" className={formsStyle.form}>
-            <Form.Label>{this.props.translate('labelDataSetTypeReferenceCodeValue', null, 'Kodeverdi')}</Form.Label>
-            {this.state.editable
-              ? (
-                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                  <Form.Control
-                    name="codeValue"
-                    value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.codeValue ? registerItem.dataSet.typeReference.codeValue : ''}
-                    onChange={this.handleDatasetTypeReferenceChange} />
-                </div>
-              )
-              : (
-                <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.codeValue ? registerItem.dataSet.typeReference.codeValue : ''}</div>
-              )}
-          </Form.Group>
-
-          <Form.Group controlId="labelDataSetTypeReferenceType" className={formsStyle.form}>
-            <Form.Label>{this.props.translate('labelDataSetTypeReferenceType', null, 'Objekttype')}</Form.Label>
-            {this.state.editable
-              ? (
-                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                  <Form.Control
-                    name="type"
-                    value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}
-                    onChange={this.handleDatasetTypeReferenceChange} />
-                </div>
-              )
-              : (
-                <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}</div>
-              )}
-          </Form.Group>
-        </React.Fragment>
 
 
         {this.renderLinks(registerItem.links)}
