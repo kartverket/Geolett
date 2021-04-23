@@ -319,10 +319,8 @@ class RegisterItemDetails extends Component {
             )}
         </Form.Group>
 
-
-
         <React.Fragment>
-          <h2>Datasett:</h2>
+          <h2>Datasett</h2>
           <Form.Group controlId="labelDataSetTitle" className={formsStyle.form}>
             <Form.Label>{this.props.translate('labelDataSetTitle', null, 'Tittel')}</Form.Label>
             {this.state.editable
@@ -397,7 +395,7 @@ class RegisterItemDetails extends Component {
                   <Form.Label>{this.props.translate('labelDataSetUrlMetadata', null, 'Metadata')}</Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control
-                      name="dataSetUrlMetadata"
+                      name="urlMetadata"
                       value={registerItem.dataSet && registerItem.dataSet.urlMetadata ? registerItem.dataSet.urlMetadata : ''}
                       onChange={this.handleDatasetChange} />
                   </div>
@@ -416,7 +414,7 @@ class RegisterItemDetails extends Component {
                   <Form.Label>{this.props.translate('labelDataSetUrlGmlSchema', null, 'GML-skjema')}</Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control
-                      name="dataSetUrlGmlSchema"
+                      name="urlGmlSchema"
                       value={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}
                       onChange={this.handleDatasetChange} />
                   </div>
