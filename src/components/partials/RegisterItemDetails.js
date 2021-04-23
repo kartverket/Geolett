@@ -127,7 +127,12 @@ class RegisterItemDetails extends Component {
         url: this.state.newLinkUrl
       }
     });
-    this.setState({ registerItem });
+    this.setState(
+      {
+        registerItem,
+        newLinkText: '',
+        newLinkUrl: '',
+      });
   }
 
   handleDeleteLink(linkIndex) {
@@ -227,23 +232,23 @@ class RegisterItemDetails extends Component {
           ? (
             <React.Fragment>
               <h3>Legg til ny lenke</h3>
-            <div key="newLink" className={formsStyle.flex}>
-              <Form.Group controlId="newLinkText" className={formsStyle.form}>
-                <Form.Label>{this.props.translate('labelLinkText', null, 'Tekst')}</Form.Label>
-                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                  <Form.Control name="text" onChange={event => this.setState({ newLinkText: event.target.value })} />
-                </div>
-              </Form.Group>
-              <Form.Group controlId="newLinkUrl" className={formsStyle.form}>
-                <Form.Label>{this.props.translate('labelLinkUrl', null, 'URL')}</Form.Label>
-                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                  <Form.Control name="url" onChange={event => this.setState({ newLinkUrl: event.target.value })} />
-                </div>
-              </Form.Group>
-              <Form.Group controlId="labelAddNewLink" className={formsStyle.form}>
-                <Button variant="primary" onClick={(event) => { this.handleAddLink() }}>Legg til</Button>
-              </Form.Group>
-            </div>
+              <div key="newLink" className={formsStyle.flex}>
+                <Form.Group controlId="newLinkText" className={formsStyle.form}>
+                  <Form.Label>{this.props.translate('labelLinkText', null, 'Tekst')}</Form.Label>
+                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                    <Form.Control name="text" value={this.state.newLinkText} onChange={event => this.setState({ newLinkText: event.target.value })} />
+                  </div>
+                </Form.Group>
+                <Form.Group controlId="newLinkUrl" className={formsStyle.form}>
+                  <Form.Label>{this.props.translate('labelLinkUrl', null, 'URL')}</Form.Label>
+                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                    <Form.Control name="url" value={this.state.newLinkUrl} onChange={event => this.setState({ newLinkUrl: event.target.value })} />
+                  </div>
+                </Form.Group>
+                <Form.Group controlId="labelAddNewLink" className={formsStyle.form}>
+                  <Button variant="primary" onClick={(event) => { this.handleAddLink() }}>Legg til</Button>
+                </Form.Group>
+              </div>
             </React.Fragment>
           ) : ''
       }
