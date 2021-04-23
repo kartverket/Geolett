@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { toastr } from 'react-redux-toastr'
 import Modal from 'react-bootstrap/Modal';
 import { Typeahead } from 'react-bootstrap-typeahead';
-
+import { withRouter } from 'react-router-dom';
 
 // Components
 import ValidationErrors from 'components/partials/ValidationErrors';
@@ -113,9 +113,12 @@ class RegisterItemDetails extends Component {
 
 
   handleDelete() {
-    this.props.deleteActivity(this.state.activity, this.props.user)
+    const registerItem = this.state.registerItem;
+    const token = this.props.authToken && this.props.authToken.access_token ? this.props.authToken.access_token : null;
+
+    this.props.deleteRegisterItem(registerItem, token)
       .then(() => {
-        this.props.history.push(`/geolett/${this.getMeasureNumber()}`);
+        this.props.history.push(`/geolett`);
       });
   }
 
@@ -640,4 +643,4 @@ const mapDispatchToProps = {
   translate
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterItemDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RegisterItemDetails));
