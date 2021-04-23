@@ -1,5 +1,6 @@
 {
     "environment": "dev",
+    "kartkatalogApiUrl": "https://kartkatalog.dev.geonorge.no/api",
     "signinurl": "https://register.dev.geonorge.no/SignIn?ReturnUrl=https%3A%2F%2Fregister.dev.geonorge.no%2Fgeolett",
     "signouturl": "https://register.dev.geonorge.no/SignOut",
     "tokenurl": "https://register.dev.geonorge.no/gettoken",
