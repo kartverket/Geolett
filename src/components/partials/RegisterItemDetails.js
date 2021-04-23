@@ -46,6 +46,7 @@ class RegisterItemDetails extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleDatasetChange = this.handleDatasetChange.bind(this);
     this.handleDatasetTypeReferenceChange = this.handleDatasetTypeReferenceChange.bind(this);
+    this.handleChangeLink = this.handleChangeLink.bind(this);
     this.handleOwnerSelect = this.handleOwnerSelect.bind(this);
     this.saveRegisterItem = this.saveRegisterItem.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -135,6 +136,16 @@ class RegisterItemDetails extends Component {
       });
   }
 
+  handleChangeLink(data) {
+    const registerItem = this.state.registerItem;
+    const { name, value } = data.target ? data.target : data;
+    const linkIndex = data && data.target && data.target.dataset && data.target.dataset.linkIndex ? data.target.dataset.linkIndex : null;
+    if (linkIndex !== null && registerItem.links[linkIndex]) {
+      registerItem.links[linkIndex].link[name] = value;
+      this.setState({ registerItem });
+    }
+  }
+
   handleDeleteLink(linkIndex) {
     const registerItem = this.state.registerItem;
     registerItem.links.splice(linkIndex, 1);
@@ -202,13 +213,13 @@ class RegisterItemDetails extends Component {
                 <Form.Group controlId="labelLinkText" className={formsStyle.form}>
                   <Form.Label>{this.props.translate('labelLinkText', null, 'Text')}</Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                    <Form.Control name="text" value={link.text} onChange={this.handleChange} />
+                    <Form.Control name="text" data-link-index={linkIndex} value={link.text} onChange={this.handleChangeLink} />
                   </div>
                 </Form.Group>
                 <Form.Group controlId="labelLinkUrl" className={formsStyle.form}>
                   <Form.Label>{this.props.translate('labelLinkUrl', null, 'URL')}</Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                    <Form.Control name="url" value={link.url} onChange={this.handleChange} />
+                    <Form.Control name="url" data-link-index={linkIndex} value={link.url} onChange={this.handleChangeLink} />
                   </div>
                 </Form.Group>
                 <Form.Group controlId="labelDeleteLink" className={formsStyle.form}>
