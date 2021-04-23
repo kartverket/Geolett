@@ -35,6 +35,8 @@ class RegisterItemDetails extends Component {
           props.registerItem.owner
         ] : [],
       editable: false,
+      newLinkText: '',
+      newLinkUrl: '',
       dataFetched: false,
       modalOpen: false,
       validationErrors: []
@@ -117,6 +119,24 @@ class RegisterItemDetails extends Component {
   }
 
 
+  handleAddLink() {
+    const registerItem = this.state.registerItem;
+    registerItem.links.push({
+      link: {
+        text: this.state.newLinkText,
+        url: this.state.newLinkUrl
+      }
+    });
+    this.setState({ registerItem });
+  }
+
+  handleDeleteLink(linkIndex) {
+    const registerItem = this.state.registerItem;
+    registerItem.links.splice(linkIndex, 1);
+    this.setState({ registerItem });
+  }
+
+
   saveRegisterItem() {
     const registerItem = this.state.registerItem;
     const token = this.props.authToken && this.props.authToken.access_token ? this.props.authToken.access_token : null;
@@ -168,17 +188,65 @@ class RegisterItemDetails extends Component {
     const linkListElements = links && links.length
       ? links.filter(linkItem => {
         return linkItem && linkItem.link
-      }).map(linkItem => {
+      }).map((linkItem, linkIndex) => {
         const link = linkItem.link;
-        return <li key={link.id}><a href={link.url}>{link.text}</a></li>
-      }) : null;
-    const linkList = linkListElements
-      ? (<ul>
-        {linkListElements}
-      </ul>) : '';
-    return (<div>
+        return this.state.editable
+          ? (
+            <React.Fragment>
+              <div key={linkIndex} className={formsStyle.flex}>
+                <Form.Group controlId="labelLinkText" className={formsStyle.form}>
+                  <Form.Label>{this.props.translate('labelLinkText', null, 'Text')}</Form.Label>
+                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                    <Form.Control name="text" value={link.text} onChange={this.handleChange} />
+                  </div>
+                </Form.Group>
+                <Form.Group controlId="labelLinkUrl" className={formsStyle.form}>
+                  <Form.Label>{this.props.translate('labelLinkUrl', null, 'URL')}</Form.Label>
+                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                    <Form.Control name="url" value={link.url} onChange={this.handleChange} />
+                  </div>
+                </Form.Group>
+                <Form.Group controlId="labelAddNewLink" className={formsStyle.form}>
+                  <Button variant="danger" onClick={(event) => { this.handleDeleteLink(linkIndex) }}>Fjern</Button>
+                </Form.Group>
+              </div>
 
-      {linkList}
+            </React.Fragment>
+          )
+          : (
+            <div key={linkIndex}>
+              <a href={link.url}>{link.text}</a>
+            </div>
+          );
+      }) : null;
+    return (<div>
+      <h2>Lenker</h2>
+      {linkListElements && linkListElements.length ? linkListElements : 'Ingen lenker er lagt til'}
+      {
+        this.state.editable
+          ? (
+            <React.Fragment>
+              <h3>Legg til ny lenke</h3>
+            <div key="newLink" className={formsStyle.flex}>
+              <Form.Group controlId="newLinkText" className={formsStyle.form}>
+                <Form.Label>{this.props.translate('labelLinkText', null, 'Tekst')}</Form.Label>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                  <Form.Control name="text" onChange={event => this.setState({ newLinkText: event.target.value })} />
+                </div>
+              </Form.Group>
+              <Form.Group controlId="newLinkUrl" className={formsStyle.form}>
+                <Form.Label>{this.props.translate('labelLinkUrl', null, 'URL')}</Form.Label>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                  <Form.Control name="url" onChange={event => this.setState({ newLinkUrl: event.target.value })} />
+                </div>
+              </Form.Group>
+              <Form.Group controlId="labelAddNewLink" className={formsStyle.form}>
+                <Button variant="primary" onClick={(event) => { this.handleAddLink() }}>Legg til</Button>
+              </Form.Group>
+            </div>
+            </React.Fragment>
+          ) : ''
+      }
     </div>)
   }
 
@@ -521,11 +589,9 @@ class RegisterItemDetails extends Component {
           <Modal.Header closeButton>
             <Modal.Title>Slett konteksttype</Modal.Title>
           </Modal.Header>
-
           <Modal.Body>
             <p>Er du sikker på at du vil slette {this.state.registerItem.name}?</p>
           </Modal.Body>
-
           <Modal.Footer>
             <Button variant="secondary" onClick={this.closeModal}>{this.props.translate('btnCancel', null, 'Avbryt')} </Button>
             <Button variant="danger" onClick={this.handleDelete}>{this.props.translate('btnDelete', null, 'Slett')} </Button>
