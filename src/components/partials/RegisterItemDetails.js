@@ -206,7 +206,7 @@ class RegisterItemDetails extends Component {
                     <Form.Control name="url" value={link.url} onChange={this.handleChange} />
                   </div>
                 </Form.Group>
-                <Form.Group controlId="labelAddNewLink" className={formsStyle.form}>
+                <Form.Group controlId="labelDeleteLink" className={formsStyle.form}>
                   <Button variant="danger" onClick={(event) => { this.handleDeleteLink(linkIndex) }}>Fjern</Button>
                 </Form.Group>
               </div>
