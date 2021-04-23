@@ -1,6 +1,7 @@
 @import "../../style/abstracts/_all.scss";
 
 :local(.form) {
+   white-space: pre-line;
    label {
       font-weight: 600;
    }
