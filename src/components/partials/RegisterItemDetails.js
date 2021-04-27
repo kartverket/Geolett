@@ -453,6 +453,40 @@ class RegisterItemDetails extends Component {
             )}
         </Form.Group>
 
+        <Form.Group controlId="labelDataSetBufferText" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDataSetBufferText', null, 'Buffertekst')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control
+                  name="bufferText"
+                  value={registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}
+                  onChange={this.handleDatasetChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}</div>
+            )}
+        </Form.Group>
+
+
+        <Form.Group controlId="labelDataSetBufferDistance" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDataSetBufferDistance', null, 'Buffer')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control
+                  name="bufferDistance"
+                  type="number"
+                  value={registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}
+                  onChange={this.handleDatasetChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}</div>
+            )}
+        </Form.Group>
+
 
         <h2>Datasett</h2>
         {
@@ -491,40 +525,6 @@ class RegisterItemDetails extends Component {
             )
             : (
               <div>{registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}</div>
-            )}
-        </Form.Group>
-
-        <Form.Group controlId="labelDataSetBufferText" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDataSetBufferText', null, 'Buffertekst')}</Form.Label>
-          {this.state.editable
-            ? (
-              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                <Form.Control
-                  name="bufferText"
-                  value={registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}
-                  onChange={this.handleDatasetChange} />
-              </div>
-            )
-            : (
-              <div>{registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}</div>
-            )}
-        </Form.Group>
-
-
-        <Form.Group controlId="labelDataSetBufferDistance" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDataSetBufferDistance', null, 'Buffer')}</Form.Label>
-          {this.state.editable
-            ? (
-              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                <Form.Control
-                  name="bufferDistance"
-                  type="number"
-                  value={registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}
-                  onChange={this.handleDatasetChange} />
-              </div>
-            )
-            : (
-              <div>{registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}</div>
             )}
         </Form.Group>
 
