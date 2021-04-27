@@ -547,6 +547,22 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <h3>Referanse til type</h3>
+        <Form.Group controlId="labelDataSetTypeReferenceType" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDataSetTypeReferenceType', null, 'Objekttype')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control
+                  name="type"
+                  value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}
+                  onChange={this.handleDatasetTypeReferenceChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}</div>
+            )}
+        </Form.Group>
+
         <Form.Group controlId="labelDataSetTypeReferenceAttribute" className={formsStyle.form}>
           <Form.Label>{this.props.translate('labelDataSetTypeReferenceAttribute', null, 'Attributt')}</Form.Label>
           {this.state.editable
@@ -579,21 +595,6 @@ class RegisterItemDetails extends Component {
             )}
         </Form.Group>
 
-        <Form.Group controlId="labelDataSetTypeReferenceType" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDataSetTypeReferenceType', null, 'Objekttype')}</Form.Label>
-          {this.state.editable
-            ? (
-              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                <Form.Control
-                  name="type"
-                  value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}
-                  onChange={this.handleDatasetTypeReferenceChange} />
-              </div>
-            )
-            : (
-              <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}</div>
-            )}
-        </Form.Group>
 
 
 
