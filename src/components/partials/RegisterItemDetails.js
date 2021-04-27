@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { toastr } from 'react-redux-toastr'
 import Modal from 'react-bootstrap/Modal';
 import { Typeahead, withAsync } from 'react-bootstrap-typeahead';
+import SimpleMDE from "react-simplemde-editor";
 
 import { withRouter } from 'react-router-dom';
 
@@ -23,6 +24,7 @@ import { getEnvironmentVariable } from 'helpers/environmentVariableHelpers.js';
 
 // Stylesheets
 import formsStyle from 'components/partials/forms.module.scss';
+import 'easymde/dist/easymde.min.css';
 
 
 const AsyncTypeahead = withAsync(Typeahead);
@@ -376,16 +378,26 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelDescription" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDescription', null, 'Forklarende tekst')}</Form.Label>
-          {this.state.editable
-            ? (
-              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                <Form.Control as="textarea" rows={4} name="description" value={registerItem.description} onChange={this.handleChange} />
-              </div>
-            )
-            : (
-              <div>{registerItem.description}</div>
-            )}
+        <Form.Label>{this.props.translate('labelDescription', null, 'Forklarende tekst')}</Form.Label>
+          {
+            this.state.editable
+              ? (
+                <div className={formsStyle.comboInput} style={{display: 'block'}}>
+                  <SimpleMDE
+                    value={registerItem.description || ''}
+                    onChange={value => this.handleChange({ name: 'description', value })}
+                    options={{ toolbar: ["bold", "italic", "link", "unordered-list", "|", "preview"] }}
+                    getMdeInstance={this.getMdeInstance}
+                  />
+                </div>
+              )
+              : (
+                <SimpleMDE
+                  value={registerItem.description || ''}
+                  options={{ toolbar: false, status: false }}
+                  getMdeInstance={this.getMdeInstance} />
+              )
+          }
         </Form.Group>
 
         <Form.Group controlId="labelDialogText" className={formsStyle.form}>
