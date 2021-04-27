@@ -221,7 +221,8 @@ class RegisterItemDetails extends Component {
         datasetOptions: json.Results.map(dataset => {
           return {
             title: dataset.Title,
-            urlMetadata: dataset.ShowDetailsUrl
+            urlMetadata: dataset.ShowDetailsUrl,
+            uuidMetadata: dataset.Uuid
           }
         }),
       }));
@@ -232,12 +233,14 @@ class RegisterItemDetails extends Component {
       ? datasetArray[0]
       : {
         title: '',
-        urlMetadata: ''
+        urlMetadata: '',
+        uuidMetadata: ''
       };
     const registerItem = this.state.registerItem;
     registerItem.dataSet = registerItem.dataSet || {};
     registerItem.dataSet.title = dataset.title;
     registerItem.dataSet.urlMetadata = dataset.urlMetadata;
+    registerItem.dataSet.uuidMetadata = dataset.uuidMetadata;
     this.setState({ registerItem });
   }
 
@@ -246,7 +249,8 @@ class RegisterItemDetails extends Component {
     const dataset = registerItem && registerItem.dataSet || null;
     return dataset ? [{
       title: dataset.title,
-      urlMetadata: dataset.urlMetadata
+      urlMetadata: dataset.urlMetadata,
+      uuidMetadata: dataset.uuidMetadata
     }] : [];
   }
 
