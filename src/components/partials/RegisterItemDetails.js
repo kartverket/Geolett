@@ -54,6 +54,7 @@ class RegisterItemDetails extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleDatasetSelect = this.handleDatasetSelect.bind(this);
     this.handleDatasetChange = this.handleDatasetChange.bind(this);
+    this.getRegisterInfo = this.getRegisterInfo.bind(this);
     this.handleDatasetTypeReferenceChange = this.handleDatasetTypeReferenceChange.bind(this);
     this.handleChangeLink = this.handleChangeLink.bind(this);
     this.handleOwnerSelect = this.handleOwnerSelect.bind(this);
@@ -222,7 +223,8 @@ class RegisterItemDetails extends Component {
           return {
             title: dataset.Title,
             urlMetadata: dataset.ShowDetailsUrl,
-            uuidMetadata: dataset.Uuid
+            uuidMetadata: dataset.Uuid,
+            productSpecificationUrl: dataset.ProductSpecificationUrl
           }
         }),
       }));
@@ -234,7 +236,8 @@ class RegisterItemDetails extends Component {
       : {
         title: '',
         urlMetadata: '',
-        uuidMetadata: ''
+        uuidMetadata: '',
+        productSpecificationUrl: ''
       };
     const registerItem = this.state.registerItem;
     registerItem.dataSet = registerItem.dataSet || {};
@@ -242,7 +245,32 @@ class RegisterItemDetails extends Component {
     registerItem.dataSet.urlMetadata = dataset.urlMetadata;
     registerItem.dataSet.uuidMetadata = dataset.uuidMetadata;
     this.setState({ registerItem });
+    if(dataset.productSpecificationUrl != undefined){
+      console.log(dataset.productSpecificationUrl);
+      this.getRegisterInfo(dataset.productSpecificationUrl);
+    }
   }
+
+  getRegisterInfo(url) {
+    url = url + ".json";
+    url = url.replace("geonorge.no/", "geonorge.no/api/");
+    fetch(url)
+    .then(response => response.json())
+    .then(result => {
+        const registerItem = this.state.registerItem;
+        registerItem.dataSet = registerItem.dataSet || {};
+        var gMLApplicationSchema = result.GMLApplicationSchema;
+        registerItem.dataSet.urlGmlSchema = gMLApplicationSchema;
+        var namespace = gMLApplicationSchema.substring(0, gMLApplicationSchema.lastIndexOf("/"));
+        registerItem.dataSet.namespace = namespace;
+
+        var applicationSchema = result.ApplicationSchema;
+        if(!registerItem.dataSet.typeReference.type)
+          registerItem.dataSet.typeReference.type = 'Se ' + applicationSchema; //Todo get as json filter "stereotype": "objekttype"
+
+        this.setState({ registerItem });
+    })
+  };
 
   getSelectedDatasetOption() {
     const registerItem = this.state.registerItem || null;
@@ -250,7 +278,8 @@ class RegisterItemDetails extends Component {
     return dataset ? [{
       title: dataset.title,
       urlMetadata: dataset.urlMetadata,
-      uuidMetadata: dataset.uuidMetadata
+      uuidMetadata: dataset.uuidMetadata,
+      productSpecificationUrl: dataset.productSpecificationUrl
     }] : [];
   }
 
