@@ -55,6 +55,7 @@ class RegisterItemDetails extends Component {
     this.handleDatasetSelect = this.handleDatasetSelect.bind(this);
     this.handleDatasetChange = this.handleDatasetChange.bind(this);
     this.getRegisterInfo = this.getRegisterInfo.bind(this);
+    this.getObjectTypeInfo = this.getObjectTypeInfo.bind(this);
     this.handleDatasetTypeReferenceChange = this.handleDatasetTypeReferenceChange.bind(this);
     this.handleChangeLink = this.handleChangeLink.bind(this);
     this.handleOwnerSelect = this.handleOwnerSelect.bind(this);
@@ -245,8 +246,7 @@ class RegisterItemDetails extends Component {
     registerItem.dataSet.urlMetadata = dataset.urlMetadata;
     registerItem.dataSet.uuidMetadata = dataset.uuidMetadata;
     this.setState({ registerItem });
-    if(dataset.productSpecificationUrl != undefined){
-      console.log(dataset.productSpecificationUrl);
+    if(dataset.productSpecificationUrl != undefined && dataset.productSpecificationUrl !=''){
       this.getRegisterInfo(dataset.productSpecificationUrl);
     }
   }
@@ -254,6 +254,7 @@ class RegisterItemDetails extends Component {
   getRegisterInfo(url) {
     url = url + ".json";
     url = url.replace("geonorge.no/", "geonorge.no/api/");
+    console.log("getRegisterInfo: " + url);
     fetch(url)
     .then(response => response.json())
     .then(result => {
@@ -265,10 +266,34 @@ class RegisterItemDetails extends Component {
         registerItem.dataSet.namespace = namespace;
 
         var applicationSchema = result.ApplicationSchema;
-        if(!registerItem.dataSet.typeReference.type)
-          registerItem.dataSet.typeReference.type = 'Se ' + applicationSchema; //Todo get as json filter "stereotype": "objekttype"
+       
+        this.getObjectTypeInfo(applicationSchema)
 
         this.setState({ registerItem });
+    })
+  };
+
+  getObjectTypeInfo(url) {
+    console.log("getObjectTypeInfo: " + url);
+
+    var objectTypes = [];  
+
+    fetch(url, { headers: { 'Accept': 'application/json'  }})
+    .then(response => response.json())
+    .then(results => {
+        results.result.SearchRecords.forEach(element => {
+          if(element.status == "Gyldig" && element.stereotype == "objekttype")
+          {
+            let objecttype = {
+              id: element.id,  // Use display link to find attribute and code value ex: https://objektkatalog.geonorge.no/Objekttype/Index/EAID_0108C6D9_3D9C_47ba_AD4B_673A6E3327AE
+              label: element.name
+            };
+
+            objectTypes.push(objecttype);
+          }
+        });
+        console.log(objectTypes);
+
     })
   };
 
