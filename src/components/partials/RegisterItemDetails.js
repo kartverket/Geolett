@@ -40,6 +40,7 @@ class RegisterItemDetails extends Component {
         ? [
           props.registerItem.owner
         ] : [],
+      selectedObjectTypeId: null,
       editable: false,
       newLinkText: '',
       newLinkUrl: '',
@@ -83,7 +84,15 @@ class RegisterItemDetails extends Component {
             if (applicationSchemaUrl) {
               this.getObjectTypeInfo(applicationSchemaUrl).then(objectTypeInfo => {
                 const objectTypeOptions = this.getObjectTypeOptionsFromObjectTypeinfo(objectTypeInfo);
-                this.setState({ objectTypeOptions });
+                this.setState({ objectTypeOptions }, () => {
+                  const selectedObjectTypeOptionValue = this.props?.registerItem?.dataSet?.typeReference?.type;
+                  if (selectedObjectTypeOptionValue) {
+                    const selectedObjectTypeOption = this.getSelectedObjectTypeOptionFromOptionValue(selectedObjectTypeOptionValue);
+                    this.setState({
+                      selectedObjectTypeId: selectedObjectTypeOption?.id
+                    });
+                  }
+                });
               })
             }
           }
@@ -128,7 +137,15 @@ class RegisterItemDetails extends Component {
     registerItem.dataSet.typeReference = registerItem.dataSet.typeReference || {};
     registerItem.dataSet.typeReference[name] = isNaN(parsed) ? value : parsed;
 
+
     this.setState({ registerItem });
+
+    if (name === 'type') {
+      const selectedObjectTypeOption = this.getSelectedObjectTypeOptionFromOptionValue(value);
+      this.setState({
+        selectedObjectTypeId: selectedObjectTypeOption?.id
+      });
+    }
   }
 
   handleOwnerSelect(data) {
@@ -338,6 +355,12 @@ class RegisterItemDetails extends Component {
       uuidMetadata: dataset.uuidMetadata,
       productSpecificationUrl: dataset.productSpecificationUrl
     }] : [];
+  }
+
+  getSelectedObjectTypeOptionFromOptionValue(optionValue) {
+    return this.state.objectTypeOptions.find(objectTypeOption => {
+      return objectTypeOption.label === optionValue;
+    })
   }
 
 
@@ -667,7 +690,9 @@ class RegisterItemDetails extends Component {
               </div>
             )
             : (
-              <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}</div>
+              <div>
+                <a href={`https://objektkatalog.geonorge.no/Objekttype/Index/${this.state.selectedObjectTypeId}`}>{registerItem.dataSet?.typeReference?.type}</a>
+              </div>
             )}
         </Form.Group>
 
