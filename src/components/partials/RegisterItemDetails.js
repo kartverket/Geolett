@@ -47,7 +47,8 @@ class RegisterItemDetails extends Component {
       modalOpen: false,
       validationErrors: [],
       datasetSearchIsLoading: false,
-      datasetOptions: []
+      datasetOptions: [],
+      objectTypeOptions: []
     };
 
     this.getMdeInstance = this.getMdeInstance.bind(this);
@@ -69,10 +70,26 @@ class RegisterItemDetails extends Component {
   componentDidMount() {
     Promise.all([
       this.props.fetchOrganizations(),
-    ])
-      .then(() => {
-        this.setState({ dataFetched: true });
-      });
+    ]).then(() => {
+      this.setState({ dataFetched: true });
+    });
+    const datasetUuid = this.props?.registerItem?.dataSet?.uuidMetadata;
+    if (datasetUuid) { // TODO Check if applicationSchemaUrl can be saved on object
+      this.fetchDatasetDetails(datasetUuid).then(dataset => {
+        this.getRegisterInfo(dataset.ProductSpecificationUrl).then(registerInfo => {
+          const gMLApplicationSchema = registerInfo?.GMLApplicationSchema;
+          if (gMLApplicationSchema) {
+            const applicationSchemaUrl = registerInfo.ApplicationSchema;
+            if (applicationSchemaUrl) {
+              this.getObjectTypeInfo(applicationSchemaUrl).then(objectTypeInfo => {
+                const objectTypeOptions = this.getObjectTypeOptionsFromObjectTypeinfo(objectTypeInfo);
+                this.setState({ objectTypeOptions });
+              })
+            }
+          }
+        })
+      })
+    }
   }
 
   getRegisterItemId() {
@@ -80,8 +97,6 @@ class RegisterItemDetails extends Component {
       ? this.props.match.params.registerItemId
       : null;
   }
-
-
 
   handleChange(data) {
     const registerItem = this.state.registerItem;
@@ -166,6 +181,18 @@ class RegisterItemDetails extends Component {
     this.setState({ registerItem });
   }
 
+  fetchDatasetDetails(uuid) {
+    const kartkatalogApiUrl = getEnvironmentVariable('kartkatalogApiUrl');
+    const datasetApiUrl = `${kartkatalogApiUrl}/getdata/${uuid}`;
+    return fetch(datasetApiUrl)
+      .then(response => response.json())
+      .then(result => {
+        return result;
+      }).catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
 
   saveRegisterItem() {
     const registerItem = this.state.registerItem;
@@ -240,61 +267,66 @@ class RegisterItemDetails extends Component {
         uuidMetadata: '',
         productSpecificationUrl: ''
       };
+
     const registerItem = this.state.registerItem;
     registerItem.dataSet = registerItem.dataSet || {};
     registerItem.dataSet.title = dataset.title;
     registerItem.dataSet.urlMetadata = dataset.urlMetadata;
     registerItem.dataSet.uuidMetadata = dataset.uuidMetadata;
-    this.setState({ registerItem });
-    if(dataset.productSpecificationUrl != undefined && dataset.productSpecificationUrl !=''){
-      this.getRegisterInfo(dataset.productSpecificationUrl);
+
+    if (dataset.productSpecificationUrl?.length) {
+      this.getRegisterInfo(dataset.productSpecificationUrl).then(registerInfo => {
+        const gMLApplicationSchema = registerInfo?.GMLApplicationSchema;
+        if (gMLApplicationSchema) {
+          registerItem.dataSet.urlGmlSchema = gMLApplicationSchema;
+          registerItem.dataSet.namespace = gMLApplicationSchema.substring(0, gMLApplicationSchema.lastIndexOf("/"));
+
+          const applicationSchemaUrl = registerInfo.ApplicationSchema;
+          if (applicationSchemaUrl) {
+            this.getObjectTypeInfo(applicationSchemaUrl).then(objectTypeInfo => {
+              const objectTypeOptions = this.getObjectTypeOptionsFromObjectTypeinfo(objectTypeInfo);
+              this.setState({ objectTypeOptions });
+            })
+          }
+        }
+        this.setState({ registerItem });
+      })
+    } else {
+      this.setState({ registerItem });
     }
+  }
+
+  getObjectTypeOptionsFromObjectTypeinfo(objectTypeInfo) {
+    return objectTypeInfo?.result?.SearchRecords?.length ? objectTypeInfo.result.SearchRecords.filter(searchRecord => {
+      return searchRecord.status == "Gyldig" && searchRecord.stereotype == "objekttype";
+    }).map(searchRecord => {
+      return {
+        id: searchRecord.id,  // Use display link to find attribute and code value ex: https://objektkatalog.geonorge.no/Objekttype/Index/EAID_0108C6D9_3D9C_47ba_AD4B_673A6E3327AE
+        label: searchRecord.name
+      };
+    }) : null;
   }
 
   getRegisterInfo(url) {
     url = url + ".json";
     url = url.replace("geonorge.no/", "geonorge.no/api/");
-    console.log("getRegisterInfo: " + url);
-    fetch(url)
-    .then(response => response.json())
-    .then(result => {
-        const registerItem = this.state.registerItem;
-        registerItem.dataSet = registerItem.dataSet || {};
-        var gMLApplicationSchema = result.GMLApplicationSchema;
-        registerItem.dataSet.urlGmlSchema = gMLApplicationSchema;
-        var namespace = gMLApplicationSchema.substring(0, gMLApplicationSchema.lastIndexOf("/"));
-        registerItem.dataSet.namespace = namespace;
-
-        var applicationSchema = result.ApplicationSchema;
-       
-        this.getObjectTypeInfo(applicationSchema)
-
-        this.setState({ registerItem });
-    })
+    return fetch(url)
+      .then(response => response.json())
+      .then(result => {
+        return result;
+      }).catch((error) => {
+        console.error('Error:', error);
+      });
   };
 
   getObjectTypeInfo(url) {
-    console.log("getObjectTypeInfo: " + url);
-
-    var objectTypes = [];  
-
-    fetch(url, { headers: { 'Accept': 'application/json'  }})
-    .then(response => response.json())
-    .then(results => {
-        results.result.SearchRecords.forEach(element => {
-          if(element.status == "Gyldig" && element.stereotype == "objekttype")
-          {
-            let objecttype = {
-              id: element.id,  // Use display link to find attribute and code value ex: https://objektkatalog.geonorge.no/Objekttype/Index/EAID_0108C6D9_3D9C_47ba_AD4B_673A6E3327AE
-              label: element.name
-            };
-
-            objectTypes.push(objecttype);
-          }
-        });
-        console.log(objectTypes);
-
-    })
+    return fetch(url, { headers: { 'Accept': 'application/json' } })
+      .then(response => response.json())
+      .then(results => {
+        return results;
+      }).catch((error) => {
+        console.error('Error:', error);
+      });
   };
 
   getSelectedDatasetOption() {
@@ -307,7 +339,6 @@ class RegisterItemDetails extends Component {
       productSpecificationUrl: dataset.productSpecificationUrl
     }] : [];
   }
-
 
 
   renderLinks(links) {
@@ -436,11 +467,11 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelDescription" className={formsStyle.form}>
-        <Form.Label>{this.props.translate('labelDescription', null, 'Forklarende tekst')}</Form.Label>
+          <Form.Label>{this.props.translate('labelDescription', null, 'Forklarende tekst')}</Form.Label>
           {
             this.state.editable
               ? (
-                <div className={formsStyle.comboInput} style={{display: 'block'}}>
+                <div className={formsStyle.comboInput} style={{ display: 'block' }}>
                   <SimpleMDE
                     value={registerItem.description || ''}
                     onChange={value => this.handleChange({ name: 'description', value })}
@@ -624,8 +655,15 @@ class RegisterItemDetails extends Component {
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                 <Form.Control
                   name="type"
+                  as="select"
                   value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}
-                  onChange={this.handleDatasetTypeReferenceChange} />
+                  onChange={this.handleDatasetTypeReferenceChange}>
+                  {this.state.objectTypeOptions.map(objectTypeOption => {
+                    return (
+                      <option key={objectTypeOption.id} value={objectTypeOption.label}>{objectTypeOption.label}</option>
+                    )
+                  })}
+                </Form.Control>
               </div>
             )
             : (
