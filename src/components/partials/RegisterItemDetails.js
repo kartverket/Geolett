@@ -608,12 +608,12 @@ class RegisterItemDetails extends Component {
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                 <Form.Control
                   name="bufferText"
-                  value={registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}
+                  value={registerItem?.dataSet?.bufferText || ''}
                   onChange={this.handleDatasetChange} />
               </div>
             )
             : (
-              <div>{registerItem.dataSet && registerItem.dataSet.bufferText ? registerItem.dataSet.bufferText : ''}</div>
+              <div>{registerItem?.dataSet?.bufferText || ''}</div>
             )}
         </Form.Group>
 
@@ -625,12 +625,12 @@ class RegisterItemDetails extends Component {
                 <Form.Control
                   name="bufferDistance"
                   type="number"
-                  value={registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}
+                  value={registerItem?.dataSet?.bufferDistance || ''}
                   onChange={this.handleDatasetChange} />
               </div>
             )
             : (
-              <div>{registerItem.dataSet && registerItem.dataSet.bufferDistance ? registerItem.dataSet.bufferDistance : ''}</div>
+              <div>{registerItem?.dataSet?.bufferDistance || ''}</div>
             )}
         </Form.Group>
 
@@ -686,8 +686,8 @@ class RegisterItemDetails extends Component {
                 />
               )
               : (
-                <a href={registerItem.dataSet && registerItem.dataSet.urlMetadata ? registerItem.dataSet.urlMetadata : ''}>
-                  <h3>{registerItem.dataSet && registerItem.dataSet.title ? registerItem.dataSet.title : ''}</h3>
+                <a href={registerItem?.dataSet?.urlMetadata || ''}>
+                  <h3>{registerItem?.dataSet?.title || ''}</h3>
                 </a>
               )
           }
@@ -716,7 +716,7 @@ class RegisterItemDetails extends Component {
                   <Form.Control
                     name="type"
                     as="select"
-                    value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}
+                    value={registerItem?.dataSet?.typeReference?.type || ''}
                     onChange={this.handleDatasetTypeReferenceChange}>
                     {this.state.objectTypeOptions.map(objectTypeOption => {
                       return (
@@ -749,12 +749,12 @@ class RegisterItemDetails extends Component {
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                 <Form.Control
                   name="attribute"
-                  value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.attribute ? registerItem.dataSet.typeReference.attribute : ''}
+                  value={registerItem?.dataSet?.typeReference?.attribute || ''}
                   onChange={this.handleDatasetTypeReferenceChange} />
               </div>
             )
             : (
-              <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.attribute ? registerItem.dataSet.typeReference.attribute : ''}</div>
+              <div>{registerItem?.dataSet?.typeReference?.attribute || ''}</div>
             )}
         </Form.Group>
 
@@ -765,12 +765,12 @@ class RegisterItemDetails extends Component {
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                 <Form.Control
                   name="codeValue"
-                  value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.codeValue ? registerItem.dataSet.typeReference.codeValue : ''}
+                  value={registerItem?.dataSet?.typeReference?.codeValue || ''}
                   onChange={this.handleDatasetTypeReferenceChange} />
               </div>
             )
             : (
-              <div>{registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.codeValue ? registerItem.dataSet.typeReference.codeValue : ''}</div>
+              <div>{registerItem?.dataSet?.typeReference?.codeValue || ''}</div>
             )}
         </Form.Group>
 
@@ -781,12 +781,12 @@ class RegisterItemDetails extends Component {
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                 <Form.Control
                   name="namespace"
-                  value={registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}
+                  value={registerItem?.dataSet?.namespace || ''}
                   onChange={this.handleDatasetChange} />
               </div>
             )
             : (
-              <div>{registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}</div>
+              <div>{registerItem?.dataSet?.namespace || ''}</div>
             )}
         </Form.Group>
 
@@ -798,13 +798,13 @@ class RegisterItemDetails extends Component {
                 <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                   <Form.Control
                     name="urlGmlSchema"
-                    value={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}
+                    value={registerItem?.dataSet?.urlGmlSchema || ''}
                     onChange={this.handleDatasetChange} />
                 </div>
               </React.Fragment>
             )
             : (
-              <div><a href={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}>Lenke til GML-skjema</a></div>
+              <div><a href={registerItem?.dataSet?.urlGmlSchema || ''}>Lenke til GML-skjema</a></div>
             )}
         </Form.Group>
 
