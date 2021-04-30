@@ -675,19 +675,29 @@ class RegisterItemDetails extends Component {
           <Form.Label>{this.props.translate('labelDataSetTypeReferenceType', null, 'Objekttype')}</Form.Label>
           {this.state.editable
             ? (
-              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                <Form.Control
-                  name="type"
-                  as="select"
-                  value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}
-                  onChange={this.handleDatasetTypeReferenceChange}>
-                  {this.state.objectTypeOptions.map(objectTypeOption => {
-                    return (
-                      <option key={objectTypeOption.id} value={objectTypeOption.label}>{objectTypeOption.label}</option>
-                    )
-                  })}
-                </Form.Control>
-              </div>
+              <React.Fragment>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                  <Form.Control
+                    name="type"
+                    as="select"
+                    value={registerItem.dataSet && registerItem.dataSet.typeReference && registerItem.dataSet.typeReference.type ? registerItem.dataSet.typeReference.type : ''}
+                    onChange={this.handleDatasetTypeReferenceChange}>
+                    {this.state.objectTypeOptions.map(objectTypeOption => {
+                      return (
+                        <option key={objectTypeOption.id} value={objectTypeOption.label}>{objectTypeOption.label}</option>
+                      )
+                    })}
+                  </Form.Control>
+                </div>
+                { registerItem?.dataSet?.typeReference?.type
+                  ? (
+                    <a href={`https://objektkatalog.geonorge.no/Objekttype/Index/${this.state.selectedObjectTypeId}`}>
+                      Gå til objektkatalogen for å finne attributt og kodeverdi til {registerItem.dataSet?.typeReference?.type}
+                    </a>
+                  )
+                  : ''
+                }
+              </React.Fragment>
             )
             : (
               <div>
