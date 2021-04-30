@@ -315,7 +315,7 @@ class RegisterItemDetails extends Component {
 
   getObjectTypeOptionsFromObjectTypeinfo(objectTypeInfo) {
     return objectTypeInfo?.result?.SearchRecords?.length ? objectTypeInfo.result.SearchRecords.filter(searchRecord => {
-      return searchRecord.status == "Gyldig" && searchRecord.stereotype == "objekttype";
+      return searchRecord.status === "Gyldig" && searchRecord.stereotype === "objekttype";
     }).map(searchRecord => {
       return {
         id: searchRecord.id,  // Use display link to find attribute and code value ex: https://objektkatalog.geonorge.no/Objekttype/Index/EAID_0108C6D9_3D9C_47ba_AD4B_673A6E3327AE
@@ -348,7 +348,7 @@ class RegisterItemDetails extends Component {
 
   getSelectedDatasetOption() {
     const registerItem = this.state.registerItem || null;
-    const dataset = registerItem && registerItem.dataSet || null;
+    const dataset = registerItem?.dataSet || null;
     return dataset ? [{
       title: dataset.title,
       urlMetadata: dataset.urlMetadata,
