@@ -54,6 +54,9 @@ class RegisterItemDetails extends Component {
 
     this.getMdeInstance = this.getMdeInstance.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeReferenceTek17 = this.handleChangeReferenceTek17.bind(this);
+    this.handleChangeReferenceOtherLaw = this.handleChangeReferenceOtherLaw.bind(this);
+    this.handleChangeReferenceCircularFromMinistry = this.handleChangeReferenceCircularFromMinistry.bind(this);
     this.handleDatasetSelect = this.handleDatasetSelect.bind(this);
     this.handleDatasetChange = this.handleDatasetChange.bind(this);
     this.getRegisterInfo = this.getRegisterInfo.bind(this);
@@ -146,6 +149,39 @@ class RegisterItemDetails extends Component {
         selectedObjectTypeId: selectedObjectTypeOption?.id
       });
     }
+  }
+
+  handleChangeReferenceTek17(data) {
+    const registerItem = this.state.registerItem;
+    const { name, value } = data.target ? data.target : data;
+
+    registerItem.reference = registerItem.reference || {};
+    registerItem.reference.tek17 = registerItem.reference.tek17 || {};
+    registerItem.reference.tek17[name] = value;
+
+    this.setState({ registerItem });
+  }
+
+  handleChangeReferenceOtherLaw(data) {
+    const registerItem = this.state.registerItem;
+    const { name, value } = data.target ? data.target : data;
+
+    registerItem.reference = registerItem.reference || {};
+    registerItem.reference.otherLaw = registerItem.reference.otherLaw || {};
+    registerItem.reference.otherLaw[name] = value;
+
+    this.setState({ registerItem });
+  }
+
+  handleChangeReferenceCircularFromMinistry(data) {
+    const registerItem = this.state.registerItem;
+    const { name, value } = data.target ? data.target : data;
+
+    registerItem.reference = registerItem.reference || {};
+    registerItem.reference.circularFromMinistry = registerItem.reference.circularFromMinistry || {};
+    registerItem.reference.circularFromMinistry[name] = value;
+
+    this.setState({ registerItem });
   }
 
   handleOwnerSelect(data) {
@@ -775,21 +811,83 @@ class RegisterItemDetails extends Component {
 
         <h2>Referanser</h2>
 
+        {
+          this.state.editable
+            ? (
+              <div className={formsStyle.flex}>
+                <Form.Group controlId="labelReferenceTek17Text" className={formsStyle.form}>
+                  <Form.Label>{this.props.translate('labelReferenceTek17Text', null, 'ref-tek-17-tittel')}</Form.Label>
+                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                    <Form.Control name="text" value={registerItem?.reference?.tek17?.text || ''} onChange={this.handleChangeReferenceTek17} />
+                  </div>
+                </Form.Group>
+                <Form.Group controlId="labelReferenceTek17Url" className={formsStyle.form}>
+                  <Form.Label>{this.props.translate('labelReferenceTek17Url', null, 'ref-tek-17-url')}</Form.Label>
+                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                    <Form.Control name="url" value={registerItem?.reference?.tek17?.url || ''} onChange={this.handleChangeReferenceTek17} />
+                  </div>
+                </Form.Group>
+              </div>
+            )
+            : (
+              <div>
+                <a href={registerItem?.reference?.tek17?.url || ''}>{registerItem?.reference?.tek17?.text || ''}</a>
+              </div>
+            )
+        }
 
+        {
+          this.state.editable
+            ? (
+              <div className={formsStyle.flex}>
+                <Form.Group controlId="labelReferenceOtherLawText" className={formsStyle.form}>
+                  <Form.Label>{this.props.translate('labelReferenceOtherLawText', null, 'ref-annen lov/forskrift')}</Form.Label>
+                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                    <Form.Control name="text" value={registerItem?.reference?.otherLaw?.text || ''} onChange={this.handleChangeReferenceOtherLaw} />
+                  </div>
+                </Form.Group>
+                <Form.Group controlId="labelReferenceOtherLawUrl" className={formsStyle.form}>
+                  <Form.Label>{this.props.translate('labelReferenceOtherLawUrl', null, 'ref-annen lov/forskrift-url')}</Form.Label>
+                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                    <Form.Control name="url" value={registerItem?.reference?.otherLaw?.url || ''} onChange={this.handleChangeReferenceOtherLaw} />
+                  </div>
+                </Form.Group>
+              </div>
+            )
+            : (
+              <div>
+                <a href={registerItem?.reference?.otherLaw?.url || ''}>{registerItem?.reference?.otherLaw?.text || ''}</a>
+              </div>
+            )
+        }
 
-
-
-
-
-
-
-
-
-
+        {
+          this.state.editable
+            ? (
+              <div className={formsStyle.flex}>
+                <Form.Group controlId="labelReferenceCircularFromMinistryText" className={formsStyle.form}>
+                  <Form.Label>{this.props.translate('labelReferenceCircularFromMinistryText', null, 'ref-rundskriv fra dep')}</Form.Label>
+                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                    <Form.Control name="text" value={registerItem?.reference?.circularFromMinistry?.text || ''} onChange={this.handleChangeReferenceCircularFromMinistry} />
+                  </div>
+                </Form.Group>
+                <Form.Group controlId="labelReferenceCircularFromMinistryUrl" className={formsStyle.form}>
+                  <Form.Label>{this.props.translate('labelReferenceCircularFromMinistryUrl', null, 'ref-rundskriv fra dep-url')}</Form.Label>
+                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                    <Form.Control name="url" value={registerItem?.reference?.circularFromMinistry?.url || ''} onChange={this.handleChangeReferenceCircularFromMinistry} />
+                  </div>
+                </Form.Group>
+              </div>
+            )
+            : (
+              <div>
+                <a href={registerItem?.reference?.circularFromMinistry?.url || ''}>{registerItem?.reference?.circularFromMinistry?.text || ''}</a>
+              </div>
+            )
+        }
 
 
         <div className={formsStyle.btngroup}>
-
           {this.state.editable ? (
             <div>
               {
@@ -818,7 +916,6 @@ class RegisterItemDetails extends Component {
             </div>
           )}
         </div>
-
 
         <Modal
           show={this.state.modalOpen}
