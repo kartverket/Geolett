@@ -400,7 +400,6 @@ class RegisterItemDetails extends Component {
           );
       }) : null;
     return (<div>
-      <h2>Lenker</h2>
       {linkListElements && linkListElements.length ? linkListElements : 'Ingen lenker er lagt til'}
       {
         this.state.editable
@@ -441,6 +440,8 @@ class RegisterItemDetails extends Component {
         <h1>{registerItem.contextType}</h1>
 
         <ValidationErrors errors={this.state.validationErrors} />
+
+        <h2>Kontekstbeskrivelse</h2>
 
         <Form.Group controlId="labelContextType" className={formsStyle.form}>
           <Form.Label>{this.props.translate('labelContextType', null, 'Konteksttype')}</Form.Label>
@@ -525,32 +526,6 @@ class RegisterItemDetails extends Component {
             )}
         </Form.Group>
 
-        <Form.Group controlId="labelGuidance" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelGuidance', null, 'Veiledning')}</Form.Label>
-          {this.state.editable
-            ? (
-              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                <Form.Control name="guidance" value={registerItem.guidance} onChange={this.handleChange} />
-              </div>
-            )
-            : (
-              <div>{registerItem.guidance}</div>
-            )}
-        </Form.Group>
-
-        <Form.Group controlId="labelOtherComment" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelOtherComment', null, 'Andre kommentarer')}</Form.Label>
-          {this.state.editable
-            ? (
-              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                <Form.Control name="otherComment" value={registerItem.otherComment} onChange={this.handleChange} />
-              </div>
-            )
-            : (
-              <div>{registerItem.otherComment}</div>
-            )}
-        </Form.Group>
-
         <Form.Group controlId="labelPossibleMeasures" className={formsStyle.form}>
           <Form.Label>{this.props.translate('labelPossibleMeasures', null, 'Mulige tiltak')}</Form.Label>
           {this.state.editable
@@ -564,16 +539,16 @@ class RegisterItemDetails extends Component {
             )}
         </Form.Group>
 
-        <Form.Group controlId="labelTechnicalComment" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelTechnicalComment', null, 'Teknisk kommentar')}</Form.Label>
+        <Form.Group controlId="labelGuidance" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelGuidance', null, 'Veiledning')}</Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                <Form.Control name="technicalComment" value={registerItem.technicalComment} onChange={this.handleChange} />
+                <Form.Control name="guidance" value={registerItem.guidance} onChange={this.handleChange} />
               </div>
             )
             : (
-              <div>{registerItem.technicalComment}</div>
+              <div>{registerItem.guidance}</div>
             )}
         </Form.Group>
 
@@ -593,7 +568,6 @@ class RegisterItemDetails extends Component {
             )}
         </Form.Group>
 
-
         <Form.Group controlId="labelDataSetBufferDistance" className={formsStyle.form}>
           <Form.Label>{this.props.translate('labelDataSetBufferDistance', null, 'Buffer')}</Form.Label>
           {this.state.editable
@@ -612,10 +586,45 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
 
-        <h2>Datasett</h2>
-        {
-          this.state.editable
+        <h2>Lenker</h2>
+        {this.renderLinks(registerItem.links)}
+
+
+        <h2>Kommentarer</h2>
+
+        <Form.Group controlId="labelTechnicalComment" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelTechnicalComment', null, 'Teknisk kommentar')}</Form.Label>
+          {this.state.editable
             ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control name="technicalComment" value={registerItem.technicalComment} onChange={this.handleChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.technicalComment}</div>
+            )}
+        </Form.Group>
+
+        <Form.Group controlId="labelOtherComment" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelOtherComment', null, 'Andre kommentarer')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control name="otherComment" value={registerItem.otherComment} onChange={this.handleChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.otherComment}</div>
+            )}
+        </Form.Group>
+
+
+        <h2>Datasett</h2>
+        <Form.Group controlId="labelDataSetTitle" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDataSetTitle', null, 'Datasett-tittel')}</Form.Label>
+          {
+            this.state.editable
+              ? (
               <AsyncTypeahead
                 id="dataset-search"
                 isLoading={this.state.datasetSearchIsLoading}
@@ -625,52 +634,30 @@ class RegisterItemDetails extends Component {
                 options={this.state.datasetOptions}
                 defaultSelected={this.getSelectedDatasetOption()}
                 placeholder="Søk etter datasett"
-              />
-            )
-            : (
-              <Form.Group controlId="labelDataSetTitle" className={formsStyle.form}>
+                />
+              )
+              : (
                 <a href={registerItem.dataSet && registerItem.dataSet.urlMetadata ? registerItem.dataSet.urlMetadata : ''}>
                   <h3>{registerItem.dataSet && registerItem.dataSet.title ? registerItem.dataSet.title : ''}</h3>
                 </a>
-              </Form.Group>
-            )
-        }
+              )
+          }
+        </Form.Group>
 
-        <Form.Group controlId="labelDataSetNamespace" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDataSetNamespace', null, 'Navnerom')}</Form.Label>
+        <Form.Group controlId="labelDataSetUrlMetadata" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDataSetUrlMetadata', null, 'Datasett-meta-url')}</Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                 <Form.Control
-                  name="namespace"
-                  value={registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}
+                  name="urlMetadata"
+                  value={registerItem?.dataSet?.urlMetadata || ''}
                   onChange={this.handleDatasetChange} />
               </div>
             )
-            : (
-              <div>{registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}</div>
-            )}
+            : ''}
         </Form.Group>
 
-        <Form.Group controlId="labelDataSetUrlGmlSchema" className={formsStyle.form}>
-          {this.state.editable
-            ? (
-              <React.Fragment>
-                <Form.Label>{this.props.translate('labelDataSetUrlGmlSchema', null, 'GML-skjema')}</Form.Label>
-                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                  <Form.Control
-                    name="urlGmlSchema"
-                    value={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}
-                    onChange={this.handleDatasetChange} />
-                </div>
-              </React.Fragment>
-            )
-            : (
-              <div><a href={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}>Lenke til GML-skjema</a></div>
-            )}
-        </Form.Group>
-
-        <h3>Referanse til type</h3>
         <Form.Group controlId="labelDataSetTypeReferenceType" className={formsStyle.form}>
           <Form.Label>{this.props.translate('labelDataSetTypeReferenceType', null, 'Objekttype')}</Form.Label>
           {this.state.editable
@@ -738,10 +725,55 @@ class RegisterItemDetails extends Component {
             )}
         </Form.Group>
 
+        <Form.Group controlId="labelDataSetNamespace" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelDataSetNamespace', null, 'Navnerom')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control
+                  name="namespace"
+                  value={registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}
+                  onChange={this.handleDatasetChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.dataSet && registerItem.dataSet.namespace ? registerItem.dataSet.namespace : ''}</div>
+            )}
+        </Form.Group>
+
+        <Form.Group controlId="labelDataSetUrlGmlSchema" className={formsStyle.form}>
+          {this.state.editable
+            ? (
+              <React.Fragment>
+                <Form.Label>{this.props.translate('labelDataSetUrlGmlSchema', null, 'GML-skjema')}</Form.Label>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                  <Form.Control
+                    name="urlGmlSchema"
+                    value={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}
+                    onChange={this.handleDatasetChange} />
+                </div>
+              </React.Fragment>
+            )
+            : (
+              <div><a href={registerItem.dataSet && registerItem.dataSet.urlGmlSchema ? registerItem.dataSet.urlGmlSchema : ''}>Lenke til GML-skjema</a></div>
+            )}
+        </Form.Group>
+
+
+        <h2>Referanser</h2>
 
 
 
-        {this.renderLinks(registerItem.links)}
+
+
+
+
+
+
+
+
+
+
 
         <div className={formsStyle.btngroup}>
 
