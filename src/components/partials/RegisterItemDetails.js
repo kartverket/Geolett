@@ -456,6 +456,19 @@ class RegisterItemDetails extends Component {
             )}
         </Form.Group>
 
+        <Form.Group controlId="labelId" className={formsStyle.form}>
+          <Form.Label>{this.props.translate('labelId', null, 'ID')}</Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control name="id" value={registerItem.id} onChange={this.handleChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.id}</div>
+            )}
+        </Form.Group>
+
         <Form.Group controlId="labelTitle" className={formsStyle.form}>
           <Form.Label>{this.props.translate('labelTitle', null, 'Tittel')}</Form.Label>
           {this.state.editable
@@ -625,15 +638,15 @@ class RegisterItemDetails extends Component {
           {
             this.state.editable
               ? (
-              <AsyncTypeahead
-                id="dataset-search"
-                isLoading={this.state.datasetSearchIsLoading}
-                labelKey={option => `${option.title}`}
-                onSearch={(query) => this.handleOnDatasetSearch(query)}
-                onChange={this.handleDatasetSelect}
-                options={this.state.datasetOptions}
-                defaultSelected={this.getSelectedDatasetOption()}
-                placeholder="Søk etter datasett"
+                <AsyncTypeahead
+                  id="dataset-search"
+                  isLoading={this.state.datasetSearchIsLoading}
+                  labelKey={option => `${option.title}`}
+                  onSearch={(query) => this.handleOnDatasetSearch(query)}
+                  onChange={this.handleDatasetSelect}
+                  options={this.state.datasetOptions}
+                  defaultSelected={this.getSelectedDatasetOption()}
+                  placeholder="Søk etter datasett"
                 />
               )
               : (
