@@ -212,6 +212,13 @@
    }
    :local(.form) {
       flex: 1;
+      &:not(:last-child){
+         margin-right: 16px;
+      }
+   }
+   :local(button.form){
+      margin-bottom: 1rem;
+      flex: none;
    }
 }
 :local(.block) {

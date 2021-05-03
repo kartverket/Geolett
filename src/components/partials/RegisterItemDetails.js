@@ -422,9 +422,7 @@ class RegisterItemDetails extends Component {
                     <Form.Control name="url" data-link-index={linkIndex} value={link.url} onChange={this.handleChangeLink} />
                   </div>
                 </Form.Group>
-                <Form.Group controlId="labelDeleteLink" className={formsStyle.form}>
-                  <Button variant="danger" onClick={(event) => { this.handleDeleteLink(linkIndex) }}>Fjern</Button>
-                </Form.Group>
+                <Button variant="danger" className={formsStyle.form} onClick={(event) => { this.handleDeleteLink(linkIndex) }}>Fjern</Button>
               </div>
 
             </React.Fragment>
@@ -455,9 +453,7 @@ class RegisterItemDetails extends Component {
                     <Form.Control name="url" value={this.state.newLinkUrl} onChange={event => this.setState({ newLinkUrl: event.target.value })} />
                   </div>
                 </Form.Group>
-                <Form.Group controlId="labelAddNewLink" className={formsStyle.form}>
-                  <Button variant="primary" onClick={(event) => { this.handleAddLink() }}>Legg til</Button>
-                </Form.Group>
+                <Button variant="primary" className={formsStyle.form} onClick={(event) => { this.handleAddLink() }}>Legg til</Button>
               </div>
             </React.Fragment>
           ) : ''
