@@ -490,15 +490,7 @@ class RegisterItemDetails extends Component {
 
         <Form.Group controlId="labelId" className={formsStyle.form}>
           <Form.Label>{this.props.translate('labelId', null, 'ID')}</Form.Label>
-          {this.state.editable
-            ? (
-              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                <Form.Control name="id" value={registerItem.id} onChange={this.handleChange} />
-              </div>
-            )
-            : (
               <div>{registerItem.id}</div>
-            )}
         </Form.Group>
 
         <Form.Group controlId="labelTitle" className={formsStyle.form}>
