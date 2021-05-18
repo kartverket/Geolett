@@ -12,6 +12,7 @@ import { withRouter } from 'react-router-dom';
 
 // Components
 import ValidationErrors from 'components/partials/ValidationErrors';
+import ToggleHelpText from 'components/template/ToggleHelpText';
 
 // Actions
 import { createRegisterItem, updateRegisterItem, deleteRegisterItem } from 'actions/RegisterItemActions';
@@ -411,13 +412,19 @@ class RegisterItemDetails extends Component {
             <React.Fragment>
               <div key={linkIndex} className={formsStyle.flex}>
                 <Form.Group controlId="labelLinkText" className={formsStyle.form}>
-                  <Form.Label>{this.props.translate('labelLinkText', null, 'Text')}</Form.Label>
+                  <Form.Label>
+                    {this.props.translate('labelLinkText', null, 'Text')}
+                    <ToggleHelpText resourceKey='linkTextDescription' />
+                  </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="text" data-link-index={linkIndex} value={link.text} onChange={this.handleChangeLink} />
                   </div>
                 </Form.Group>
                 <Form.Group controlId="labelLinkUrl" className={formsStyle.form}>
-                  <Form.Label>{this.props.translate('labelLinkUrl', null, 'URL')}</Form.Label>
+                  <Form.Label>
+                    {this.props.translate('labelLinkUrl', null, 'URL')}
+                    <ToggleHelpText resourceKey='linkUrlDescription' />
+                  </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="url" data-link-index={linkIndex} value={link.url} onChange={this.handleChangeLink} />
                   </div>
@@ -476,7 +483,10 @@ class RegisterItemDetails extends Component {
         <h2>Kontekstbeskrivelse</h2>
 
         <Form.Group controlId="labelContextType" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelContextType', null, 'Konteksttype')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelContextType', null, 'Konteksttype')}
+            <ToggleHelpText resourceKey='contextTypeDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -489,12 +499,18 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelId" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelId', null, 'ID')}</Form.Label>
-              <div>{registerItem.id}</div>
+          <Form.Label>
+            {this.props.translate('labelId', null, 'ID')}
+            <ToggleHelpText resourceKey='IdDescription' />
+          </Form.Label>
+          <div>{registerItem.id}</div>
         </Form.Group>
 
         <Form.Group controlId="labelTitle" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelTitle', null, 'Tittel')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelTitle', null, 'Tittel')}
+            <ToggleHelpText resourceKey='titleDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -507,7 +523,10 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelOwner" className={formsStyle.form}>
-          <Form.Label>Eier</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelOwner', null, 'Eier')}
+            <ToggleHelpText resourceKey='ownerDescription' />
+          </Form.Label>
           {
             this.state.editable
               ? (
@@ -528,7 +547,11 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelDescription" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDescription', null, 'Forklarende tekst')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelDescription', null, 'Forklarende tekst')}
+            <ToggleHelpText resourceKey='contextTypeDescription' />
+          </Form.Label>
+
           {
             this.state.editable
               ? (
@@ -551,7 +574,10 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelDialogText" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDialogText', null, 'Dialogtekst')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelDialogText', null, 'Dialogtekst')}
+            <ToggleHelpText resourceKey='dialogTextDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -564,7 +590,10 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelPossibleMeasures" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelPossibleMeasures', null, 'Mulige tiltak')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelPossibleMeasures', null, 'Mulige tiltak')}
+            <ToggleHelpText resourceKey='possibleMeasuresDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -577,7 +606,10 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelGuidance" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelGuidance', null, 'Veiledning')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelGuidance', null, 'Veiledning')}
+            <ToggleHelpText resourceKey='guidanceDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -590,7 +622,10 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelDataSetBufferText" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDataSetBufferText', null, 'Buffertekst')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelDataSetBufferText', null, 'Buffertekst')}
+            <ToggleHelpText resourceKey='dataSetBufferTextDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -606,7 +641,10 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelDataSetBufferDistance" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDataSetBufferDistance', null, 'Buffer')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelDataSetBufferDistance', null, 'Buffer')}
+            <ToggleHelpText resourceKey='dataSetBufferDistanceDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -630,7 +668,10 @@ class RegisterItemDetails extends Component {
         <h2>Kommentarer</h2>
 
         <Form.Group controlId="labelTechnicalComment" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelTechnicalComment', null, 'Teknisk kommentar')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelTechnicalComment', null, 'Teknisk kommentar')}
+            <ToggleHelpText resourceKey='technicalCommentDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -643,7 +684,10 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelOtherComment" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelOtherComment', null, 'Andre kommentarer')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelOtherComment', null, 'Andre kommentarer')}
+            <ToggleHelpText resourceKey='otherCommentDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -656,9 +700,14 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
 
-        <h2>Datasett</h2>
+        <h2>Datasett <ToggleHelpText resourceKey='dataSetTitleDescription' /></h2>
+
+
         <Form.Group controlId="labelDataSetTitle" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDataSetTitle', null, 'Datasett-tittel')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelDataSetTitle', null, 'Datasett-tittel')}
+            <ToggleHelpText resourceKey='dataSetTitleDescription' />
+          </Form.Label>
           {
             this.state.editable
               ? (
@@ -682,7 +731,10 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelDataSetUrlMetadata" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDataSetUrlMetadata', null, 'Datasett-meta-url')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelDataSetUrlMetadata', null, 'Datasett-meta-url')}
+            <ToggleHelpText resourceKey='dataSetUrlMetadataDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -696,7 +748,10 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelDataSetTypeReferenceType" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDataSetTypeReferenceType', null, 'Objekttype')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelDataSetTypeReferenceType', null, 'Objekttype')}
+            <ToggleHelpText resourceKey='dataSetTypeReferenceTypeDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <React.Fragment>
@@ -731,7 +786,10 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelDataSetTypeReferenceAttribute" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDataSetTypeReferenceAttribute', null, 'Attributt')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelDataSetTypeReferenceAttribute', null, 'Attributt')}
+            <ToggleHelpText resourceKey='dataSetTypeReferenceAttributeDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -747,7 +805,10 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelDataSetTypeReferenceCodeValue" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDataSetTypeReferenceCodeValue', null, 'Kodeverdi')}</Form.Label>
+          <Form.Label>
+            {this.props.translate('labelDataSetTypeReferenceCodeValue', null, 'Kodeverdi')}
+            <ToggleHelpText resourceKey='dataSetTypeReferenceCodeValueDescription' />
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -763,7 +824,10 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
         <Form.Group controlId="labelDataSetNamespace" className={formsStyle.form}>
-          <Form.Label>{this.props.translate('labelDataSetNamespace', null, 'Navnerom')}</Form.Label>
+          <Form.Label>
+            <ToggleHelpText resourceKey='dataSetNamespaceDescription' />
+            {this.props.translate('labelDataSetNamespace', null, 'Navnerom')}
+          </Form.Label>
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -782,7 +846,10 @@ class RegisterItemDetails extends Component {
           {this.state.editable
             ? (
               <React.Fragment>
-                <Form.Label>{this.props.translate('labelDataSetUrlGmlSchema', null, 'GML-skjema')}</Form.Label>
+                <Form.Label>
+                  <ToggleHelpText resourceKey='dataSetUrlGmlSchemaDescription' />
+                  {this.props.translate('dataSetUrlGmlSchemaDescription', null, 'GML-skjema')}
+                </Form.Label>
                 <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                   <Form.Control
                     name="urlGmlSchema"
@@ -804,13 +871,19 @@ class RegisterItemDetails extends Component {
             ? (
               <div className={formsStyle.flex}>
                 <Form.Group controlId="labelReferenceTek17Text" className={formsStyle.form}>
-                  <Form.Label>{this.props.translate('labelReferenceTek17Text', null, 'ref-tek-17-tittel')}</Form.Label>
+                  <Form.Label>
+                    <ToggleHelpText resourceKey='referenceTek17TextDescription' />
+                    {this.props.translate('referenceTek17TextDescription', null, 'ref-tek-17-tittel')}
+                  </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="text" value={registerItem?.reference?.tek17?.text || ''} onChange={this.handleChangeReferenceTek17} />
                   </div>
                 </Form.Group>
                 <Form.Group controlId="labelReferenceTek17Url" className={formsStyle.form}>
-                  <Form.Label>{this.props.translate('labelReferenceTek17Url', null, 'ref-tek-17-url')}</Form.Label>
+                  <Form.Label>
+                    <ToggleHelpText resourceKey='referenceTek17UrlDescription' />
+                    {this.props.translate('labelReferenceTek17Url', null, 'ref-tek-17-url')}
+                  </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="url" value={registerItem?.reference?.tek17?.url || ''} onChange={this.handleChangeReferenceTek17} />
                   </div>
@@ -829,13 +902,19 @@ class RegisterItemDetails extends Component {
             ? (
               <div className={formsStyle.flex}>
                 <Form.Group controlId="labelReferenceOtherLawText" className={formsStyle.form}>
-                  <Form.Label>{this.props.translate('labelReferenceOtherLawText', null, 'ref-annen lov/forskrift')}</Form.Label>
+                  <Form.Label>
+                    <ToggleHelpText resourceKey='referenceOtherLawTextDescription' />
+                    {this.props.translate('labelReferenceOtherLawText', null, 'ref-annen lov/forskrift')}
+                  </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="text" value={registerItem?.reference?.otherLaw?.text || ''} onChange={this.handleChangeReferenceOtherLaw} />
                   </div>
                 </Form.Group>
                 <Form.Group controlId="labelReferenceOtherLawUrl" className={formsStyle.form}>
-                  <Form.Label>{this.props.translate('labelReferenceOtherLawUrl', null, 'ref-annen lov/forskrift-url')}</Form.Label>
+                  <Form.Label>
+                    <ToggleHelpText resourceKey='referenceOtherLawUrlDescription' />
+                    {this.props.translate('labelReferenceOtherLawUrl', null, 'ref-annen lov/forskrift-url')}
+                  </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="url" value={registerItem?.reference?.otherLaw?.url || ''} onChange={this.handleChangeReferenceOtherLaw} />
                   </div>
@@ -854,13 +933,19 @@ class RegisterItemDetails extends Component {
             ? (
               <div className={formsStyle.flex}>
                 <Form.Group controlId="labelReferenceCircularFromMinistryText" className={formsStyle.form}>
-                  <Form.Label>{this.props.translate('labelReferenceCircularFromMinistryText', null, 'ref-rundskriv fra dep')}</Form.Label>
+                  <Form.Label>
+                    <ToggleHelpText resourceKey='referenceCircularFromMinistryTextDescription' />
+                    {this.props.translate('labelReferenceCircularFromMinistryText', null, 'ref-rundskriv fra dep')}
+                  </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="text" value={registerItem?.reference?.circularFromMinistry?.text || ''} onChange={this.handleChangeReferenceCircularFromMinistry} />
                   </div>
                 </Form.Group>
                 <Form.Group controlId="labelReferenceCircularFromMinistryUrl" className={formsStyle.form}>
-                  <Form.Label>{this.props.translate('labelReferenceCircularFromMinistryUrl', null, 'ref-rundskriv fra dep-url')}</Form.Label>
+                  <Form.Label>
+                    <ToggleHelpText resourceKey='referenceCircularFromMinistryUrlDescription' />
+                    {this.props.translate('labelReferenceCircularFromMinistryUrl', null, 'ref-rundskriv fra dep-url')}
+                  </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="url" value={registerItem?.reference?.circularFromMinistry?.url || ''} onChange={this.handleChangeReferenceCircularFromMinistry} />
                   </div>
