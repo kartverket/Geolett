@@ -1,3 +1,5 @@
+import translations from 'config/translations.json'
+
 import { Component } from 'react';
 import { load } from "components/config";
 
@@ -9,7 +11,7 @@ export default class ConfigLoader extends Component {
 
     async componentDidMount() {       
         const config = await load();
-
+        config.translations = translations;
         this.setState({ isLoaded: true, config })
     }
 
