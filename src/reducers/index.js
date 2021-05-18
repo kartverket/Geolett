@@ -10,6 +10,7 @@ import AuthTokenReducer from 'reducers/AuthTokenReducer';
 import ConfigReducer from 'reducers/ConfigReducer';
 import OrganizationsReducer from 'reducers/OrganizationsReducer';
 import RegisterItemsReducer from 'reducers/RegisterItemsReducer';
+import SelectedLanguageReducer from 'reducers/SelectedLanguageReducer';
 import SelectedRegisterItemReducer from 'reducers/SelectedRegisterItemReducer';
 
 const reducers = history => combineReducers({
@@ -21,6 +22,7 @@ const reducers = history => combineReducers({
   config: ConfigReducer,
   organizations: OrganizationsReducer,
   registerItems: RegisterItemsReducer,
+  selectedLanguage: SelectedLanguageReducer,
   selectedRegisterItem: SelectedRegisterItemReducer
 });
 
