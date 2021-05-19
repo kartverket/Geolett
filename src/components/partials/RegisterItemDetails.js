@@ -700,7 +700,7 @@ class RegisterItemDetails extends Component {
         </Form.Group>
 
 
-        <h2>Datasett <ToggleHelpText resourceKey='dataSetTitleDescription' /></h2>
+        <h2>Datasett<ToggleHelpText resourceKey='dataSetTitleDescription' /></h2>
 
 
         <Form.Group controlId="labelDataSetTitle" className={formsStyle.form}>

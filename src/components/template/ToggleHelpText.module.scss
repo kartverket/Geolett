@@ -1,24 +1,55 @@
-:local(.openInfo) {
-    transition: all .3s ease-in-out;
-    overflow: hidden;  
-    
+@import "../../style/abstracts/_all.scss";
+
+@keyframes show {
+  0% {
+    opacity: 0;
+    margin-top: -10px;
   }
-  :local(.close) {
-    max-height: 0;
+  100% {
+    opacity: 1;
+    margin-top: 0px;
   }
-  :local(.open) {
-    font-style: italic;
-    max-height: 4000px;
-    padding: 5px;
-    font-weight: 600;
-    border-radius: 3px;
-    border: 2px solid lightgrey;
-    margin: 5px;
-    margin-left: 0;
+}
+
+@keyframes hide {
+  100% {
+    opacity: 0;
+    margin-top: -10px;
   }
-  :local(.icon) {
-      margin-left: 5px;
-      &:hover {
-          cursor: pointer;
-      }
+  0% {
+    opacity: 1;
+    margin-top: 0px;
   }
+}
+
+:local(.toggleIcon) {
+  cursor: pointer;
+  margin: 0 4px;
+  position: relative;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  &:local(.expanded) {
+    color: $primary-brand;
+  }
+}
+
+:local(.content) {
+  animation: hide 0.5s ease-in-out;
+  opacity: 0;
+  margin-top: -10px;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: normal;
+  font-style: italic;
+  background: #f3f3f3;
+  padding: 8px;
+  border-radius: 4px;
+
+  &:local(.expanded) {
+    animation: show 0.5s ease-in-out;
+    opacity: 1;
+    margin-top: 0px;
+  }
+}
