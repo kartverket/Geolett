@@ -44,8 +44,18 @@ class CreateRegisterItem extends Component {
    componentDidMount() {
       this.props.fetchOrganizations()
          .then(() => {
-            this.setState({ dataFetched: true });
+            const preSelectedOwner = this.getPreSelectedOwnerFromAuthInfo(this.props.authInfo);
+            this.setState({ 
+               dataFetched: true,
+               selectedOwner: preSelectedOwner ? [preSelectedOwner] : []
+            });
          });
+   }
+
+   getPreSelectedOwnerFromAuthInfo(authInfo){
+      return this.props.organizations.find(organization => {
+         return organization.orgNumber === authInfo?.organizationNumber;
+      });
    }
 
    openModal() {
