@@ -22,7 +22,7 @@ import { canAddRegisterItem } from 'helpers/authorizationHelpers';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 
-class RegisterItemDetails extends Component {
+class CreateRegisterItem extends Component {
    constructor(props) {
       super(props);
 
@@ -174,4 +174,4 @@ const mapDispatchToProps = {
    fetchRegisterItems
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterItemDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateRegisterItem);
