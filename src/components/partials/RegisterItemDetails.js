@@ -20,7 +20,7 @@ import { fetchOrganizations } from 'actions/OrganizationsActions';
 import { translate } from 'actions/ConfigActions';
 
 // Helpers
-import { canDeleteRegisterItem, canEditRegisterItem } from 'helpers/authorizationHelpers';
+import { canDeleteRegisterItem, canEditRegisterItem, canEditRegisterItemOwner } from 'helpers/authorizationHelpers';
 import { getEnvironmentVariable } from 'helpers/environmentVariableHelpers.js';
 
 // Stylesheets
@@ -536,6 +536,7 @@ class RegisterItemDetails extends Component {
                   onChange={this.handleOwnerSelect}
                   options={this.props.organizations}
                   selected={this.state.selectedOwner}
+                  disabled={!canEditRegisterItemOwner(this.props.authInfo)}
                   placeholder="Legg til eier..."
                 />
               )

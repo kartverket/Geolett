@@ -16,7 +16,7 @@ import { fetchOrganizations } from 'actions/OrganizationsActions';
 import { createRegisterItem, updateRegisterItem, fetchRegisterItems } from 'actions/RegisterItemActions';
 
 // Helpers
-import { canAddRegisterItem } from 'helpers/authorizationHelpers';
+import { canAddRegisterItem, canEditRegisterItemOwner } from 'helpers/authorizationHelpers';
 
 // Stylesheets
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -103,7 +103,6 @@ class CreateRegisterItem extends Component {
             toastr.error('Kunne ikke opprette konteksttype');
             this.setState({ validationErrors: response.data });
          })
-
    }
 
    showAddRegisterItemContent() {
@@ -150,6 +149,7 @@ class CreateRegisterItem extends Component {
                         onChange={this.handleOwnerSelect}
                         options={this.props.organizations}
                         selected={this.state.selectedOwner}
+                        disabled={!canEditRegisterItemOwner(this.props.authInfo)}
                         placeholder="Legg til eier..."
                      />
                   </Form.Group>
