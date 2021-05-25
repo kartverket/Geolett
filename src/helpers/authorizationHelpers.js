@@ -27,3 +27,7 @@ export const canDeleteRegisterItem = authInfo => {
 export const canEditRegisterItem = authInfo => {
   return hasAdminRole(authInfo);
 }
+
+export const canEditRegisterItemOwner = authInfo => {
+  return hasAdminRole(authInfo);
+}
