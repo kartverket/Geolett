@@ -4,10 +4,16 @@
   0% {
     opacity: 0;
     margin-top: -10px;
+    padding: 0 8px;
+    line-height: 0;
+    transform: scaleY(0);
   }
   100% {
     opacity: 1;
     margin-top: 0px;
+    padding: 8px;
+    line-height: 1.5;
+    transform: scaleY(1);
   }
 }
 
@@ -15,10 +21,16 @@
   100% {
     opacity: 0;
     margin-top: -10px;
+    padding: 0 8px;
+    line-height: 0;
+    transform: scaleY(0);
   }
   0% {
     opacity: 1;
     margin-top: 0px;
+    padding: 8px;
+    line-height: 1.5;
+    transform: scaleY(1);
   }
 }
 
@@ -40,16 +52,20 @@
   opacity: 0;
   margin-top: -10px;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 0;
   font-weight: normal;
   font-style: italic;
   background: #f3f3f3;
-  padding: 8px;
+  padding: 0 8px;
   border-radius: 4px;
+  transform: scaleY(0);
 
   &:local(.expanded) {
     animation: show 0.5s ease-in-out;
     opacity: 1;
     margin-top: 0px;
+    padding: 8px 8px;
+    line-height: 1.5;
+    transform: scaleY(1);
   }
 }

@@ -2,6 +2,7 @@
 
 :local(.form) {
    white-space: pre-line;
+
    label {
       font-weight: 600;
    }
@@ -34,6 +35,8 @@
 
    label {
       display: block;
+      margin: 24px 0 14px;
+      font-size: 1.2em;
    }
    :local(.comboInput) {
       display: inline-block;
@@ -184,6 +187,7 @@
       div {
          background: #fff;
          border: none;
+         padding: 0;
       }
    }
    .editor-preview-full {
@@ -212,11 +216,11 @@
    }
    :local(.form) {
       flex: 1;
-      &:not(:last-child){
+      &:not(:last-child) {
          margin-right: 16px;
       }
    }
-   :local(button.form){
+   :local(button.form) {
       margin-bottom: 1rem;
       flex: none;
    }
