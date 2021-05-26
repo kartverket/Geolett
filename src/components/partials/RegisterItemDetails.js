@@ -826,8 +826,8 @@ class RegisterItemDetails extends Component {
 
         <Form.Group controlId="labelDataSetNamespace" className={formsStyle.form}>
           <Form.Label>
-            <ToggleHelpText resourceKey='dataSetNamespaceDescription' />
             {this.props.translate('labelDataSetNamespace', null, 'Navnerom')}
+            <ToggleHelpText resourceKey='dataSetNamespaceDescription' />
           </Form.Label>
           {this.state.editable
             ? (
@@ -848,8 +848,8 @@ class RegisterItemDetails extends Component {
             ? (
               <React.Fragment>
                 <Form.Label>
-                  <ToggleHelpText resourceKey='dataSetUrlGmlSchemaDescription' />
                   {this.props.translate('dataSetUrlGmlSchemaDescription', null, 'GML-skjema')}
+                  <ToggleHelpText resourceKey='dataSetUrlGmlSchemaDescription' />
                 </Form.Label>
                 <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                   <Form.Control
@@ -873,8 +873,8 @@ class RegisterItemDetails extends Component {
               <div className={formsStyle.flex}>
                 <Form.Group controlId="labelReferenceTek17Text" className={formsStyle.form}>
                   <Form.Label>
-                    <ToggleHelpText resourceKey='referenceTek17TextDescription' />
                     {this.props.translate('referenceTek17TextDescription', null, 'ref-tek-17-tittel')}
+                    <ToggleHelpText resourceKey='referenceTek17TextDescription' />
                   </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="text" value={registerItem?.reference?.tek17?.text || ''} onChange={this.handleChangeReferenceTek17} />
@@ -882,8 +882,8 @@ class RegisterItemDetails extends Component {
                 </Form.Group>
                 <Form.Group controlId="labelReferenceTek17Url" className={formsStyle.form}>
                   <Form.Label>
-                    <ToggleHelpText resourceKey='referenceTek17UrlDescription' />
                     {this.props.translate('labelReferenceTek17Url', null, 'ref-tek-17-url')}
+                    <ToggleHelpText resourceKey='referenceTek17UrlDescription' />
                   </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="url" value={registerItem?.reference?.tek17?.url || ''} onChange={this.handleChangeReferenceTek17} />
@@ -904,8 +904,8 @@ class RegisterItemDetails extends Component {
               <div className={formsStyle.flex}>
                 <Form.Group controlId="labelReferenceOtherLawText" className={formsStyle.form}>
                   <Form.Label>
-                    <ToggleHelpText resourceKey='referenceOtherLawTextDescription' />
                     {this.props.translate('labelReferenceOtherLawText', null, 'ref-annen lov/forskrift')}
+                    <ToggleHelpText resourceKey='referenceOtherLawTextDescription' />
                   </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="text" value={registerItem?.reference?.otherLaw?.text || ''} onChange={this.handleChangeReferenceOtherLaw} />
@@ -913,8 +913,8 @@ class RegisterItemDetails extends Component {
                 </Form.Group>
                 <Form.Group controlId="labelReferenceOtherLawUrl" className={formsStyle.form}>
                   <Form.Label>
-                    <ToggleHelpText resourceKey='referenceOtherLawUrlDescription' />
                     {this.props.translate('labelReferenceOtherLawUrl', null, 'ref-annen lov/forskrift-url')}
+                    <ToggleHelpText resourceKey='referenceOtherLawUrlDescription' />
                   </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="url" value={registerItem?.reference?.otherLaw?.url || ''} onChange={this.handleChangeReferenceOtherLaw} />
@@ -935,8 +935,8 @@ class RegisterItemDetails extends Component {
               <div className={formsStyle.flex}>
                 <Form.Group controlId="labelReferenceCircularFromMinistryText" className={formsStyle.form}>
                   <Form.Label>
-                    <ToggleHelpText resourceKey='referenceCircularFromMinistryTextDescription' />
                     {this.props.translate('labelReferenceCircularFromMinistryText', null, 'ref-rundskriv fra dep')}
+                    <ToggleHelpText resourceKey='referenceCircularFromMinistryTextDescription' />
                   </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="text" value={registerItem?.reference?.circularFromMinistry?.text || ''} onChange={this.handleChangeReferenceCircularFromMinistry} />
@@ -944,8 +944,8 @@ class RegisterItemDetails extends Component {
                 </Form.Group>
                 <Form.Group controlId="labelReferenceCircularFromMinistryUrl" className={formsStyle.form}>
                   <Form.Label>
-                    <ToggleHelpText resourceKey='referenceCircularFromMinistryUrlDescription' />
                     {this.props.translate('labelReferenceCircularFromMinistryUrl', null, 'ref-rundskriv fra dep-url')}
+                    <ToggleHelpText resourceKey='referenceCircularFromMinistryUrlDescription' />
                   </Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="url" value={registerItem?.reference?.circularFromMinistry?.url || ''} onChange={this.handleChangeReferenceCircularFromMinistry} />
