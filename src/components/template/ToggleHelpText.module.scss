@@ -48,7 +48,6 @@
 }
 
 :local(.content) {
-  animation: hide 0.5s ease-in-out;
   opacity: 0;
   margin-top: -10px;
   font-size: 14px;
@@ -59,6 +58,9 @@
   padding: 0 8px;
   border-radius: 4px;
   transform: scaleY(0);
+  &:local(.initialized) {
+    animation: hide 0.5s ease-in-out;
+  }
 
   &:local(.expanded) {
     animation: show 0.5s ease-in-out;
