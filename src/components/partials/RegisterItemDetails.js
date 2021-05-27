@@ -560,7 +560,7 @@ class RegisterItemDetails extends Component {
                   <SimpleMDE
                     value={registerItem.description || ''}
                     onChange={value => this.handleChange({ name: 'description', value })}
-                    options={{ toolbar: ["bold", "italic", "link", "unordered-list", "|", "preview"] }}
+                    options={{ toolbar: ["bold", "italic", "link", "unordered-list", "|", "preview"], spellChecker: false }}
                     getMdeInstance={this.getMdeInstance}
                   />
                 </div>
