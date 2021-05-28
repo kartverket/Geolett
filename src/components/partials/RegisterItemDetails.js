@@ -30,6 +30,16 @@ import 'easymde/dist/easymde.min.css';
 
 const AsyncTypeahead = withAsync(Typeahead);
 
+const editableMdeOptions = {
+  toolbar: ["bold", "italic", "link", "unordered-list", "|", "preview"],
+  spellChecker: false
+};
+
+const readOnlyMdeOptions = {
+  toolbar: false,
+  status: false
+};
+
 class RegisterItemDetails extends Component {
 
   constructor(props) {
@@ -277,12 +287,14 @@ class RegisterItemDetails extends Component {
 
 
   getMdeInstance(instance) {
-    const container = instance.element.nextSibling;
-    container.setAttribute('tabIndex', '0');
+    const container = instance?.element?.nextSibling;
+    if (container) {
+      container.setAttribute('tabIndex', '0');
 
-    if (!this.state.editable) {
-      instance.togglePreview()
-      container.classList.add(formsStyle.mdePreview);
+      if (!this.state.editable) {
+        instance.togglePreview()
+        container.classList.add(formsStyle.mdePreview);
+      }
     }
   }
 
@@ -558,17 +570,17 @@ class RegisterItemDetails extends Component {
               ? (
                 <div className={formsStyle.comboInput} style={{ display: 'block' }}>
                   <SimpleMDE
-                    value={registerItem.description || ''}
+                    value={registerItem?.description || ''}
                     onChange={value => this.handleChange({ name: 'description', value })}
-                    options={{ toolbar: ["bold", "italic", "link", "unordered-list", "|", "preview"], spellChecker: false }}
+                    options={editableMdeOptions}
                     getMdeInstance={this.getMdeInstance}
                   />
                 </div>
               )
               : (
                 <SimpleMDE
-                  value={registerItem.description || ''}
-                  options={{ toolbar: false, status: false }}
+                  value={registerItem?.description || ''}
+                  options={readOnlyMdeOptions}
                   getMdeInstance={this.getMdeInstance} />
               )
           }
