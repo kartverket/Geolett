@@ -1,9 +1,9 @@
 export const hasAdminRole = authInfo => {
-  return authInfo && authInfo.roles && authInfo.roles.includes('nd.metadata_admin');
+  return authInfo?.roles?.includes('nd.metadata_admin');
 }
 
 export const hasEditorRole = authInfo => {
-  return authInfo && authInfo.roles && authInfo.roles.includes('nd.geolett');
+  return authInfo?.roles?.includes('nd.geolett');
 }
 
 export const isResponsibleAgency = (authInfo = {}, responsibleAgency = {}) => {
@@ -17,15 +17,21 @@ export const isOwner = (authInfo = {}, owner = {}) => {
 
 // RegisterItem
 export const canAddRegisterItem = authInfo => {
-  return hasAdminRole(authInfo);
+  return hasAdminRole(authInfo) || hasEditorRole(authInfo);
 }
 
 export const canDeleteRegisterItem = authInfo => {
   return hasAdminRole(authInfo);
 }
 
-export const canEditRegisterItem = authInfo => {
-  return hasAdminRole(authInfo);
+export const canEditRegisterItem = (authInfo, owner) => {
+  if (hasAdminRole(authInfo)) {
+    return true;
+  } else if (hasEditorRole(authInfo)) {
+    return isOwner(authInfo, owner);
+  } else {
+    return false;
+  }
 }
 
 export const canEditRegisterItemOwner = authInfo => {

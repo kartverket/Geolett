@@ -975,7 +975,7 @@ class RegisterItemDetails extends Component {
           {this.state.editable ? (
             <div>
               {
-                canEditRegisterItem(this.props.authInfo)
+                canEditRegisterItem(this.props.authInfo, this.props.registerItem?.owner)
                   ? (
                     <React.Fragment>
                       <Button className="mr-2" variant="secondary" onClick={(event) => { this.setState({ editable: false }) }}>Avslutt redigering</Button>
@@ -993,7 +993,7 @@ class RegisterItemDetails extends Component {
                   : ''
               }
               {
-                canEditRegisterItem(this.props.authInfo)
+                canEditRegisterItem(this.props.authInfo, this.props.registerItem?.owner)
                   ? <Button variant="primary" onClick={(event) => { this.setState({ editable: true }) }}>Rediger konteksttype</Button>
                   : ''
               }
