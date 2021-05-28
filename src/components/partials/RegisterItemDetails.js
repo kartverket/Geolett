@@ -421,30 +421,27 @@ class RegisterItemDetails extends Component {
         const link = linkItem.link;
         return this.state.editable
           ? (
-            <React.Fragment>
-              <div key={linkIndex} className={formsStyle.flex}>
-                <Form.Group controlId="labelLinkText" className={formsStyle.form}>
-                  <Form.Label>
-                    {this.props.translate('labelLinkText', null, 'Text')}
-                    <ToggleHelpText resourceKey='linkTextDescription' />
-                  </Form.Label>
-                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                    <Form.Control name="text" data-link-index={linkIndex} value={link.text} onChange={this.handleChangeLink} />
-                  </div>
-                </Form.Group>
-                <Form.Group controlId="labelLinkUrl" className={formsStyle.form}>
-                  <Form.Label>
-                    {this.props.translate('labelLinkUrl', null, 'URL')}
-                    <ToggleHelpText resourceKey='linkUrlDescription' />
-                  </Form.Label>
-                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                    <Form.Control name="url" data-link-index={linkIndex} value={link.url} onChange={this.handleChangeLink} />
-                  </div>
-                </Form.Group>
-                <Button variant="danger" className={formsStyle.form} onClick={(event) => { this.handleDeleteLink(linkIndex) }}>Fjern</Button>
-              </div>
-
-            </React.Fragment>
+            <div key={linkIndex} className={formsStyle.flex}>
+              <Form.Group controlId="labelLinkText" className={formsStyle.form}>
+                <Form.Label>
+                  {this.props.translate('labelLinkText', null, 'Text')}
+                  <ToggleHelpText resourceKey='linkTextDescription' />
+                </Form.Label>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                  <Form.Control name="text" data-link-index={linkIndex} value={link.text} onChange={this.handleChangeLink} />
+                </div>
+              </Form.Group>
+              <Form.Group controlId="labelLinkUrl" className={formsStyle.form}>
+                <Form.Label>
+                  {this.props.translate('labelLinkUrl', null, 'URL')}
+                  <ToggleHelpText resourceKey='linkUrlDescription' />
+                </Form.Label>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                  <Form.Control name="url" data-link-index={linkIndex} value={link.url} onChange={this.handleChangeLink} />
+                </div>
+              </Form.Group>
+              <Button variant="danger" className={formsStyle.form} onClick={(event) => { this.handleDeleteLink(linkIndex) }}>Fjern</Button>
+            </div>
           )
           : (
             <div key={linkIndex}>
@@ -460,14 +457,14 @@ class RegisterItemDetails extends Component {
             <React.Fragment>
               <h3>Legg til ny lenke</h3>
               <div key="newLink" className={formsStyle.flex}>
-                <Form.Group controlId="newLinkText" className={formsStyle.form}>
-                  <Form.Label>{this.props.translate('labelLinkText', null, 'Tekst')}</Form.Label>
+                <Form.Group controlId="labelnewLinkText" className={formsStyle.form}>
+                  <Form.Label>{this.props.translate('labelnewLinkText', null, 'Tekst')}</Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="text" value={this.state.newLinkText} onChange={event => this.setState({ newLinkText: event.target.value })} />
                   </div>
                 </Form.Group>
-                <Form.Group controlId="newLinkUrl" className={formsStyle.form}>
-                  <Form.Label>{this.props.translate('labelLinkUrl', null, 'URL')}</Form.Label>
+                <Form.Group controlId="labelNewLinkUrl" className={formsStyle.form}>
+                  <Form.Label>{this.props.translate('labelNewLinkUrl', null, 'URL')}</Form.Label>
                   <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
                     <Form.Control name="url" value={this.state.newLinkUrl} onChange={event => this.setState({ newLinkUrl: event.target.value })} />
                   </div>
@@ -486,6 +483,7 @@ class RegisterItemDetails extends Component {
     if (!this.state.dataFetched) {
       return '';
     }
+
     return registerItem ? (
       <React.Fragment>
         <h1>{registerItem.contextType}</h1>
