@@ -37,7 +37,9 @@ const editableMdeOptions = {
 
 const readOnlyMdeOptions = {
   toolbar: false,
-  status: false
+  status: false,
+  spellChecker: false,
+  readOnly: true
 };
 
 class RegisterItemDetails extends Component {
@@ -290,9 +292,11 @@ class RegisterItemDetails extends Component {
     const container = instance?.element?.nextSibling;
     if (container) {
       container.setAttribute('tabIndex', '0');
-
       if (!this.state.editable) {
-        instance.togglePreview()
+        const editableElement = container.getElementsByClassName('CodeMirror-scroll')?.[0]
+        editableElement.style.display = 'none';
+        instance.togglePreview();
+        instance.codemirror.options.readOnly = true;
         container.classList.add(formsStyle.mdePreview);
       }
     }
