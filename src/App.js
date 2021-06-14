@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import { OidcProvider } from 'redux-oidc';
-
+import ReduxToastr from 'react-redux-toastr';
 
 // Utils
 import configureStore, { history } from 'utils/configureStore';
@@ -13,12 +13,13 @@ import userManagerPromise from 'utils/userManager';
 // Routes
 import OidcCallback from 'components/routes/OidcCallback';
 import OidcSignoutCallback from 'components/routes/OidcSignoutCallback';
-import Home from 'components/routes/Home';
 import NotFound from 'components/routes/NotFound';
 import RegisterItems from 'components/routes/RegisterItems';
+import RegisterItem from 'components/routes/RegisterItem';
 
 // Actions
 import { updateConfig } from 'actions/ConfigActions';
+import { fetchAuthToken } from 'actions/AuthenticationActions';
 
 // Partials
 import NavigationBar from 'components/partials/NavigationBar';
@@ -49,6 +50,7 @@ class App extends Component {
    componentDidMount() {
       storePromise.then((storeConfig) => {
          store = storeConfig;
+         store.dispatch(fetchAuthToken());
          store.dispatch(updateConfig(this.props.config));
 
          if (!this.state.userManagerIsLoaded) {
@@ -72,13 +74,24 @@ class App extends Component {
                   <ConnectedRouter history={history}>
                      <NavigationBar userManager={userManager} />
                      <Switch>
-                        <Route exact={true} path="/" render={(props) => (<RegisterItems {...props} />)} />
-                        <Route exact={true} path="/geolett" render={(props) => (<RegisterItems {...props} />)} />
-                        <Route exact={true} path="/home" render={(props) => (<Home {...props} />)} />
+                        <Route exact path="/" render={(props) => (<RegisterItems {...props} />)} />
+                        <Route exact path="/geolett" render={(props) => (<RegisterItems {...props} />)} />
+                        <Route exact path="/geolett/:registerItemId/" render={(props) => (<RegisterItem {...props} />)} />
                         <Route exact path="/signin-oidc" render={() => (<OidcCallback userManager={userManager}/>)} />
                         <Route exact path="/signout-callback-oidc" render={() => (<OidcSignoutCallback userManager={userManager}/>)} />
                         <Route render={() => (<NotFound />)} />
                      </Switch>
+                     <ReduxToastr
+                        timeOut={2000}
+                        newestOnTop={false}
+                        preventDuplicates
+                        position="top-right"
+                        getState={(state) => state.toastr}
+                        transitionIn="fadeIn"
+                        transitionOut="fadeOut"
+                        progressBar
+                        closeOnToastrClick
+                     />
                   </ConnectedRouter>
                </OidcProvider>
             </Provider>

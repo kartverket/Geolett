@@ -1,0 +1,73 @@
+@import "../../style/abstracts/_all.scss";
+
+@keyframes show {
+  0% {
+    opacity: 0;
+    margin-top: -10px;
+    padding: 0 8px;
+    line-height: 0;
+    transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    margin-top: 0px;
+    padding: 8px;
+    line-height: 1.5;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes hide {
+  100% {
+    opacity: 0;
+    margin-top: -10px;
+    padding: 0 8px;
+    line-height: 0;
+    transform: scaleY(0);
+  }
+  0% {
+    opacity: 1;
+    margin-top: 0px;
+    padding: 8px;
+    line-height: 1.5;
+    transform: scaleY(1);
+  }
+}
+
+:local(.toggleIcon) {
+  cursor: pointer;
+  margin: 0 4px;
+  position: relative;
+  z-index: 1;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  &:local(.expanded) {
+    color: $primary-brand;
+  }
+}
+
+:local(.content) {
+  opacity: 0;
+  margin-top: -10px;
+  font-size: 14px;
+  line-height: 0;
+  font-weight: normal;
+  font-style: italic;
+  background: #f3f3f3;
+  padding: 0 8px;
+  border-radius: 4px;
+  transform: scaleY(0);
+  &:local(.initialized) {
+    animation: hide 0.5s ease-in-out;
+  }
+
+  &:local(.expanded) {
+    animation: show 0.5s ease-in-out;
+    opacity: 1;
+    margin-top: 0px;
+    padding: 8px 8px;
+    line-height: 1.5;
+    transform: scaleY(1);
+  }
+}

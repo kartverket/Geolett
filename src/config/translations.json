@@ -1,0 +1,45 @@
+[
+    {
+        "culture": "nb-NO",
+        "texts": {
+            "contextTypeDescription": "Logisk oppbygget navn på kontekst som teksten skal inngå i (eks: Byggesak-treff-naturfare-stormflo-20-års)",
+            "IdDescription": "UUID - autogenereres og skal ikke kunne endres",
+            "titleDescription": "Tittel på overordnet kontekst (eks: Oversvømmelse fra havet)",
+            "ownerDescription": "",
+            "descriptionDescription": "En begrunnelse for hvorfor søker gjøres oppmerksom på forholdet. Hensikten er å skape forståelse for at foholdet må tas hensyn til. Skal formuleres på en slik måte at det er forståelig uten fagkompetanse",
+            "dialogTextDescription": "En tekst som gjør søkeren oppmerksom på et forhold av betydning for søknaden",
+            "possibleMeasuresDescription": "Denne teksten skal fungere som en hjelp til søkeren til å komme videre i prosessen. Beskriv alternativene kort. Skal formuleres på en slik måte at det er forståelig uten fagkompetanse",
+            "guidanceDescription": "Veiledende tekst om  ett eller flere av de mulige tiltakene, dersom det er behov for det. Skal formuleres på en slik måte at det er forståelig uten fagkompetanse",
+            "dataSetBufferTextDescription": "Tekst som sier noe om konsekvenser av tiltak i nærheten av definerte objekter i datasettet",
+            "dataSetBufferDistanceDescription": "Avstand i meter som angir når buffertekst skal gjøres gjeldende",
+            "linkTextDescription": "Lenketekst om det er ønskelig å lenke til mer utfyllende informasjon",
+            "linkUrlDescription": "Adressen til nettstedet med mer utfyllende informasjon",
+            "technicalCommentDescription": "",
+            "otherCommentDescription": "",
+            "dataSetDescription": "Hvilket datasett tekstene er knyttet til. Objekttype, attributt og datasett skal sammen med type tiltak (eks: garasje, bolig) avgjøre i hvilken sammenheng tekstene skal brukes",
+            "dataSetTitleDescription": "Hvilket datasett tekstene er knyttet til (eks: Naturtyper utvalgte, Radon aktsomhet )",
+            "dataSetUrlMetadataDescription": "Lenke til metadata i Geonorge for aktuelt datasett",
+            "dataSetTypeReferenceTypeDescription": "Navn på objekttype som tekstene er knyttet til (eks: BmNaturtype, Radonflate )",
+            "dataSetTypeReferenceAttributeDescription": "Navn på attributt/felt i objekttypen som tekstene er knyttet til (eks: bmUtvalgtNaturtype, aktsomhetGrad)",
+            "dataSetTypeReferenceCodeValueDescription": "Navn på verdi i attributten som teksten er knyttet til (eks: huleEiker, alle)",
+            "dataSetNamespaceDescription": "Navnerom til GML-skjema (på http://skjema.geonorge.no/SOSI/produktspesifikasjon/*)",
+            "dataSetUrlGmlSchemaDescription": "Lenke til GML-skjemaet til dataasettet (på http://skjema.geonorge.no/SOSI/produktspesifikasjon/*)",
+            "referenceTek17TextDescription": "Aktuelle byggesaksforskrifter",
+            "referenceTek17UrlDescription": "Aktuelle byggesaksforskrifter - lenke",
+            "referenceOtherLawTextDescription": "Andre aktuelle lover eller forskrifter",
+            "referenceOtherLawUrlDescription": "Andre aktuelle lover eller forskrifter - lenke",
+            "referenceCircularFromMinistryTextDescription": "Aktuelle rundskriv eller rapporter fra departementer",
+            "referenceCircularFromMinistryUrlDescription": "",
+            "sign1Description": "Tegnforklaring 1",
+            "sign2Description": "Tegnforklaring 2",
+            "sign3Description": "Tegnforklaring 3",
+            "sign4Description": "Tegnforklaring 4",
+            "sign5Description": "Tegnforklaring 5",
+            "sign6Description": "Tegnforklaring 6"
+        }
+    },
+    {
+        "culture": "en-US",
+        "texts": {}
+    }
+]

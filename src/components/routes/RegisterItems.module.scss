@@ -1,0 +1,36 @@
+@import "../../style/abstracts/_all.scss";
+
+:local(.registerItemsTable) {
+   border-collapse: collapse;
+   width: 100%;
+   margin: 20px 0;
+
+   :local(thead) {
+      th {
+         border-bottom: 2px solid #fe5000;
+         color: $primary-color;
+         font-weight: 600;
+         height: 27px;
+         line-height: 18.6667px;
+         padding: 20px 15px 5px 0;
+         text-align: left;
+         text-transform: uppercase;
+      }
+   }
+
+   :local(tbody) {
+      tr {
+         &:hover {
+            background-color: #fbfbfb;
+         }
+         a {
+            text-decoration: none;
+         }
+
+         td {
+            padding: 8px 0;
+            border-bottom: 1px solid #cccccc;
+         }
+      }
+   }
+}

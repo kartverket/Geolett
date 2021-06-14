@@ -30,8 +30,9 @@ class NavigationBar extends Component {
     if (!this.state.mainNavigationIsInitialized) {
       this.initMainNavigation();
     }
-    const wasLoggedIn = prevProps.oidc.user;
-    const isLoggedIn = this.props.oidc.user;
+    const wasLoggedIn = prevProps.authToken && prevProps.authToken.access_token && prevProps.authToken.access_token.length ? true : false;
+    const isLoggedIn = this.props.authToken && this.props.authToken.access_token && this.props.authToken.access_token.length ? true : false;
+
     const hadAuthInfo = prevProps.authInfo && prevProps.authInfo.organizationNumber;
     const hasAuthInfo = this.props.authInfo && this.props.authInfo.organizationNumber;
     if ((isLoggedIn !== wasLoggedIn) || (hasAuthInfo !== hadAuthInfo)) {
@@ -41,15 +42,7 @@ class NavigationBar extends Component {
   }
 
   initMainNavigation() {
-    const userManager = this.props.userManager;
     MainNavigation.setup('main-navigation', {
-      onSignInClick: () => {
-        userManager.signinRedirect();
-      },
-      onSignOutClick: () => {
-        userManager.signoutRedirect({ 'id_token_hint': this.props.oidc.user.id_token });
-        userManager.removeUser();
-      },
       onNorwegianLanguageSelect: () => {
         this.props.updateSelectedLanguage('nb-NO');
       },
@@ -64,8 +57,11 @@ class NavigationBar extends Component {
 
   render() {
     const environment = getEnvironmentVariable('environment');
+    const signinurl = getEnvironmentVariable('signinurl');
+    const signouturl = getEnvironmentVariable('signouturl');
+    const isLoggedIn = this.props.authToken && this.props.authToken.access_token && this.props.authToken.access_token.length ? true : false;
     const language = this.props.selectedLanguage === 'en-US' ? 'en' : 'no';
-    return <main-navigation language={language} isLoggedIn={this.props.oidc.user ? true : false} environment={environment}></main-navigation>;
+    return <main-navigation signinurl={signinurl} signouturl={signouturl} language={language} isLoggedIn={isLoggedIn} environment={environment}></main-navigation>;
   }
 }
 
@@ -73,6 +69,7 @@ const mapStateToProps = state => ({
   oidc: state.oidc,
   config: state.config,
   authInfo: state.authInfo,
+  authToken: state.authToken,
   selectedLanguage: state.selectedLanguage
 });
 

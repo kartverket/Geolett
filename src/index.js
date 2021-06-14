@@ -4,6 +4,7 @@ import App from 'App';
 import ConfigLoader from 'components/ConfigLoader';
 import * as serviceWorker from './serviceWorker';
 import WebFont from 'webfontloader';
+import 'extensions';
 import 'index.scss';
 
 

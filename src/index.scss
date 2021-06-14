@@ -1,6 +1,7 @@
 @import "./style/abstracts/_all.scss";
 @import "./style/_select-dropdown.scss";
 @import "./style/overrides.scss";
+@import "~bootstrap/scss/bootstrap";
 @import "react-redux-toastr/src/styles/index";
 
 *,
@@ -50,6 +51,15 @@ h1 {
    }
 }
 
+h2 {
+   font-size: 2em;
+   margin-top: 36px;
+}
+
+h3 {
+   font-size: 1.4em;
+}
+
 input[type="radio"] {
    visibility: hidden;
 }
@@ -70,9 +80,6 @@ code {
    padding: 0;
 }
 @media screen and (max-width: 600px) {
-   H2 {
-      font-size: 1.3em;
-   }
    table {
       border: 0;
    }
