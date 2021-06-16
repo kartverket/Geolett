@@ -1502,9 +1502,9 @@
     chalk "^4.0.0"
 
 "@kartverket/geonorge-web-components@^0.1.44":
-  version "0.1.49"
-  resolved "https://registry.yarnpkg.com/@kartverket/geonorge-web-components/-/geonorge-web-components-0.1.49.tgz#d25af6e138f3fede4408f026889478ccc93a63c7"
-  integrity sha512-gCp9+VdlZ/rkJfyJzZjTDyhZ2Hfqrr6qmgD6R87mgKVxKsAUnjma1lrvZ985E3/v6wpOsjDKCml5fA1mVJSwbA==
+  version "0.1.50"
+  resolved "https://registry.yarnpkg.com/@kartverket/geonorge-web-components/-/geonorge-web-components-0.1.50.tgz#307217dcd65b08d9865f532127279c56345642ec"
+  integrity sha512-v9Ccgd14vWDE+Ki+M0ojzSldjAvkrHTBfKbAN7jX2Pn45KnVqz70vJOULGWPP1gQUxuurQPaVwcBcOPUC0Go7g==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -9353,10 +9353,10 @@ react-refresh@^0.8.3:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
 
-react-router-breadcrumbs-hoc@^3.3.1:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/react-router-breadcrumbs-hoc/-/react-router-breadcrumbs-hoc-3.4.0.tgz#e4e05dd7c25a8bdd75f2b846ec388a738af03937"
-  integrity sha512-Ai8WUcYy83NnNB6OA9YiYRw4PxIAALKIQrNQUtK28jWxI//I0/bNPyPTDbWF21TTJ/n4W9DoOzS1MEqMuKZqoA==
+react-router-breadcrumbs-hoc@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-router-breadcrumbs-hoc/-/react-router-breadcrumbs-hoc-4.0.1.tgz#e7cfebf478d1fd25bd944611b87a28a260f00c27"
+  integrity sha512-oJBRth3kGIL8NZdeLIoJeO+BpN6q8A48z3+TIhvMI2Sxip4VRgOHUcJdZ5aY2dSeZ66jw61bhYGLdRjDa3iozA==
 
 react-router-dom@^5.2.0:
   version "5.2.0"
