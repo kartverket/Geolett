@@ -564,7 +564,7 @@ class RegisterItemDetails extends Component {
         <Form.Group controlId="labelDescription" className={formsStyle.form}>
           <Form.Label>
             {this.props.translate('labelDescription', null, 'Forklarende tekst')}
-            <ToggleHelpText resourceKey='contextTypeDescription' />
+            <ToggleHelpText resourceKey='descriptionDescription' />
           </Form.Label>
 
           {
