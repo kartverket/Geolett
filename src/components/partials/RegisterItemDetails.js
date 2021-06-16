@@ -744,20 +744,22 @@ class RegisterItemDetails extends Component {
               )
           }
         </Form.Group>
-
+        
         <Form.Group controlId="labelDataSetUrlMetadata" className={formsStyle.form}>
-          <Form.Label>
-            {this.props.translate('labelDataSetUrlMetadata', null, 'Datasett-meta-url')}
-            <ToggleHelpText resourceKey='dataSetUrlMetadataDescription' />
-          </Form.Label>
           {this.state.editable
             ? (
-              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                <Form.Control
-                  name="urlMetadata"
-                  value={registerItem?.dataSet?.urlMetadata || ''}
-                  onChange={this.handleDatasetChange} />
-              </div>
+              <React.Fragment>
+                <Form.Label>
+                  {this.props.translate('labelDataSetUrlMetadata', null, 'Datasett-meta-url')}
+                  <ToggleHelpText resourceKey='dataSetUrlMetadataDescription' />
+                </Form.Label>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                  <Form.Control
+                    name="urlMetadata"
+                    value={registerItem?.dataSet?.urlMetadata || ''}
+                    onChange={this.handleDatasetChange} />
+                </div>
+              </React.Fragment>
             )
             : ''}
         </Form.Group>
