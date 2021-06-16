@@ -313,7 +313,7 @@ class RegisterItemDetails extends Component {
   handleOnDatasetSearch(query) {
     this.setState({ datasetSearchIsLoading: true });
     const kartkatalogApiUrl = getEnvironmentVariable('kartkatalogApiUrl');
-    fetch(`${kartkatalogApiUrl}/search?text=${query}&facets[0]name=type&facets[0]value=dataset&limit=25`)
+    fetch(`${kartkatalogApiUrl}/search?text=${query}&facets[0]name=type&facets[0]value=dataset&limit=25`, {headers: {'Accept-Language': 'no'}}) // As long as app is monolingual
       .then(resp => resp.json())
       .then(json => this.setState({
         datasetSearchIsLoading: false,
