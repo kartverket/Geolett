@@ -873,9 +873,11 @@ class RegisterItemDetails extends Component {
                 </div>
               </React.Fragment>
             )
-            : (
-              <div><a href={registerItem?.dataSet?.urlGmlSchema || ''}>Lenke til GML-skjema</a></div>
-            )}
+            : registerItem?.dataSet?.urlGmlSchema?.length
+              ? (
+                <div><a href={registerItem.dataSet.urlGmlSchema}>Lenke til GML-skjema</a></div>
+              )
+              : ''}
         </Form.Group>
 
 
