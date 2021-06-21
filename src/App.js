@@ -6,6 +6,9 @@ import { ConnectedRouter } from 'connected-react-router';
 import { OidcProvider } from 'redux-oidc';
 import ReduxToastr from 'react-redux-toastr';
 
+// Geonorge Webcomponents
+import { GeonorgeFooter } from '@kartverket/geonorge-web-components/GeonorgeFooter';
+
 // Utils
 import configureStore, { history } from 'utils/configureStore';
 import userManagerPromise from 'utils/userManager';
@@ -21,6 +24,9 @@ import RegisterItem from 'components/routes/RegisterItem';
 import { updateConfig } from 'actions/ConfigActions';
 import { fetchAuthToken } from 'actions/AuthenticationActions';
 
+// Helpers
+import { getEnvironmentVariable } from 'helpers/environmentVariableHelpers.js';
+
 // Partials
 import NavigationBar from 'components/partials/NavigationBar';
 
@@ -29,7 +35,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { faCheckSquare, faTrashAlt, faEdit, faPlusCircle, faMinusCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 
-library.add(fab, faCheckSquare, faTrashAlt, faEdit,faPlusCircle,faMinusCircle,faInfoCircle)
+library.add(fab, faCheckSquare, faTrashAlt, faEdit, faPlusCircle, faMinusCircle, faInfoCircle)
 
 
 const initialState = {};
@@ -67,6 +73,7 @@ class App extends Component {
       })
    }
    render() {
+      const environment = getEnvironmentVariable('environment');
       if (this.state && userManager && this.state.userManagerIsLoaded && this.state.storeIsLoaded) {
          return (
             <Provider store={store}>
@@ -77,10 +84,11 @@ class App extends Component {
                         <Route exact path="/" render={(props) => (<RegisterItems {...props} />)} />
                         <Route exact path="/geolett" render={(props) => (<RegisterItems {...props} />)} />
                         <Route exact path="/geolett/:registerItemId/" render={(props) => (<RegisterItem {...props} />)} />
-                        <Route exact path="/signin-oidc" render={() => (<OidcCallback userManager={userManager}/>)} />
-                        <Route exact path="/signout-callback-oidc" render={() => (<OidcSignoutCallback userManager={userManager}/>)} />
+                        <Route exact path="/signin-oidc" render={() => (<OidcCallback userManager={userManager} />)} />
+                        <Route exact path="/signout-callback-oidc" render={() => (<OidcSignoutCallback userManager={userManager} />)} />
                         <Route render={() => (<NotFound />)} />
                      </Switch>
+                     <geonorge-footer environment={environment} />
                      <ReduxToastr
                         timeOut={2000}
                         newestOnTop={false}
