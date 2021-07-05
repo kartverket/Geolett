@@ -6,9 +6,6 @@ import { ConnectedRouter } from 'connected-react-router';
 import { OidcProvider } from 'redux-oidc';
 import ReduxToastr from 'react-redux-toastr';
 
-// Geonorge Webcomponents
-import { GeonorgeFooter } from '@kartverket/geonorge-web-components/GeonorgeFooter';
-
 // Utils
 import configureStore, { history } from 'utils/configureStore';
 import userManagerPromise from 'utils/userManager';
@@ -24,11 +21,9 @@ import RegisterItem from 'components/routes/RegisterItem';
 import { updateConfig } from 'actions/ConfigActions';
 import { fetchAuthToken } from 'actions/AuthenticationActions';
 
-// Helpers
-import { getEnvironmentVariable } from 'helpers/environmentVariableHelpers.js';
-
 // Partials
 import NavigationBar from 'components/partials/NavigationBar';
+import Footer from 'components/partials/Footer';
 
 // font awesome
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -73,7 +68,6 @@ class App extends Component {
       })
    }
    render() {
-      const environment = getEnvironmentVariable('environment');
       if (this.state && userManager && this.state.userManagerIsLoaded && this.state.storeIsLoaded) {
          return (
             <Provider store={store}>
@@ -88,7 +82,7 @@ class App extends Component {
                         <Route exact path="/signout-callback-oidc" render={() => (<OidcSignoutCallback userManager={userManager} />)} />
                         <Route render={() => (<NotFound />)} />
                      </Switch>
-                     <geonorge-footer environment={environment} />
+                     <Footer />
                      <ReduxToastr
                         timeOut={2000}
                         newestOnTop={false}
