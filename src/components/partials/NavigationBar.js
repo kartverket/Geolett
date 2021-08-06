@@ -13,6 +13,11 @@ import { getEnvironmentVariable } from 'helpers/environmentVariableHelpers.js';
 
 class NavigationBar extends Component {
 
+  // 
+  // Language logic is commented out as long as app is monolingual
+  //
+
+
   constructor(props) {
     super(props);
     this.state = {
@@ -21,15 +26,20 @@ class NavigationBar extends Component {
   }
 
   componentDidMount() {
+    /*
     if (!this.props.oidc.isLoadingUser) {
       this.initMainNavigation();
     }
+    */
   }
 
   componentDidUpdate(prevProps) {
+    /*
     if (!this.state.mainNavigationIsInitialized) {
       this.initMainNavigation();
     }
+    */
+
     const wasLoggedIn = prevProps.authToken && prevProps.authToken.access_token && prevProps.authToken.access_token.length ? true : false;
     const isLoggedIn = this.props.authToken && this.props.authToken.access_token && this.props.authToken.access_token.length ? true : false;
 
@@ -41,6 +51,7 @@ class NavigationBar extends Component {
     }
   }
 
+  /*
   initMainNavigation() {
     MainNavigation.setup('main-navigation', {
       onNorwegianLanguageSelect: () => {
@@ -54,14 +65,15 @@ class NavigationBar extends Component {
       mainNavigationIsInitialized: true
     });
   }
+*/
 
   render() {
     const environment = getEnvironmentVariable('environment');
     const signinurl = getEnvironmentVariable('signinurl');
     const signouturl = getEnvironmentVariable('signouturl');
     const isLoggedIn = this.props.authToken && this.props.authToken.access_token && this.props.authToken.access_token.length ? true : false;
-    const language = this.props.selectedLanguage === 'en-US' ? 'en' : 'no';
-    return <main-navigation signinurl={signinurl} signouturl={signouturl} language={language} isLoggedIn={isLoggedIn} environment={environment}></main-navigation>;
+   // const language = this.props.selectedLanguage === 'en-US' ? 'en' : 'no';
+    return <main-navigation signinurl={signinurl} signouturl={signouturl} isLoggedIn={isLoggedIn} environment={environment}></main-navigation>;
   }
 }
 

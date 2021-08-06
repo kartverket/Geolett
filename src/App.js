@@ -23,13 +23,14 @@ import { fetchAuthToken } from 'actions/AuthenticationActions';
 
 // Partials
 import NavigationBar from 'components/partials/NavigationBar';
+import Footer from 'components/partials/Footer';
 
 // font awesome
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { faCheckSquare, faTrashAlt, faEdit, faPlusCircle, faMinusCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 
-library.add(fab, faCheckSquare, faTrashAlt, faEdit,faPlusCircle,faMinusCircle,faInfoCircle)
+library.add(fab, faCheckSquare, faTrashAlt, faEdit, faPlusCircle, faMinusCircle, faInfoCircle)
 
 
 const initialState = {};
@@ -77,10 +78,11 @@ class App extends Component {
                         <Route exact path="/" render={(props) => (<RegisterItems {...props} />)} />
                         <Route exact path="/geolett" render={(props) => (<RegisterItems {...props} />)} />
                         <Route exact path="/geolett/:registerItemId/" render={(props) => (<RegisterItem {...props} />)} />
-                        <Route exact path="/signin-oidc" render={() => (<OidcCallback userManager={userManager}/>)} />
-                        <Route exact path="/signout-callback-oidc" render={() => (<OidcSignoutCallback userManager={userManager}/>)} />
+                        <Route exact path="/signin-oidc" render={() => (<OidcCallback userManager={userManager} />)} />
+                        <Route exact path="/signout-callback-oidc" render={() => (<OidcSignoutCallback userManager={userManager} />)} />
                         <Route render={() => (<NotFound />)} />
                      </Switch>
+                     <Footer />
                      <ReduxToastr
                         timeOut={2000}
                         newestOnTop={false}

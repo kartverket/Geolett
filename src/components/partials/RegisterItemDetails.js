@@ -313,7 +313,7 @@ class RegisterItemDetails extends Component {
   handleOnDatasetSearch(query) {
     this.setState({ datasetSearchIsLoading: true });
     const kartkatalogApiUrl = getEnvironmentVariable('kartkatalogApiUrl');
-    fetch(`${kartkatalogApiUrl}/search?text=${query}&facets[0]name=type&facets[0]value=dataset&limit=25`)
+    fetch(`${kartkatalogApiUrl}/search?text=${query}&facets[0]name=type&facets[0]value=dataset&limit=25`, {headers: {'Accept-Language': 'no'}}) // As long as app is monolingual
       .then(resp => resp.json())
       .then(json => this.setState({
         datasetSearchIsLoading: false,
@@ -564,7 +564,7 @@ class RegisterItemDetails extends Component {
         <Form.Group controlId="labelDescription" className={formsStyle.form}>
           <Form.Label>
             {this.props.translate('labelDescription', null, 'Forklarende tekst')}
-            <ToggleHelpText resourceKey='contextTypeDescription' />
+            <ToggleHelpText resourceKey='descriptionDescription' />
           </Form.Label>
 
           {
@@ -744,20 +744,22 @@ class RegisterItemDetails extends Component {
               )
           }
         </Form.Group>
-
+        
         <Form.Group controlId="labelDataSetUrlMetadata" className={formsStyle.form}>
-          <Form.Label>
-            {this.props.translate('labelDataSetUrlMetadata', null, 'Datasett-meta-url')}
-            <ToggleHelpText resourceKey='dataSetUrlMetadataDescription' />
-          </Form.Label>
           {this.state.editable
             ? (
-              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                <Form.Control
-                  name="urlMetadata"
-                  value={registerItem?.dataSet?.urlMetadata || ''}
-                  onChange={this.handleDatasetChange} />
-              </div>
+              <React.Fragment>
+                <Form.Label>
+                  {this.props.translate('labelDataSetUrlMetadata', null, 'Datasett-meta-url')}
+                  <ToggleHelpText resourceKey='dataSetUrlMetadataDescription' />
+                </Form.Label>
+                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                  <Form.Control
+                    name="urlMetadata"
+                    value={registerItem?.dataSet?.urlMetadata || ''}
+                    onChange={this.handleDatasetChange} />
+                </div>
+              </React.Fragment>
             )
             : ''}
         </Form.Group>
@@ -873,9 +875,11 @@ class RegisterItemDetails extends Component {
                 </div>
               </React.Fragment>
             )
-            : (
-              <div><a href={registerItem?.dataSet?.urlGmlSchema || ''}>Lenke til GML-skjema</a></div>
-            )}
+            : registerItem?.dataSet?.urlGmlSchema?.length
+              ? (
+                <div><a href={registerItem.dataSet.urlGmlSchema}>Lenke til GML-skjema</a></div>
+              )
+              : ''}
         </Form.Group>
 
 
