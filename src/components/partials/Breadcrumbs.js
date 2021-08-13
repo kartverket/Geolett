@@ -7,6 +7,9 @@ import { useSelector } from "react-redux";
 // Stylesheets
 import style from 'components/partials/Breadcrumbs.module.scss'
 
+// Helpers
+import { getEnvironmentVariable } from 'helpers/environmentVariableHelpers.js';
+
 const SelectedRegisterItemBreadcrumb = () => {
    const selectedRegisterItem = useSelector(state => state.selectedRegisterItem);
    return selectedRegisterItem ? (
@@ -15,7 +18,7 @@ const SelectedRegisterItemBreadcrumb = () => {
 };
 
 const routes = [
-   { path: '/', breadcrumb: 'Registrene' },
+   { path: '/', breadcrumb: '' },
    { path: '/geolett', breadcrumb: 'Geolett' },
    { path: '/geolett/:registerItemId', breadcrumb: SelectedRegisterItemBreadcrumb },
    { path: '/geolett/:registerItemId/ny-registerItem', breadcrumb: 'Ny registerItem' },
@@ -37,7 +40,8 @@ const Breadcrumbs = ({ breadcrumbs }) => {
 
    return (
       <div className={style.breadcrumbs}>
-         <span>{breadcrumbTranslation} </span>
+         <span>{breadcrumbTranslation}</span>
+         <span> <a href={getEnvironmentVariable('registerUrl')} target="_top">Registrene</a></span>
          <div>
             {breadcrumbs.map(({ match, breadcrumb }, index) => {
                return (
