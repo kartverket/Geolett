@@ -663,11 +663,11 @@ class RegisterItemDetails extends Component {
           {this.state.editable
             ? (
               <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                <Form.Control as="textarea" rows={4} name="bufferPossibleMeasures" value={registerItem.bufferPossibleMeasures} onChange={this.handleChange} />
+                <Form.Control as="textarea" rows={4} name="bufferPossibleMeasures" value={registerItem?.dataSet?.bufferPossibleMeasures || ''} onChange={this.handleDatasetChange} />
               </div>
             )
             : (
-              <div>{registerItem.bufferPossibleMeasures}</div>
+              <div>{registerItem?.dataSet?.bufferPossibleMeasures || ''}</div>
             )}
         </Form.Group>        
 
