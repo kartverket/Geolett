@@ -655,6 +655,22 @@ class RegisterItemDetails extends Component {
             )}
         </Form.Group>
 
+        <Form.Group controlId="labelBufferPossibleMeasures" className={formsStyle.form}>
+          <Form.Label>
+            {this.props.translate('labelBufferPossibleMeasures', null, 'Mulige tiltak buffer')}
+            <ToggleHelpText resourceKey='bufferPossibleMeasuresDescription' />
+          </Form.Label>
+          {this.state.editable
+            ? (
+              <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
+                <Form.Control as="textarea" rows={4} name="bufferPossibleMeasures" value={registerItem.bufferPossibleMeasures} onChange={this.handleChange} />
+              </div>
+            )
+            : (
+              <div>{registerItem.bufferPossibleMeasures}</div>
+            )}
+        </Form.Group>        
+
         <Form.Group controlId="labelDataSetBufferDistance" className={formsStyle.form}>
           <Form.Label>
             {this.props.translate('labelDataSetBufferDistance', null, 'Buffer')}
