@@ -45,14 +45,24 @@ class CreateRegisterItem extends Component {
       this.props.fetchOrganizations()
          .then(() => {
             const preSelectedOwner = this.getPreSelectedOwnerFromAuthInfo(this.props.authInfo);
-            this.setState({ 
+            this.setState({
                dataFetched: true,
                selectedOwner: preSelectedOwner ? [preSelectedOwner] : []
             });
          });
    }
 
-   getPreSelectedOwnerFromAuthInfo(authInfo){
+   componentDidUpdate(prevProps) {
+      if (this.props.authInfo && prevProps.authInfo !== this.props.authInfo) {
+         const preSelectedOwner = this.getPreSelectedOwnerFromAuthInfo(this.props.authInfo);
+         this.setState({
+            dataFetched: true,
+            selectedOwner: preSelectedOwner ? [preSelectedOwner] : []
+         });
+      }
+   }
+
+   getPreSelectedOwnerFromAuthInfo(authInfo) {
       return this.props.organizations.find(organization => {
          return organization.orgNumber === authInfo?.organizationNumber;
       });
