@@ -355,6 +355,10 @@ class RegisterItemDetails extends Component {
           if (applicationSchemaUrl) {
             this.getObjectTypeInfo(applicationSchemaUrl).then(objectTypeInfo => {
               const objectTypeOptions = this.getObjectTypeOptionsFromObjectTypeinfo(objectTypeInfo);
+              objectTypeOptions.unshift({
+                id: "", 
+                label: "Vennligst velg"
+              }); 
               this.setState({ objectTypeOptions });
             })
           }
@@ -362,6 +366,13 @@ class RegisterItemDetails extends Component {
         this.setState({ registerItem });
       })
     } else {
+      let objectTypeOptions = [{ id: "", label: "Ingen funnet" } ];
+      this.setState({ objectTypeOptions });
+      registerItem.dataSet.urlGmlSchema = "";
+      registerItem.dataSet.namespace = "";
+      registerItem.dataSet.typeReference.type = "";
+      registerItem.dataSet.typeReference.attribute = "";
+      registerItem.dataSet.typeReference.codeValue = "";
       this.setState({ registerItem });
     }
   }
