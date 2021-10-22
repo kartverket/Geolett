@@ -24,7 +24,7 @@
             "dataSetTypeReferenceAttributeDescription": "Navn på attributt/felt i objekttypen som tekstene er knyttet til (eks: bmUtvalgtNaturtype, aktsomhetGrad)",
             "dataSetTypeReferenceCodeValueDescription": "Navn på verdi i attributten som teksten er knyttet til (eks: huleEiker, alle)",
             "dataSetNamespaceDescription": "Navnerom til GML-skjema (på http://skjema.geonorge.no/SOSI/produktspesifikasjon/*)",
-            "dataSetUrlGmlSchemaDescription": "Lenke til GML-skjemaet til dataasettet (på http://skjema.geonorge.no/SOSI/produktspesifikasjon/*)",
+            "dataSetUrlGmlSchemaDescription": "Lenke til GML-skjemaet til datasettet (på http://skjema.geonorge.no/SOSI/produktspesifikasjon/*)",
             "referenceTek17TextDescription": "Aktuelle byggesaksforskrifter",
             "referenceTek17UrlDescription": "Aktuelle byggesaksforskrifter - lenke",
             "referenceOtherLawTextDescription": "Andre aktuelle lover eller forskrifter",
