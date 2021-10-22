@@ -803,7 +803,7 @@ class RegisterItemDetails extends Component {
                 </div>
                 { registerItem?.dataSet?.typeReference?.type
                   ? (
-                    <a href={`https://objektkatalog.geonorge.no/Objekttype/Index/${this.state.selectedObjectTypeId}`}>
+                    <a target="_blank" href={`https://objektkatalog.geonorge.no/Objekttype/Index/${this.state.selectedObjectTypeId}`}>
                       Gå til objektkatalogen for å finne attributt og kodeverdi til {registerItem.dataSet?.typeReference?.type}
                     </a>
                   )
