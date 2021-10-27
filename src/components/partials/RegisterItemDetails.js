@@ -352,13 +352,25 @@ class RegisterItemDetails extends Component {
           registerItem.dataSet.namespace = gMLApplicationSchema.substring(0, gMLApplicationSchema.lastIndexOf("/"));
 
           const applicationSchemaUrl = registerInfo.ApplicationSchema;
+          console.log(applicationSchemaUrl);
           if (applicationSchemaUrl) {
             this.getObjectTypeInfo(applicationSchemaUrl).then(objectTypeInfo => {
               const objectTypeOptions = this.getObjectTypeOptionsFromObjectTypeinfo(objectTypeInfo);
-              objectTypeOptions.unshift({
-                id: "", 
-                label: "Vennligst velg"
-              }); 
+
+              if(objectTypeOptions.length == 0)
+              {
+                objectTypeOptions.unshift({
+                  id: "", 
+                  label: "Ingen funnet"
+                });
+              }
+              else
+              {
+                objectTypeOptions.unshift({
+                  id: "", 
+                  label: "Vennligst velg"
+                });
+              } 
               this.setState({ objectTypeOptions });
             })
           }
@@ -404,6 +416,7 @@ class RegisterItemDetails extends Component {
     return fetch(url, { headers: { 'Accept': 'application/json' } })
       .then(response => response.json())
       .then(results => {
+        console.log(results);
         return results;
       }).catch((error) => {
         console.error('Error:', error);
