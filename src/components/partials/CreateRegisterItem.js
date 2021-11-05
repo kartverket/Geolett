@@ -142,12 +142,12 @@ class CreateRegisterItem extends Component {
                <Modal.Body>
                   <ValidationErrors errors={this.state.validationErrors} />
                   <Form.Group controlId="contextType">
-                     <Form.Label>Konteksttype</Form.Label>
+                     <Form.Label>Konteksttype (påkrevd felt)</Form.Label>
                      <Form.Control type="text" name="contextType" value={this.state.registerItem.contextType} onChange={this.handleChange} />
                   </Form.Group>
 
                   <Form.Group controlId="title">
-                     <Form.Label>Title</Form.Label>
+                     <Form.Label>Tittel (påkrevd felt)</Form.Label>
                      <Form.Control type="text" name="title" value={this.state.registerItem.title} onChange={this.handleChange} />
                   </Form.Group>
 
@@ -170,7 +170,7 @@ class CreateRegisterItem extends Component {
 
                <Modal.Footer>
                   <Button variant="secondary" onClick={this.closeModal}>Avbryt</Button>
-                  <Button variant="primary" onClick={this.saveRegisterItem}>Lagre</Button>
+                  <Button variant="primary" disabled={!this.state.registerItem?.contextType?.length || !this.state.registerItem?.title?.length} onClick={this.saveRegisterItem}>Lagre</Button>
                </Modal.Footer>
             </Modal>
          </React.Fragment>

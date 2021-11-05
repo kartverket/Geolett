@@ -352,13 +352,25 @@ class RegisterItemDetails extends Component {
           registerItem.dataSet.namespace = gMLApplicationSchema.substring(0, gMLApplicationSchema.lastIndexOf("/"));
 
           const applicationSchemaUrl = registerInfo.ApplicationSchema;
+          console.log(applicationSchemaUrl);
           if (applicationSchemaUrl) {
             this.getObjectTypeInfo(applicationSchemaUrl).then(objectTypeInfo => {
               const objectTypeOptions = this.getObjectTypeOptionsFromObjectTypeinfo(objectTypeInfo);
-              objectTypeOptions.unshift({
-                id: "", 
-                label: "Vennligst velg"
-              }); 
+
+              if(objectTypeOptions.length == 0)
+              {
+                objectTypeOptions.unshift({
+                  id: "", 
+                  label: "Ingen funnet"
+                });
+              }
+              else
+              {
+                objectTypeOptions.unshift({
+                  id: "", 
+                  label: "Vennligst velg"
+                });
+              } 
               this.setState({ objectTypeOptions });
             })
           }
@@ -404,6 +416,7 @@ class RegisterItemDetails extends Component {
     return fetch(url, { headers: { 'Accept': 'application/json' } })
       .then(response => response.json())
       .then(results => {
+        console.log(results);
         return results;
       }).catch((error) => {
         console.error('Error:', error);
@@ -869,7 +882,7 @@ class RegisterItemDetails extends Component {
 
         <Form.Group controlId="labelDataSetNamespace" className={formsStyle.form}>
           <Form.Label>
-            {this.props.translate('labelDataSetNamespace', null, 'Navnerom')}
+            {this.props.translate('labelDataSetNamespace', null, 'Navnerom (skjemaplassering)')}
             <ToggleHelpText resourceKey='dataSetNamespaceDescription' />
           </Form.Label>
           {this.state.editable
@@ -891,7 +904,7 @@ class RegisterItemDetails extends Component {
             ? (
               <React.Fragment>
                 <Form.Label>
-                  {this.props.translate('dataSetUrlGmlSchemaDescription', null, 'GML-skjema')}
+                  {this.props.translate('labelDataSetUrlGmlSchema', null, 'Lenke til GML-skjemaet')}
                   <ToggleHelpText resourceKey='dataSetUrlGmlSchemaDescription' />
                 </Form.Label>
                 <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
@@ -1014,7 +1027,7 @@ class RegisterItemDetails extends Component {
                   ? (
                     <React.Fragment>
                       <Button className="mr-2" variant="secondary" onClick={(event) => { this.setState({ editable: false }) }}>Avslutt redigering</Button>
-                      <Button variant="primary" onClick={this.saveRegisterItem}>Lagre</Button>
+                      <Button variant="primary" disabled={!this.state.registerItem?.contextType?.length || !this.state.registerItem?.title?.length} onClick={this.saveRegisterItem}>Lagre</Button>
                     </React.Fragment>
                   )
                   : ''
