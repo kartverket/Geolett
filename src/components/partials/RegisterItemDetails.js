@@ -882,7 +882,7 @@ class RegisterItemDetails extends Component {
 
         <Form.Group controlId="labelDataSetNamespace" className={formsStyle.form}>
           <Form.Label>
-            {this.props.translate('labelDataSetNamespace', null, 'Navnerom')}
+            {this.props.translate('labelDataSetNamespace', null, 'Navnerom (skjemaplassering)')}
             <ToggleHelpText resourceKey='dataSetNamespaceDescription' />
           </Form.Label>
           {this.state.editable
@@ -904,7 +904,7 @@ class RegisterItemDetails extends Component {
             ? (
               <React.Fragment>
                 <Form.Label>
-                  {this.props.translate('dataSetUrlGmlSchemaDescription', null, 'GML-skjema')}
+                  {this.props.translate('labelDataSetUrlGmlSchema', null, 'Lenke til GML-skjemaet')}
                   <ToggleHelpText resourceKey='dataSetUrlGmlSchemaDescription' />
                 </Form.Label>
                 <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
