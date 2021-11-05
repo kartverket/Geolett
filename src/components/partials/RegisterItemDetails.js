@@ -1027,7 +1027,7 @@ class RegisterItemDetails extends Component {
                   ? (
                     <React.Fragment>
                       <Button className="mr-2" variant="secondary" onClick={(event) => { this.setState({ editable: false }) }}>Avslutt redigering</Button>
-                      <Button variant="primary" onClick={this.saveRegisterItem}>Lagre</Button>
+                      <Button variant="primary" disabled={!this.state.registerItem?.contextType?.length || !this.state.registerItem?.title?.length} onClick={this.saveRegisterItem}>Lagre</Button>
                     </React.Fragment>
                   )
                   : ''

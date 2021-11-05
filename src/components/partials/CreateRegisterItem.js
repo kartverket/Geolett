@@ -170,7 +170,7 @@ class CreateRegisterItem extends Component {
 
                <Modal.Footer>
                   <Button variant="secondary" onClick={this.closeModal}>Avbryt</Button>
-                  <Button variant="primary" onClick={this.saveRegisterItem}>Lagre</Button>
+                  <Button variant="primary" disabled={!this.state.registerItem?.contextType?.length || !this.state.registerItem?.title?.length} onClick={this.saveRegisterItem}>Lagre</Button>
                </Modal.Footer>
             </Modal>
          </React.Fragment>
