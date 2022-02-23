@@ -8,6 +8,7 @@ import { reducer as toastrReducer } from 'react-redux-toastr'
 import AuthInfoReducer from 'reducers/AuthInfoReducer';
 import AuthTokenReducer from 'reducers/AuthTokenReducer';
 import ConfigReducer from 'reducers/ConfigReducer';
+import OptionsReducer from 'reducers/OptionsReducer';
 import OrganizationsReducer from 'reducers/OrganizationsReducer';
 import RegisterItemsReducer from 'reducers/RegisterItemsReducer';
 import SelectedLanguageReducer from 'reducers/SelectedLanguageReducer';
@@ -21,6 +22,7 @@ const reducers = history => combineReducers({
   authToken: AuthTokenReducer,
   config: ConfigReducer,
   organizations: OrganizationsReducer,
+  options: OptionsReducer,
   registerItems: RegisterItemsReducer,
   selectedLanguage: SelectedLanguageReducer,
   selectedRegisterItem: SelectedRegisterItemReducer

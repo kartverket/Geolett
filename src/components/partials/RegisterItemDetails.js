@@ -11,6 +11,7 @@ import SimpleMDE from "react-simplemde-editor";
 import { withRouter } from 'react-router-dom';
 
 // Components
+import { SelectDropdown } from 'components/custom-elements';
 import ValidationErrors from 'components/partials/ValidationErrors';
 import ToggleHelpText from 'components/template/ToggleHelpText';
 
@@ -18,6 +19,7 @@ import ToggleHelpText from 'components/template/ToggleHelpText';
 import { createRegisterItem, updateRegisterItem, deleteRegisterItem } from 'actions/RegisterItemActions';
 import { fetchOrganizations } from 'actions/OrganizationsActions';
 import { translate } from 'actions/ConfigActions';
+import { fetchOptions } from 'actions/OptionsActions';
 
 // Helpers
 import { canDeleteRegisterItem, canEditRegisterItem, canEditRegisterItemOwner } from 'helpers/authorizationHelpers';
@@ -87,6 +89,7 @@ class RegisterItemDetails extends Component {
   componentDidMount() {
     Promise.all([
       this.props.fetchOrganizations(),
+      this.props.fetchOptions(),
     ]).then(() => {
       this.setState({ dataFetched: true });
     });
@@ -440,6 +443,12 @@ class RegisterItemDetails extends Component {
     })
   }
 
+  getActivityStatusLabel(statuses, registerItem) {
+
+    return statuses && registerItem.status && statuses[registerItem.status - 1] &&
+      statuses[registerItem.status -1].label ? statuses[registerItem.status - 1].label : '';
+  }
+
 
   renderLinks(links) {
     const linkListElements = links && links.length
@@ -559,6 +568,30 @@ class RegisterItemDetails extends Component {
               <div>{registerItem.title}</div>
             )}
         </Form.Group>
+
+        <Form.Group controlId="formName" className={formsStyle.form}>
+          <Form.Label>Status </Form.Label>
+          {
+            this.state.editable
+              ? (
+                <div className={formsStyle.comboInput}>
+                  <SelectDropdown
+                    name="status"
+                    value={this.state.registerItem.status || 1}
+                    options={this.props.statuses}
+                    onSelect={this.handleChange}
+                    className={formsStyle.statusSelect}
+                  />
+
+                </div>
+              )
+              : (
+                <span>{this.getActivityStatusLabel(this.props.statuses, this.state.registerItem)}</span>
+              )
+          }
+
+        </Form.Group>
+
 
         <Form.Group controlId="labelOwner" className={formsStyle.form}>
           <Form.Label>
@@ -1084,6 +1117,7 @@ const mapStateToProps = state => ({
       name: organization.name
     };
   }),
+  statuses: state.options.statuses,
   selectedLanguage: state.selectedLanguage
 });
 
@@ -1092,6 +1126,7 @@ const mapDispatchToProps = {
   updateRegisterItem,
   deleteRegisterItem,
   fetchOrganizations,
+  fetchOptions,
   translate
 };
 
