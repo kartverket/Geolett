@@ -443,7 +443,7 @@ class RegisterItemDetails extends Component {
     })
   }
 
-  getActivityStatusLabel(statuses, registerItem) {
+  getStatusLabel(statuses, registerItem) {
 
     return statuses && registerItem.status && statuses[registerItem.status - 1] &&
       statuses[registerItem.status -1].label ? statuses[registerItem.status - 1].label : '';
@@ -586,7 +586,7 @@ class RegisterItemDetails extends Component {
                 </div>
               )
               : (
-                <span>{this.getActivityStatusLabel(this.props.statuses, this.state.registerItem)}</span>
+                <span>{this.getStatusLabel(this.props.statuses, this.state.registerItem)}</span>
               )
           }
 

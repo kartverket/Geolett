@@ -9,6 +9,7 @@ import CreateRegisterItem from 'components/partials/CreateRegisterItem';
 
 // Actions
 import { fetchRegisterItems } from 'actions/RegisterItemActions';
+import { fetchOptions } from 'actions/OptionsActions';
 
 // Stylesheets
 import style from 'components/routes/RegisterItems.module.scss'
@@ -29,6 +30,12 @@ class RegisterItems extends Component {
       });
    }
 
+   getStatusLabel(statuses, registerItem) {
+
+      return statuses && registerItem.status && statuses[registerItem.status - 1] &&
+        statuses[registerItem.status -1].label ? statuses[registerItem.status - 1].label : '';
+    }
+
    renderRegisterItems(registerItems) {
       const registerItemRows = registerItems?.length
          ? registerItems.filter(registerItem => { return registerItem; }).map(registerItem => {
@@ -44,6 +51,9 @@ class RegisterItems extends Component {
                <td>
                   {registerItem.owner?.name || ''}
                </td>
+               <td>
+                  {this.getStatusLabel(this.props.statuses, registerItem )}
+               </td>
             </tr>)
          }) : null;
       return registerItemRows
@@ -54,6 +64,7 @@ class RegisterItems extends Component {
                      <th>Konteksttype</th>
                      <th>Tittel</th>
                      <th>Eier</th>
+                     <th>status</th>
                   </tr>
                </thead>
                <tbody>{registerItemRows}</tbody>
@@ -81,11 +92,13 @@ const mapStateToProps = state => ({
    authInfo: state.authInfo,
    registerItems: state.registerItems,
    options: state.options,
-   selectedLanguage: state.selectedLanguage
+   selectedLanguage: state.selectedLanguage,
+   statuses: state.options.statuses
 });
 
 const mapDispatchToProps = {
-   fetchRegisterItems
+   fetchRegisterItems,
+   fetchOptions
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterItems);
