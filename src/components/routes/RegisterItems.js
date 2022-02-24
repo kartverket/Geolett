@@ -25,7 +25,7 @@ class RegisterItems extends Component {
    }
 
    componentDidMount() {
-      this.props.fetchRegisterItems().then(() => {
+      this.props.fetchRegisterItems() && this.props.fetchOptions().then(() => {
          this.setState({ registerItemsFetched: true });
       });
    }
