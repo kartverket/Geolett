@@ -42,4 +42,5 @@ export const cloneRegisterItem = (registerItem, token) => async (dispatch) => {
    const response = await appApi(token).post(apiUrl , null);
 
    dispatch({ type: CLONE_REGISTER_ITEM, payload: response.data });
+   return response;
 }

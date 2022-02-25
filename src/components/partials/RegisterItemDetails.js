@@ -321,14 +321,16 @@ class RegisterItemDetails extends Component {
     }
 
     this.props.cloneRegisterItem(registerItem, token)
-      .then(() => {
+      .then((result) => {
         this.setState({
+          registerItem: result.data,
           validationErrors: [],
-          editable: false
+          editable: true
         });
         toastr.success('Konteksttypen ble opprettet');
+        window.scroll(0, 0);
       })
-      .catch(({ response }) => {
+      .catch((response) => {
         console.log(response);
         toastr.error('Kunne ikke opprette konteksttype');
         this.setState({
