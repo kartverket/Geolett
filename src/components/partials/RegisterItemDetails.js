@@ -329,6 +329,7 @@ class RegisterItemDetails extends Component {
         });
         toastr.success('Konteksttypen ble opprettet');
         window.scroll(0, 0);
+        this.props.history.replace({  pathname: '/geolett/'+result.data.id})
       })
       .catch((response) => {
         console.log(response);
