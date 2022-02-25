@@ -16,7 +16,7 @@ import ValidationErrors from 'components/partials/ValidationErrors';
 import ToggleHelpText from 'components/template/ToggleHelpText';
 
 // Actions
-import { createRegisterItem, updateRegisterItem, deleteRegisterItem } from 'actions/RegisterItemActions';
+import { createRegisterItem, updateRegisterItem, deleteRegisterItem, cloneRegisterItem } from 'actions/RegisterItemActions';
 import { fetchOrganizations } from 'actions/OrganizationsActions';
 import { translate } from 'actions/ConfigActions';
 import { fetchOptions } from 'actions/OptionsActions';
@@ -83,6 +83,7 @@ class RegisterItemDetails extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.cloneRegister = this.cloneRegister.bind(this);
   }
 
 
@@ -307,6 +308,34 @@ class RegisterItemDetails extends Component {
 
   openModal() {
     this.setState({ modalOpen: true });
+  }
+
+  cloneRegister() {
+    const registerItem = this.state.registerItem;
+    const token = this.props.authToken && this.props.authToken.access_token ? this.props.authToken.access_token : null;
+
+    if (this.state.selectedOwner.length && this.state.selectedOwner[0].organizationId) {
+      registerItem.owner = {
+        id: this.state.selectedOwner[0].organizationId
+      }
+    }
+
+    this.props.cloneRegisterItem(registerItem, token)
+      .then(() => {
+        this.setState({
+          validationErrors: [],
+          editable: false
+        });
+        toastr.success('Konteksttypen ble opprettet');
+      })
+      .catch(({ response }) => {
+        console.log(response);
+        toastr.error('Kunne ikke opprette konteksttype');
+        this.setState({
+          validationErrors: response.data
+        });
+        window.scroll(0, 0);
+      });
   }
 
   closeModal() {
@@ -1075,6 +1104,11 @@ class RegisterItemDetails extends Component {
               }
               {
                 canEditRegisterItem(this.props.authInfo, this.props.registerItem?.owner)
+                  ? <Button className="mr-2" variant="secondary" onClick={this.cloneRegister}>Dupliser konteksttype</Button>
+                  : ''
+              }
+              {
+                canEditRegisterItem(this.props.authInfo, this.props.registerItem?.owner)
                   ? <Button variant="primary" onClick={(event) => { this.setState({ editable: true }) }}>Rediger konteksttype</Button>
                   : ''
               }
@@ -1125,6 +1159,7 @@ const mapDispatchToProps = {
   createRegisterItem,
   updateRegisterItem,
   deleteRegisterItem,
+  cloneRegisterItem,
   fetchOrganizations,
   fetchOptions,
   translate
