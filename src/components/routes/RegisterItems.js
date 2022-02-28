@@ -20,7 +20,12 @@ class RegisterItems extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         registerItemsFetched: false
+         registerItemsFetched: false,
+         registerItems: null,            
+         sort: {
+            column: null,
+            direction: 'desc',
+         }
       };
    }
 
@@ -34,7 +39,83 @@ class RegisterItems extends Component {
 
       return statuses && registerItem.status && statuses[registerItem.status - 1] &&
         statuses[registerItem.status -1].label ? statuses[registerItem.status - 1].label : '';
-    }
+   }
+
+   setArrow = (column) => {
+      let className = 'sort-direction';
+      
+      if (this.state.sort.column === column) {
+        className += this.state.sort.direction === 'asc' ? ` ${style.asc}` : ` ${style.desc}`;
+      }
+      
+      return className;
+      };
+
+   onSort = column => {
+      return e => {
+          const direction = this.state.sort.column ? (this.state.sort.direction === 'asc' ? 'desc' : 'asc') : 'asc'
+          const sortedRegisterItems = this.props.registerItems.sort((a, b) => {
+              if (column === 'contextType') {
+               const nameA = a.contextType;
+               const nameB = b.contextType;
+
+               if (nameA < nameB)
+                   return -1
+               if (nameA < nameB)
+                   return 1
+               else return 0
+               }
+               else if (column === 'title') {
+                  const nameA = a.title;
+                  const nameB = b.title;
+  
+                  if (nameA < nameB)
+                      return -1
+                  if (nameA < nameB)
+                      return 1
+                  else return 0
+               }
+               else if (column === 'owner') {
+                  const nameA = a.owner.name;
+                  const nameB = b.owner.name;
+  
+                  if (nameA < nameB)
+                      return -1
+                  if (nameA < nameB)
+                      return 1
+                  else return 0
+              }
+               else if (column === 'status') {
+
+                  const nameA = this.getStatusLabel(this.props.statuses, a)
+                  const nameB = this.getStatusLabel(this.props.statuses, b)
+   
+                  if (nameA < nameB)
+                     return -1
+                  if (nameA < nameB)
+                     return 1
+                  else return 0
+
+               }
+              else {
+                  return a.first - b.first
+              }
+          })
+
+          if (direction === 'desc') {
+            sortedRegisterItems.reverse()
+          }
+          
+
+          this.setState({
+            registerItems: sortedRegisterItems,
+              sort: {
+                  column,
+                  direction,
+              },
+          })
+      }
+  }   
 
    renderRegisterItems(registerItems) {
       const registerItemRows = registerItems?.length
@@ -61,10 +142,10 @@ class RegisterItems extends Component {
             <table className={style.registerItemsTable}>
                <thead>
                   <tr>
-                     <th>Konteksttype</th>
-                     <th>Tittel</th>
-                     <th>Eier</th>
-                     <th>status</th>
+                     <th style={{cursor : 'pointer'}} onClick={this.onSort('contextType')}>Konteksttype<span className={this.setArrow('contextType')}></span></th>
+                     <th style={{cursor : 'pointer'}} onClick={this.onSort('title')}>Tittel<span className={this.setArrow('title')}></span></th>
+                     <th style={{cursor : 'pointer'}} onClick={this.onSort('owner')}>Eier<span className={this.setArrow('owner')}></span></th>
+                     <th style={{cursor : 'pointer'}} onClick={this.onSort('status')}>Status<span className={this.setArrow('status')}></span></th>
                   </tr>
                </thead>
                <tbody>{registerItemRows}</tbody>
