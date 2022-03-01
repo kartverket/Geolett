@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // Components
+import { SelectDropdown } from 'components/custom-elements';
 import Container from 'components/template/Container';
 import CreateRegisterItem from 'components/partials/CreateRegisterItem';
 
@@ -13,6 +14,7 @@ import { fetchOptions } from 'actions/OptionsActions';
 
 // Stylesheets
 import style from 'components/routes/RegisterItems.module.scss'
+import formsStyle from 'components/partials/forms.module.scss';
 
 
 class RegisterItems extends Component {
@@ -27,6 +29,8 @@ class RegisterItems extends Component {
             direction: 'desc',
          }
       };
+
+      this.handleChange = this.handleChange.bind(this);
    }
 
    componentDidMount() {
@@ -40,6 +44,62 @@ class RegisterItems extends Component {
       return statuses && registerItem.status && statuses[registerItem.status - 1] &&
         statuses[registerItem.status -1].label ? statuses[registerItem.status - 1].label : '';
    }
+
+   exists(status, arr) {
+      return arr.some(function(el) {
+        return el.value === status;
+      }); 
+    }
+
+   getOwners() {
+
+      const uniqueOwners = [];
+      const owners = [];
+
+      let allOwners = {value:0, label: "Alle"};
+      owners.unshift(allOwners);
+
+         this.props.registerItems.map(item => {
+            if (uniqueOwners.indexOf(item.owner.id) === -1) {
+               uniqueOwners.push(item.owner.id);
+               let obj = {value : item.owner.id, label : item.owner.name };
+               owners.push(obj);
+            }
+      });
+
+      owners.sort((a, b) => {
+         
+          let nameA = a.label;
+          let nameB = b.label;
+
+          if (nameA < nameB)
+              return -1
+          if (nameA < nameB)
+              return 1
+          else return 0
+
+      })
+
+      return owners;
+   }
+
+   handleChange(data) {
+
+      let ownerRegisterItems = this.props.registerItems;
+      let owner = data.value;
+
+      if(owner != 0)
+      {
+         ownerRegisterItems = ownerRegisterItems.filter(function (el) {
+         return el.owner.id == owner ;
+       });
+      }
+
+      this.setState({
+         ownerSelected: owner,
+         registerItems: ownerRegisterItems
+     })
+    }
 
    setArrow = (column) => {
       let className = 'sort-direction';
@@ -139,6 +199,19 @@ class RegisterItems extends Component {
          }) : null;
       return registerItemRows
          ? (
+            <React.Fragment>
+            <div>Eier </div>
+            <div className={formsStyle.comboInput}>
+                  <SelectDropdown
+                    name="owner"
+                    value={this.state.ownerSelected || 0}
+                    options={this.getOwners()}
+                    onSelect={this.handleChange}
+                    className={formsStyle.statusSelect}
+                  />
+
+            </div>
+
             <table className={style.registerItemsTable}>
                <thead>
                   <tr>
@@ -150,6 +223,8 @@ class RegisterItems extends Component {
                </thead>
                <tbody>{registerItemRows}</tbody>
             </table>
+
+            </React.Fragment>
          )
          : '';
    }
@@ -158,7 +233,7 @@ class RegisterItems extends Component {
       if (!this.state.registerItemsFetched) {
          return ''
       }
-      const registerItems = this.props.registerItems;
+      const registerItems = this.state.registerItems || this.props.registerItems;
       return (
          <Container>
             <h1>Konteksttyper</h1>
