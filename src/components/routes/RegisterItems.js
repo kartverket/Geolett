@@ -114,7 +114,8 @@ class RegisterItems extends Component {
    onSort = column => {
       return e => {
           const direction = this.state.sort.column ? (this.state.sort.direction === 'asc' ? 'desc' : 'asc') : 'asc'
-          const sortedRegisterItems = this.props.registerItems.sort((a, b) => {
+          const registerItems = this.state.registerItems || this.props.registerItems;
+          const sortedRegisterItems = registerItems.sort((a, b) => {
               if (column === 'contextType') {
                const nameA = a.contextType;
                const nameB = b.contextType;
