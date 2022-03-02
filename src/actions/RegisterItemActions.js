@@ -1,4 +1,4 @@
-import { FETCH_REGISTER_ITEMS, FETCH_REGISTER_ITEM, CREATE_REGISTER_ITEM, UPDATE_REGISTER_ITEM, DELETE_REGISTER_ITEM } from 'constants/types';
+import { FETCH_REGISTER_ITEMS, FETCH_REGISTER_ITEM, CREATE_REGISTER_ITEM, UPDATE_REGISTER_ITEM, DELETE_REGISTER_ITEM, CLONE_REGISTER_ITEM } from 'constants/types';
 import { apiUrls } from 'components/config';
 import appApi from 'config/appApi';
 
@@ -33,4 +33,14 @@ export const deleteRegisterItem = (registerItem, token) => async (dispatch) => {
    const response = await appApi(token).delete(apiUrl);
 
    dispatch({ type: DELETE_REGISTER_ITEM, payload: response.data });
+}
+
+export const cloneRegisterItem = (registerItem, token) => async (dispatch) => {
+   let apiUrl = apiUrls.registerItem.clone;
+   apiUrl = apiUrl.replace("{id}", registerItem.id);
+   console.log(apiUrl);
+   const response = await appApi(token).post(apiUrl , null);
+
+   dispatch({ type: CLONE_REGISTER_ITEM, payload: response.data });
+   return response;
 }

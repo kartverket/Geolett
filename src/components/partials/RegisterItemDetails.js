@@ -11,13 +11,15 @@ import SimpleMDE from "react-simplemde-editor";
 import { withRouter } from 'react-router-dom';
 
 // Components
+import { SelectDropdown } from 'components/custom-elements';
 import ValidationErrors from 'components/partials/ValidationErrors';
 import ToggleHelpText from 'components/template/ToggleHelpText';
 
 // Actions
-import { createRegisterItem, updateRegisterItem, deleteRegisterItem } from 'actions/RegisterItemActions';
+import { createRegisterItem, updateRegisterItem, deleteRegisterItem, cloneRegisterItem } from 'actions/RegisterItemActions';
 import { fetchOrganizations } from 'actions/OrganizationsActions';
 import { translate } from 'actions/ConfigActions';
+import { fetchOptions } from 'actions/OptionsActions';
 
 // Helpers
 import { canDeleteRegisterItem, canEditRegisterItem, canEditRegisterItemOwner } from 'helpers/authorizationHelpers';
@@ -81,12 +83,14 @@ class RegisterItemDetails extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.cloneRegister = this.cloneRegister.bind(this);
   }
 
 
   componentDidMount() {
     Promise.all([
       this.props.fetchOrganizations(),
+      this.props.fetchOptions(),
     ]).then(() => {
       this.setState({ dataFetched: true });
     });
@@ -306,6 +310,37 @@ class RegisterItemDetails extends Component {
     this.setState({ modalOpen: true });
   }
 
+  cloneRegister() {
+    const registerItem = this.state.registerItem;
+    const token = this.props.authToken && this.props.authToken.access_token ? this.props.authToken.access_token : null;
+
+    if (this.state.selectedOwner.length && this.state.selectedOwner[0].organizationId) {
+      registerItem.owner = {
+        id: this.state.selectedOwner[0].organizationId
+      }
+    }
+
+    this.props.cloneRegisterItem(registerItem, token)
+      .then((result) => {
+        this.setState({
+          registerItem: result.data,
+          validationErrors: [],
+          editable: true
+        });
+        toastr.success('Konteksttypen ble opprettet');
+        window.scroll(0, 0);
+        this.props.history.replace({  pathname: '/geolett/'+result.data.id})
+      })
+      .catch((response) => {
+        console.log(response);
+        toastr.error('Kunne ikke opprette konteksttype');
+        this.setState({
+          validationErrors: response.data
+        });
+        window.scroll(0, 0);
+      });
+  }
+
   closeModal() {
     this.setState({ modalOpen: false });
   }
@@ -440,6 +475,12 @@ class RegisterItemDetails extends Component {
     })
   }
 
+  getStatusLabel(statuses, registerItem) {
+
+    return statuses && registerItem.status && statuses[registerItem.status - 1] &&
+      statuses[registerItem.status -1].label ? statuses[registerItem.status - 1].label : '';
+  }
+
 
   renderLinks(links) {
     const linkListElements = links && links.length
@@ -559,6 +600,30 @@ class RegisterItemDetails extends Component {
               <div>{registerItem.title}</div>
             )}
         </Form.Group>
+
+        <Form.Group controlId="formName" className={formsStyle.form}>
+          <Form.Label>Status </Form.Label>
+          {
+            this.state.editable
+              ? (
+                <div className={formsStyle.comboInput}>
+                  <SelectDropdown
+                    name="status"
+                    value={this.state.registerItem.status || 1}
+                    options={this.props.statuses}
+                    onSelect={this.handleChange}
+                    className={formsStyle.statusSelect}
+                  />
+
+                </div>
+              )
+              : (
+                <span>{this.getStatusLabel(this.props.statuses, this.state.registerItem)}</span>
+              )
+          }
+
+        </Form.Group>
+
 
         <Form.Group controlId="labelOwner" className={formsStyle.form}>
           <Form.Label>
@@ -1042,6 +1107,11 @@ class RegisterItemDetails extends Component {
               }
               {
                 canEditRegisterItem(this.props.authInfo, this.props.registerItem?.owner)
+                  ? <Button className="mr-2" variant="secondary" onClick={this.cloneRegister}>Dupliser konteksttype</Button>
+                  : ''
+              }
+              {
+                canEditRegisterItem(this.props.authInfo, this.props.registerItem?.owner)
                   ? <Button variant="primary" onClick={(event) => { this.setState({ editable: true }) }}>Rediger konteksttype</Button>
                   : ''
               }
@@ -1084,6 +1154,7 @@ const mapStateToProps = state => ({
       name: organization.name
     };
   }),
+  statuses: state.options.statuses,
   selectedLanguage: state.selectedLanguage
 });
 
@@ -1091,7 +1162,9 @@ const mapDispatchToProps = {
   createRegisterItem,
   updateRegisterItem,
   deleteRegisterItem,
+  cloneRegisterItem,
   fetchOrganizations,
+  fetchOptions,
   translate
 };
 

@@ -8,6 +8,7 @@ import RegisterItemDetails from 'components/partials/RegisterItemDetails';
 
 // Actions
 import { fetchRegisterItem } from 'actions/RegisterItemActions';
+import { fetchOptions } from 'actions/OptionsActions';
 
 
 class RegisterItem extends Component {
@@ -50,7 +51,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    fetchRegisterItem
+    fetchRegisterItem,
+    fetchOptions
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterItem);
