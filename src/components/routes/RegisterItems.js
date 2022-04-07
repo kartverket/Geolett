@@ -34,7 +34,8 @@ class RegisterItems extends Component {
    }
 
    componentDidMount() {
-      this.props.fetchRegisterItems() && this.props.fetchOptions().then(() => {
+      const token = this.props.authToken && this.props.authToken.access_token ? this.props.authToken.access_token : null;
+      this.props.fetchRegisterItems(token) && this.props.fetchOptions().then(() => {
          this.setState({ registerItemsFetched: true });
       });
    }
@@ -247,6 +248,7 @@ class RegisterItems extends Component {
 
 const mapStateToProps = state => ({
    authInfo: state.authInfo,
+   authToken: state.authToken,
    registerItems: state.registerItems,
    options: state.options,
    selectedLanguage: state.selectedLanguage,
