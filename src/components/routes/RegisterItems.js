@@ -247,12 +247,12 @@ class RegisterItems extends Component {
 }
 
 const mapStateToProps = state => ({
-   authInfo: state.authInfo,
-   authToken: state.authToken,
    registerItems: state.registerItems,
    options: state.options,
    selectedLanguage: state.selectedLanguage,
-   statuses: state.options.statuses
+   statuses: state.options.statuses,
+   authInfo: state.authInfo,
+   authToken: state.authToken,
 });
 
 const mapDispatchToProps = {
