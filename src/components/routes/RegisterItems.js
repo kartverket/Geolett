@@ -34,10 +34,17 @@ class RegisterItems extends Component {
    }
 
    componentDidMount() {
-      const token = this.props.authToken && this.props.authToken.access_token ? this.props.authToken.access_token : null;
-      this.props.fetchRegisterItems(token) && this.props.fetchOptions().then(() => {
-         this.setState({ registerItemsFetched: true });
-      });
+
+      setTimeout(
+         function() {
+            const token = this.props.authToken && this.props.authToken.access_token ? this.props.authToken.access_token : null;
+            this.props.fetchRegisterItems(token) && this.props.fetchOptions().then(() => {
+               this.setState({ registerItemsFetched: true });
+            });
+         }
+         .bind(this),
+         200
+     );
    }
 
    getStatusLabel(statuses, registerItem) {
@@ -251,8 +258,7 @@ const mapStateToProps = state => ({
    options: state.options,
    selectedLanguage: state.selectedLanguage,
    statuses: state.options.statuses,
-   authInfo: state.authInfo,
-   authToken: state.authToken,
+   authToken: state.authToken
 });
 
 const mapDispatchToProps = {
