@@ -2,9 +2,9 @@ import { FETCH_REGISTER_ITEMS, FETCH_REGISTER_ITEM, CREATE_REGISTER_ITEM, UPDATE
 import { apiUrls } from 'components/config';
 import appApi from 'config/appApi';
 
-export const fetchRegisterItems = () => async (dispatch) => {
+export const fetchRegisterItems = (token) => async (dispatch) => {
    const apiUrl = apiUrls.registerItem.getAll;   
-   const response = await appApi().get(apiUrl);
+   const response = await appApi(token).get(apiUrl);
    dispatch({ type: FETCH_REGISTER_ITEMS, payload: response.data });
 }
 

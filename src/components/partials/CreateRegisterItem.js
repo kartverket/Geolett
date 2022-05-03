@@ -106,7 +106,7 @@ class CreateRegisterItem extends Component {
          .then(() => {
             this.closeModal();
             this.setState({ validationErrors: [] });
-            this.props.fetchRegisterItems();
+            this.props.fetchRegisterItems(token);
             toastr.success('En ny konteksttype ble lagt til');
          })
          .catch(({ response }) => {
