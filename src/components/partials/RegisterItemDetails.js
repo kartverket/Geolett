@@ -392,7 +392,7 @@ class RegisterItemDetails extends Component {
             this.getObjectTypeInfo(applicationSchemaUrl).then(objectTypeInfo => {
               const objectTypeOptions = this.getObjectTypeOptionsFromObjectTypeinfo(objectTypeInfo);
 
-              if(objectTypeOptions.length == 0)
+              if(objectTypeOptions.length === 0)
               {
                 objectTypeOptions.unshift({
                   id: "", 
@@ -892,7 +892,7 @@ class RegisterItemDetails extends Component {
                 </div>
                 { registerItem?.dataSet?.typeReference?.type
                   ? (
-                    <a target="_blank" href={`https://objektkatalog.geonorge.no/Objekttype/Index/${this.state.selectedObjectTypeId}`}>
+                    <a target="_blank" rel="noreferrer" href={`https://objektkatalog.geonorge.no/Objekttype/Index/${this.state.selectedObjectTypeId}`}>
                       Gå til objektkatalogen for å finne attributt og kodeverdi til {registerItem.dataSet?.typeReference?.type}
                     </a>
                   )

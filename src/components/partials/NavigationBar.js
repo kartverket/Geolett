@@ -1,6 +1,9 @@
 // Dependencies
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+// Geonorge Webcomponents
+// eslint-disable-next-line no-unused-vars
 import { MainNavigation } from '@kartverket/geonorge-web-components/MainNavigation';
 
 // Actions

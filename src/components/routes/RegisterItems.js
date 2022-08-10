@@ -67,7 +67,7 @@ class RegisterItems extends Component {
       let allOwners = {value:0, label: "Alle"};
       owners.unshift(allOwners);
 
-         this.props.registerItems.map(item => {
+         this.props.registerItems.forEach(item => {
             if (uniqueOwners.indexOf(item.owner.id) === -1) {
                uniqueOwners.push(item.owner.id);
                let obj = {value : item.owner.id, label : item.owner.name };
@@ -96,10 +96,10 @@ class RegisterItems extends Component {
       let ownerRegisterItems = this.props.registerItems;
       let owner = data.value;
 
-      if(owner != 0)
+      if(owner !== 0)
       {
          ownerRegisterItems = ownerRegisterItems.filter(function (el) {
-         return el.owner.id == owner ;
+         return el.owner.id === owner ;
        });
       }
 
