@@ -1,36 +1,30 @@
 // Dependencies
-import React from "react";
-import { connect } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { SignoutCallbackComponent } from "redux-oidc";
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
+const OidcSignoutCallback = ({ userManager }) => {
+    const navigate = useNavigate();
 
-class SignoutCallbackPage extends React.Component {
-    successCallback = () => {
-        this.props.history.push('/');
-    };
+    const successCallback = () => {};
 
-    render() {
-        return (
-            <SignoutCallbackComponent
-                userManager={this.props.userManager}
-                successCallback={this.successCallback}
-                errorCallback={error => {
-                    if (this.props && this.props.history){
-                        this.props.history.push("/");
-                    }
-                    console.error(error);
-                }}
-            >
-                <div>Logger ut...</div>
-            </SignoutCallbackComponent>
-        );
-    }
-}
+    useEffect(() => {
+        const autoRedirectPath = sessionStorage?.autoRedirectPath || "/";
+        sessionStorage.removeItem("autoRedirectPath");
+        navigate(autoRedirectPath);
+    }, [navigate]);
 
-SignoutCallbackPage.propTypes = {
-  userManager: PropTypes.object.isRequired
+    return (
+        <SignoutCallbackComponent
+            userManager={userManager}
+            successCallback={successCallback}
+            errorCallback={() => {
+                navigate("/");
+            }}
+        >
+            <div>Logger ut...</div>
+        </SignoutCallbackComponent>
+    );
 };
 
-export default withRouter(connect(null)(SignoutCallbackPage));
+export default OidcSignoutCallback;
