@@ -1,28 +1,25 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import App from 'App';
-import ConfigLoader from 'components/ConfigLoader';
-import * as serviceWorker from './serviceWorker';
-import WebFont from 'webfontloader';
-import 'extensions';
-import 'index.scss';
+// Dependencies
+import React from "react";
+import { createRoot } from "react-dom/client";
+import * as serviceWorker from "./serviceWorker";
+import WebFont from "webfontloader";
+import "extensions";
 
+// Components
+import App from "App";
+import ConfigLoader from "components/ConfigLoader";
+
+// Stylesheets
+import "index.scss";
 
 WebFont.load({
     google: {
-      families: ['Raleway:100,400,500,700', 'Open Sans:400,600,700', 'sans-serif']
+        families: ["Raleway:100,400,500,700", "Open Sans:400,600,700", "sans-serif"]
     }
- })
+});
 
-class Main extends Component {
-    render() {
-        return <ConfigLoader ready={(config) =>
-            <App config={config} />
-        } />;
-    }
-}
-
-
-ReactDOM.render(<Main />, document.getElementById('root'));
+const container = document.getElementById("root");
+const root = createRoot(container);
+root.render(<ConfigLoader ready={(config) => <App config={config} />} />);
 
 serviceWorker.unregister();
