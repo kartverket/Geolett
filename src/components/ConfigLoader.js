@@ -1,25 +1,31 @@
-import translations from 'config/translations.json'
+// Dependencies
+import { useEffect, useState } from "react";
 
-import { Component } from 'react';
+// Components
 import { load } from "components/config";
 
-export default class ConfigLoader extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { isLoaded: false };
-    }
+// Config
+import translations from "config/translations.json";
 
-    async componentDidMount() {       
-        const config = await load();
-        config.translations = translations;
-        this.setState({ isLoaded: true, config })
-    }
+const ConfigLoader = (props) => {
+    // State
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [config, setConfig] = useState();
 
-    render() {
-        if (!this.state.isLoaded) {
-            return this.props.loading ? this.props.loading() : null;
-        }
+    useEffect(() => {
+        const fetchConfig = async () => {
+            const config = await load();
+            config.translations = translations;
+            setIsLoaded(true);
+            setConfig(config);
+        };
+        fetchConfig();
+    }, []);
 
-        return this.props.ready(this.state.config);
+    if (!isLoaded) {
+        return props.loading ? this.props.loading() : null;
     }
-}
+    return props.ready(config);
+};
+
+export default ConfigLoader;
