@@ -2,7 +2,7 @@
 import { UPDATE_AUTH_TOKEN } from 'constants/types';
 
 // Dependencies
-import * as Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 
 // Helpers
 import { getEnvironmentVariable } from 'helpers/environmentVariableHelpers.js';
