@@ -1,58 +1,39 @@
 // Dependencies
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 // Components
-import Container from 'components/template/Container';
-import RegisterItemDetails from 'components/partials/RegisterItemDetails';
+import Container from "components/template/Container";
+import RegisterItemDetails from "components/partials/RegisterItemDetails";
 
 // Actions
-import { fetchRegisterItem } from 'actions/RegisterItemActions';
-import { fetchOptions } from 'actions/OptionsActions';
+import { fetchRegisterItem } from "actions/RegisterItemActions";
 
+const RegisterItem = () => {
+    const dispatch = useDispatch();
+    const params = useParams();
 
-class RegisterItem extends Component {
+    // Redux store
+    const savedRegisterItem = useSelector((state) => state.selectedRegisterItem);
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            registerItemFetched: false
-        };
-      }
+    // State
+    const [registerItemFetched, setRegisterItemFetched] = useState(false);
 
-    componentDidMount() {
-        this.props.fetchRegisterItem(this.getRegisterItemId())
-            .then(() => {
-                this.setState({ registerItemFetched: true });
-            });
+    useEffect(() => {
+        dispatch(fetchRegisterItem(params?.registerItemId)).then(() => {
+            setRegisterItemFetched(true);
+        });
+    }, [dispatch, params?.registerItemId]);
+
+    if (!registerItemFetched) {
+        return "";
     }
-
-    getRegisterItemId() {
-        return this.props.match && this.props.match.params && this.props.match.params.registerItemId
-            ? this.props.match.params.registerItemId
-            : null;
-    }
-
-    render() {
-        if (!this.state.registerItemFetched) {
-            return ''
-        }
-        const registerItem = this.props.registerItem;
-        return registerItem && Object.keys(registerItem).length ? (
-            <Container>
-                <RegisterItemDetails />
-            </Container>
-        ) : ''
-    }
-}
-
-const mapStateToProps = state => ({
-    registerItem: state.selectedRegisterItem,
-});
-
-const mapDispatchToProps = {
-    fetchRegisterItem,
-    fetchOptions
+    return savedRegisterItem && Object.keys(savedRegisterItem).length ? (
+        <Container>
+            <RegisterItemDetails />
+        </Container>
+    ) : null;
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterItem);
+export default RegisterItem;
