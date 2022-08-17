@@ -1,8 +1,8 @@
 // Dependecies
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { Route, Switch } from 'react-router';
-import { ConnectedRouter } from 'connected-react-router';
+import { Route, Routes } from "react-router";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { OidcProvider } from 'redux-oidc';
 import ReduxToastr from 'react-redux-toastr';
 
@@ -72,16 +72,16 @@ class App extends Component {
          return (
             <Provider store={store}>
                <OidcProvider userManager={userManager} store={store}>
-                  <ConnectedRouter history={history}>
+                  <Router history={history}>
                      <NavigationBar userManager={userManager} />
-                     <Switch>
-                        <Route exact path="/" render={(props) => (<RegisterItems {...props} />)} />
-                        <Route exact path="/geolett" render={(props) => (<RegisterItems {...props} />)} />
-                        <Route exact path="/geolett/:registerItemId/" render={(props) => (<RegisterItem {...props} />)} />
-                        <Route exact path="/signin-oidc" render={() => (<OidcCallback userManager={userManager} />)} />
-                        <Route exact path="/signout-callback-oidc" render={() => (<OidcSignoutCallback userManager={userManager} />)} />
-                        <Route render={() => (<NotFound />)} />
-                     </Switch>
+                     <Routes>
+                        <Route exact path="/" element={<RegisterItems/>} />
+                        <Route exact path="/geolett" element={<RegisterItems/>} />
+                        <Route exact path="/geolett/:registerItemId/" element={<RegisterItem />} />
+                        <Route exact path="/signin-oidc" element={<OidcCallback userManager={userManager} />} />
+                        <Route exact path="/signout-callback-oidc" element={<OidcSignoutCallback userManager={userManager} />} />
+                        <Route path="*" element={<NotFound />} />
+                     </Routes>
                      <Footer />
                      <ReduxToastr
                         timeOut={2000}
@@ -94,7 +94,7 @@ class App extends Component {
                         progressBar
                         closeOnToastrClick
                      />
-                  </ConnectedRouter>
+                  </Router>
                </OidcProvider>
             </Provider>
          );
