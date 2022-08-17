@@ -34,7 +34,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "connected-react-router": "^6.9.1",
-    "copy-webpack-plugin": "6.2.1",
+    "copy-webpack-plugin": "^11.0.0",
     "cross-env": "^7.0.3",
     "easymde": "2.16.0",
     "history": "4.10.1",
