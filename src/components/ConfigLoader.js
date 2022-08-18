@@ -7,25 +7,26 @@ import { load } from "components/config";
 // Config
 import translations from "config/translations.json";
 
-const ConfigLoader = (props) => {
+const ConfigLoader = ({ ready, loading }) => {
     // State
     const [isLoaded, setIsLoaded] = useState(false);
     const [config, setConfig] = useState();
 
     useEffect(() => {
-        const fetchConfig = async () => {
-            const config = await load();
-            config.translations = translations;
+       load().then((config) => {
             setIsLoaded(true);
-            setConfig(config);
-        };
-        fetchConfig();
+            setConfig({
+                ...config,
+                translations
+            });
+        });
     }, []);
 
     if (!isLoaded) {
-        return props.loading ? this.props.loading() : null;
+        return loading ? loading() : null;
     }
-    return props.ready(config);
+
+    return ready(config);
 };
 
 export default ConfigLoader;

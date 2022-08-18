@@ -7,7 +7,9 @@ import "extensions";
 
 // Components
 import App from "App";
+
 import ConfigLoader from "components/ConfigLoader";
+
 
 // Stylesheets
 import "index.scss";
@@ -18,8 +20,12 @@ WebFont.load({
     }
 });
 
+const Main = () => {
+    return <ConfigLoader ready={(config) => <App config={config} />} />;
+}
+
 const container = document.getElementById("root");
 const root = createRoot(container);
-root.render(<ConfigLoader ready={(config) => <App config={config} />} />);
+root.render(<Main />);
 
 serviceWorker.unregister();
