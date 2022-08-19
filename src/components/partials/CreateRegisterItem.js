@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -43,9 +43,11 @@ const CreateRegisterItem = () => {
     const handleChange = (data) => {
         const updatedRegisterItem = registerItem;
         const { name, value } = data.target ? data.target : data;
+        console.log("data", value);
         const parsed = parseInt(value);
 
         updatedRegisterItem[name] = isNaN(parsed) ? value : parsed;
+        console.log(updatedRegisterItem);
         setRegisterItem(updatedRegisterItem);
     };
 
@@ -74,30 +76,30 @@ const CreateRegisterItem = () => {
         return !!registerItem && !!canAddRegisterItem(authInfo);
     };
 
-    useEffect(() => {
-        dispatch(fetchOrganizations());
-    }, [dispatch]);
+    const getPreSelectedOwnerFromAuthInfo = useCallback(() => {
+        return organizations.find((organization) => {
+            return organization.orgNumber === authInfo?.organizationNumber;
+        });
+    }, [authInfo?.organizationNumber, organizations]);
 
     useEffect(() => {
-        const getPreSelectedOwnerFromAuthInfo = (authInfo) => {
-            return organizations.find((organization) => {
-                return organization.orgNumber === authInfo?.organizationNumber;
+        if (!dataFetched) {
+            dispatch(fetchOrganizations()).then(() => {
+                const preSelectedOwner = getPreSelectedOwnerFromAuthInfo();
+                setDataFetched(true);
+                setSelectedOwner(preSelectedOwner ? [preSelectedOwner] : []);
             });
-        };
-
-        const preSelectedOwner = getPreSelectedOwnerFromAuthInfo(authInfo);
-        setDataFetched(true);
-        setSelectedOwner(preSelectedOwner ? [preSelectedOwner] : []);
-    }, [authInfo, organizations]);
+        }
+    }, [dataFetched, dispatch, getPreSelectedOwnerFromAuthInfo]);
 
     return dataFetched && showAddRegisterItemContent() ? (
         <React.Fragment>
-            <Button variant="primary" className="marginB-20" onClick={setModalOpen(true)}>
+            <Button variant="primary" className="marginB-20" onClick={() => setModalOpen(true)}>
                 Opprett konteksttype
             </Button>
             <Modal
                 show={modalOpen}
-                onHide={setModalOpen(false)}
+                onHide={() => setModalOpen(false)}
                 backdrop="static"
                 centered
                 keyboard={false}
@@ -114,14 +116,19 @@ const CreateRegisterItem = () => {
                         <Form.Control
                             type="text"
                             name="contextType"
-                            value={registerItem.contextType}
+                            defaultValue={registerItem.contextType}
                             onChange={handleChange}
                         />
                     </Form.Group>
 
                     <Form.Group controlId="title">
                         <Form.Label>Tittel (påkrevd felt)</Form.Label>
-                        <Form.Control type="text" name="title" value={registerItem.title} onChange={handleChange} />
+                        <Form.Control
+                            type="text"
+                            name="title"
+                            defaultValue={registerItem.title}
+                            onChange={handleChange}
+                        />
                     </Form.Group>
 
                     <Form.Group controlId="formName">
@@ -139,7 +146,7 @@ const CreateRegisterItem = () => {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={setModalOpen(false)}>
+                    <Button variant="secondary" onClick={() => setModalOpen(false)}>
                         Avbryt
                     </Button>
                     <Button
