@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -33,18 +33,21 @@ const RegisterItems = () => {
         direction: "desc"
     });
 
+    // Refs
+    const tokenRef = useRef(null);
+
     useEffect(() => {
-        setTimeout(
-            function () {
-                const token = authToken?.access_token || null;
-                dispatch(fetchRegisterItems(token)).then(() => {
-                    dispatch(fetchOptions()).then(() => {
-                        setRegisterItemsFetched(true);
-                    });
-                });
-            }, 200
-        );
-    }, [authToken?.access_token, dispatch]);
+        tokenRef.current = authToken?.access_token?.length ? authToken.access_token : null;
+    }, [authToken?.access_token]);
+
+    useEffect(() => {
+        if (!registerItemsFetched) {
+            dispatch(fetchRegisterItems(tokenRef.current)).then(() => {
+                setRegisterItemsFetched(true);
+                dispatch(fetchOptions()).then(() => {});
+            });
+        }
+    }, [dispatch, registerItemsFetched]);
 
     const getStatusLabel = (statuses, registerItem) => {
         return statuses && registerItem?.status && statuses?.[registerItem.status - 1]?.label?.length
