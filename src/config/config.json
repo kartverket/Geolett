@@ -9,16 +9,16 @@
     "apiBaseURL": "https://register.dev.geonorge.no/geolett/api",
     "oidc": {
         "client_id": "geolett.test.geoid.no",
-        "authority": "https://test2.geoid.no/realms/geoid/protocol/openid-connect/auth",
-        "issuer": "https://test2.geoid.no/realms/geoid",
+        "authority": "https://test.geoid.no/realms/geoid/protocol/openid-connect/auth",
+        "issuer": "https://test.geoid.no/realms/geoid",
         "redirect_uri": "https://register.dev.geonorge.no/geolett/signin-oidc",
         "post_logout_redirect_uri": "https://register.dev.geonorge.no/geolett/signout-callback-oidc",
         "metadata": {
-            "issuer": "https://test2.geoid.no/realms/geoid",
-            "authorization_endpoint": "https://test2.geoid.no/realms/geoid/protocol/openid-connect/auth",
-            "userinfo_endpoint": "https://test2.geoid.no/realms/geoid/protocol/openid-connect/userinfo",
-            "end_session_endpoint": "https://test2.geoid.no/realms/geoid/protocol/openid-connect/logout",
-            "jwks_uri": "https://test2.geoid.no/realms/geoid/protocol/openid-connect/certs"
+            "issuer": "https://test.geoid.no/realms/geoid",
+            "authorization_endpoint": "https://test.geoid.no/realms/geoid/protocol/openid-connect/auth",
+            "userinfo_endpoint": "https://test.geoid.no/realms/geoid/protocol/openid-connect/userinfo",
+            "end_session_endpoint": "https://test.geoid.no/realms/geoid/protocol/openid-connect/logout",
+            "jwks_uri": "https://test.geoid.no/realms/geoid/protocol/openid-connect/certs"
         },
         "signingKeys": [
             {
