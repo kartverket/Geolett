@@ -344,17 +344,17 @@ const RegisterItemDetails = () => {
     };
 
     const getObjectTypeOptionsFromObjectTypeinfo = (objectTypeInfo) => {
-        return objectTypeInfo?.result?.SearchRecords?.length
-            ? objectTypeInfo.result.SearchRecords.filter((searchRecord) => {
-                  return searchRecord.status === "Gyldig" && searchRecord.stereotype === "objekttype";
-              }).map((searchRecord) => {
-                  return {
-                      id: searchRecord.id, // Use display link to find attribute and code value ex: https://objektkatalog.geonorge.no/Objekttype/Index/EAID_0108C6D9_3D9C_47ba_AD4B_673A6E3327AE
-                      label: searchRecord.name
-                  };
-              })
-            : null;
-    };
+        return objectTypeInfo?.result?.SearchRecords?.length ? objectTypeInfo.result.SearchRecords.filter(searchRecord => {
+            return (searchRecord.status === "Gyldig" || searchRecord.status === "Foreslått" || searchRecord.status === "Utkast") && searchRecord.stereotype === "objekttype";
+        }).map(searchRecord => {
+            return {
+                id: searchRecord.id,  // Use display link to find attribute and code value ex: https://objektkatalog.geonorge.no/Objekttype/Index/EAID_0108C6D9_3D9C_47ba_AD4B_673A6E3327AE
+                label: searchRecord.name
+            };
+        }) : null;
+    }
+
+    
 
     const getRegisterInfo = (url) => {
         url = url + ".json";
@@ -634,6 +634,7 @@ const RegisterItemDetails = () => {
                 )}
             </Form.Group>
 
+  
             <Form.Group controlId="labelDescription" className={formsStyle.form}>
                 <Form.Label>
                     {dispatch(translate("labelDescription", null, "Forklarende tekst"))}
