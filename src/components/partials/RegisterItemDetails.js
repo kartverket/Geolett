@@ -6,9 +6,8 @@ import Button from "react-bootstrap/Button";
 import { toastr } from "react-redux-toastr";
 import Modal from "react-bootstrap/Modal";
 import { Typeahead, withAsync } from "react-bootstrap-typeahead";
-import SimpleMDE from "react-simplemde-editor";
-
 import { useNavigate } from "react-router-dom";
+import MDEditor from "@uiw/react-md-editor";
 
 // Components
 import { SelectDropdown } from "components/custom-elements";
@@ -27,21 +26,8 @@ import { getEnvironmentVariable } from "helpers/environmentVariableHelpers.js";
 
 // Stylesheets
 import formsStyle from "components/partials/forms.module.scss";
-import "easymde/dist/easymde.min.css";
 
 const AsyncTypeahead = withAsync(Typeahead);
-
-const editableMdeOptions = {
-    toolbar: ["bold", "italic", "link", "unordered-list", "|", "preview"],
-    spellChecker: false
-};
-
-const readOnlyMdeOptions = {
-    toolbar: false,
-    status: false,
-    spellChecker: false,
-    readOnly: true
-};
 
 const RegisterItemDetails = () => {
     const dispatch = useDispatch();
@@ -212,20 +198,6 @@ const RegisterItemDetails = () => {
                 setValidationErrors(response.data);
                 window.scroll(0, 0);
             });
-    };
-
-    const getMdeInstance = (instance) => {
-        const container = instance?.element?.nextSibling;
-        if (container) {
-            container.setAttribute("tabIndex", "0");
-            if (!editable) {
-                const editableElement = container.getElementsByClassName("CodeMirror-scroll")?.[0];
-                editableElement.style.display = "none";
-                instance.togglePreview();
-                instance.codemirror.options.readOnly = true;
-                container.classList.add(formsStyle.mdePreview);
-            }
-        }
     };
 
     const openModal = () => {
@@ -634,30 +606,20 @@ const RegisterItemDetails = () => {
                 )}
             </Form.Group>
 
-  
-            <Form.Group controlId="labelDescription" className={formsStyle.form}>
-                <Form.Label>
+            <gb-label block>
+                <label htmlFor="description">
                     {dispatch(translate("labelDescription", null, "Forklarende tekst"))}
                     <ToggleHelpText resourceKey="descriptionDescription" />
-                </Form.Label>
-
-                {editable ? (
-                    <div className={formsStyle.comboInput} style={{ display: "block" }}>
-                        <SimpleMDE
-                            value={registerItem?.description || ""}
-                            onChange={(value) => handleChange({ name: "description", value })}
-                            options={editableMdeOptions}
-                            getMdeInstance={getMdeInstance}
-                        />
-                    </div>
+                </label>
+            </gb-label>
+            <div data-color-mode="light">
+                { editable ? (
+                    <MDEditor id="description" preview="edit" height={200} name="description" value={descriptionMarkdown || ''} onChange={(value) => {setDescriptionMarkdown(value); handleChange({name: "description", value: value})}} />
                 ) : (
-                    <SimpleMDE
-                        value={registerItem?.description || ""}
-                        options={readOnlyMdeOptions}
-                        getMdeInstance={getMdeInstance}
-                    />
-                )}
-            </Form.Group>
+                <MDEditor.Markdown id="description" source={descriptionMarkdown}/>
+                )
+                }
+                    </div>
 
             <Form.Group controlId="labelDialogText" className={formsStyle.form}>
                 <Form.Label>
