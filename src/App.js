@@ -1,7 +1,7 @@
 // Dependecies
 import React, { useEffect, useState } from "react";
-import { Provider, useDispatch } from "react-redux";
-import { Route, Routes, useNavigate } from "react-router";
+import { Provider } from "react-redux";
+import { Route, Routes } from "react-router";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { OidcProvider } from "redux-oidc";
 import ReduxToastr from "react-redux-toastr";
