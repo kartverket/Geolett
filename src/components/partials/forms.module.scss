@@ -1,8 +1,6 @@
 @import "../../style/abstracts/_all.scss";
 
 :local(.form) {
-   white-space: pre-line;
-
    label {
       font-weight: 600;
    }
@@ -208,8 +206,12 @@
    display: flex;
    justify-content: space-between;
    align-items: flex-end;
+   column-gap: 32px;
    @media screen and (max-width: 600px) {
       flex-direction: column;
+   }
+   :local(.flex1) {
+      flex: 1;
    }
    :local(.form) {
       flex: 1;

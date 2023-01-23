@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 // Components
-import { SelectDropdown } from "components/custom-elements";
 import Container from "components/template/Container";
 import CreateRegisterItem from "components/partials/CreateRegisterItem";
 
@@ -14,7 +13,6 @@ import { fetchOptions } from "actions/OptionsActions";
 
 // Stylesheets
 import style from "components/routes/RegisterItems.module.scss";
-import formsStyle from "components/partials/forms.module.scss";
 
 const RegisterItems = () => {
     const dispatch = useDispatch();
@@ -83,7 +81,7 @@ const RegisterItems = () => {
 
     const handleChange = (data) => {
         let ownerRegisterItems = savedRegisterItems;
-        const owner = data.value;
+        const owner = data?.target?.value && parseInt(data?.target?.value);
 
         if (owner !== 0) {
             ownerRegisterItems = ownerRegisterItems.filter(function (el) {
@@ -177,15 +175,15 @@ const RegisterItems = () => {
         return registerItemRows ? (
             <React.Fragment>
                 <div>Eier </div>
-                <div className={formsStyle.comboInput}>
-                    <SelectDropdown
-                        name="owner"
-                        value={ownerSelected || 0}
-                        options={getOwners()}
-                        onSelect={handleChange}
-                        className={formsStyle.statusSelect}
-                    />
-                </div>
+                <gn-select>
+                    <select name="owner" defaultValue={ownerSelected || "0"} onChange={handleChange}>
+                        {getOwners().map(owner => {
+                            return (
+                                <option key={owner.value} value={owner.value}>{owner.label}</option>
+                            );
+                        })}
+                    </select>
+                </gn-select>
 
                 <table className={style.registerItemsTable}>
                     <thead>

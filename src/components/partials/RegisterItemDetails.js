@@ -1,16 +1,17 @@
 // Dependencies
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import { toastr } from "react-redux-toastr";
 import Modal from "react-bootstrap/Modal";
 import { Typeahead, withAsync } from "react-bootstrap-typeahead";
 import { useNavigate } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
 
+// Geonorge WebComponents
+// eslint-disable-next-line no-unused-vars
+import {GnButton, GnInput, GnLabel, GnSelect, GnTextarea, HeadingText } from '@kartverket/geonorge-web-components';
+
 // Components
-import { SelectDropdown } from "components/custom-elements";
 import ValidationErrors from "components/partials/ValidationErrors";
 import ToggleHelpText from "components/template/ToggleHelpText";
 
@@ -62,6 +63,9 @@ const RegisterItemDetails = () => {
     const [datasetSearchIsLoading, setDatasetSearchIsLoading] = useState(false);
     const [datasetOptions, setDatasetOptions] = useState([]);
     const [objectTypeOptions, setObjectTypeOptions] = useState([]);
+
+    const [descriptionMarkdown, setDescriptionMarkdown] = useState(savedRegisterItem?.description || '');
+    const [registerItemTitle, setRegisterItemTitle] = useState(savedRegisterItem?.contextType || '');
 
     const handleChange = (data) => {
         const registerItem = savedRegisterItem;
@@ -178,7 +182,7 @@ const RegisterItemDetails = () => {
     };
 
     const saveRegisterItem = () => {
-        const registerItem = savedRegisterItem;
+        const registerItem = newRegisterItem;
         const token = authToken?.access_token || null;
 
         if (selectedOwner?.[0]?.organizationId?.length) {
@@ -306,11 +310,17 @@ const RegisterItemDetails = () => {
             });
         } else {
             setObjectTypeOptions([{ id: "", label: "Ingen funnet" }]);
-            registerItem.dataSet.urlGmlSchema = "";
-            registerItem.dataSet.namespace = "";
-            registerItem.dataSet.typeReference.type = "";
-            registerItem.dataSet.typeReference.attribute = "";
-            registerItem.dataSet.typeReference.codeValue = "";
+            registerItem.dataset = {
+                ...registerItem?.dataset,
+                urlGmlSchema: "",
+                namespace: "",
+                typeReference: {
+                    ...registerItem?.dataset?.typeReference,
+                    type: "",
+                    attribute: "",
+                    codeValue: ""
+                }
+            }
             setNewRegisterItem(registerItem);
         }
     };
@@ -436,43 +446,41 @@ const RegisterItemDetails = () => {
                       const link = linkItem.link;
                       return editable ? (
                           <div key={linkIndex} className={formsStyle.flex}>
-                              <Form.Group controlId="labelLinkText" className={formsStyle.form}>
-                                  <Form.Label>
-                                      {dispatch(translate("labelLinkText", null, "Text"))}
-                                      <ToggleHelpText resourceKey="linkTextDescription" />
-                                  </Form.Label>
-                                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                                      <Form.Control
-                                          name="text"
-                                          data-link-index={linkIndex}
-                                          value={link.text}
-                                          onChange={handleChangeLink}
-                                      />
-                                  </div>
-                              </Form.Group>
-                              <Form.Group controlId="labelLinkUrl" className={formsStyle.form}>
-                                  <Form.Label>
-                                      {dispatch(translate("labelLinkUrl", null, "URL"))}
-                                      <ToggleHelpText resourceKey="linkUrlDescription" />
-                                  </Form.Label>
-                                  <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                                      <Form.Control
-                                          name="url"
-                                          data-link-index={linkIndex}
-                                          value={link.url}
-                                          onChange={handleChangeLink}
-                                      />
-                                  </div>
-                              </Form.Group>
-                              <Button
-                                  variant="danger"
-                                  className={formsStyle.form}
+                            <div className={formsStyle.flex1}>
+                                <gn-label block>
+                                    <label htmlFor={`linkText-${linkIndex}`}>
+                                        {dispatch(translate("labelLinkText", null, "Text"))}
+                                        <ToggleHelpText resourceKey="linkTextDescription" />
+                                    </label>
+                                </gn-label>
+                                <gn-input block fullWidth>
+                                    <input id={`linkText-${linkIndex}`} name="text" defaultValue={link.text} data-link-index={linkIndex} onChange={handleChangeLink} />
+                                </gn-input>
+                            </div>
+
+                            <div className={formsStyle.flex1}>
+                                <gn-label block>
+                                    <label htmlFor={`linkUrl-${linkIndex}`}>
+                                        {dispatch(translate("labelLinkUrl", null, "URL"))}
+                                        <ToggleHelpText resourceKey="linkUrlDescription" />
+                                    </label>
+                                </gn-label>
+                                <gn-input block fullWidth>
+                                    <input id={`linkUrl-${linkIndex}`} name="url" defaultValue={link.url} data-link-index={linkIndex} onChange={handleChangeLink} />
+                                </gn-input>
+                            </div>
+                            <div>
+                                <gn-button color="danger">
+                              <button
                                   onClick={() => {
                                       handleDeleteLink(linkIndex);
                                   }}
+                                  style={{marginBottom: "10px"}}
                               >
                                   Fjern
-                              </Button>
+                              </button>
+                              </gn-button>
+                            </div>
                           </div>
                       ) : (
                           <div key={linkIndex}>
@@ -486,31 +494,35 @@ const RegisterItemDetails = () => {
                 {linkListElements?.length ? linkListElements : "Ingen lenker er lagt til"}
                 {editable ? (
                     <React.Fragment>
-                        <h3>Legg til ny lenke</h3>
+                        <heading-text>
+                            <h3>Legg til ny lenke</h3>
+                        </heading-text>
                         <div key="newLink" className={formsStyle.flex}>
-                            <Form.Group controlId="labelnewLinkText" className={formsStyle.form}>
-                                <Form.Label>{dispatch(translate("labelnewLinkText", null, "Tekst"))}</Form.Label>
-                                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                                    <Form.Control
-                                        name="text"
-                                        value={newLinkText}
-                                        onChange={(event) => setNewLinkText(event.target.value)}
-                                    />
-                                </div>
-                            </Form.Group>
-                            <Form.Group controlId="labelNewLinkUrl" className={formsStyle.form}>
-                                <Form.Label>{dispatch(translate("labelNewLinkUrl", null, "URL"))}</Form.Label>
-                                <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                                    <Form.Control
-                                        name="url"
-                                        value={newLinkUrl}
-                                        onChange={(event) => setNewLinkUrl(event.target.value)}
-                                    />
-                                </div>
-                            </Form.Group>
-                            <Button variant="primary" className={formsStyle.form} onClick={(event) => handleAddLink()}>
-                                Legg til
-                            </Button>
+                            <div className={formsStyle.flex1}>
+                                <gn-label block>
+                                    <label htmlFor="newLinkText">
+                                        {dispatch(translate("labelnewLinkText", null, "Tekst"))}
+                                    </label>
+                                </gn-label>
+                                <gn-input block fullWidth>
+                                    <input id="newLinkText" name="text" defaultValue={newLinkText} onChange={(event) => setNewLinkText(event.target.value)} />
+                                </gn-input>
+                            </div>
+                            <div className={formsStyle.flex1}>
+                                <gn-label block>
+                                    <label htmlFor="newLinkUrl">
+                                        {dispatch(translate("labelNewLinkUrl", null, "URL"))}
+                                    </label>
+                                </gn-label>
+                                <gn-input block fullWidth>
+                                    <input id="newLinkUrl" name="url" defaultValue={newLinkUrl} onChange={(event) => setNewLinkUrl(event.target.value)} />
+                                </gn-input>
+                            </div>
+                            <div>
+                                <gn-button color="primary">
+                                    <button onClick={(event) => handleAddLink()} style={{marginBottom: "10px"}}>Legg til</button>
+                                </gn-button>
+                            </div>
                         </div>
                     </React.Fragment>
                 ) : null}
@@ -518,80 +530,86 @@ const RegisterItemDetails = () => {
         );
     };
 
-    const registerItem = savedRegisterItem;
+
     if (!dataFetched) {
         return null;
     }
 
-    return registerItem ? (
+    return newRegisterItem ? (
         <React.Fragment>
-            <h1>{registerItem.contextType}</h1>
+            <div className={formsStyle.form}>
+            <heading-text>
+                <h1>{registerItemTitle?.length ? registerItemTitle : newRegisterItem?.contextType}</h1>
+            </heading-text>
 
             <ValidationErrors errors={validationErrors} />
 
-            <h2>Kontekstbeskrivelse</h2>
+            <heading-text>
+                <h2>Kontekstbeskrivelse</h2>
+            </heading-text>
 
-            <Form.Group controlId="labelContextType" className={formsStyle.form}>
-                <Form.Label>
+            <gn-label block>
+                <label htmlFor="contextType">
                     {dispatch(translate("labelContextType", null, "Konteksttype"))}
                     <ToggleHelpText resourceKey="contextTypeDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control name="contextType" value={registerItem.contextType} onChange={handleChange} />
-                    </div>
-                ) : (
-                    <div>{registerItem.contextType}</div>
-                )}
-            </Form.Group>
-
-            <Form.Group controlId="labelId" className={formsStyle.form}>
-                <Form.Label>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="contextType" name="contextType" defaultValue={newRegisterItem.contextType} onChange={(event) => {handleChange({name: "contextType", value: event.target.value}); setRegisterItemTitle(event.target.value)}} />
+                </gn-input>
+            ) : (
+                <div id="contextType">{newRegisterItem.contextType}</div>
+            )}
+            
+            <gn-label block>
+                <label htmlFor="id">
                     {dispatch(translate("labelId", null, "ID"))}
                     <ToggleHelpText resourceKey="IdDescription" />
-                </Form.Label>
-                <div>{registerItem.id}</div>
-            </Form.Group>
+                </label>
+            </gn-label>
+            <div id="id">{newRegisterItem.id}</div>
 
-            <Form.Group controlId="labelTitle" className={formsStyle.form}>
-                <Form.Label>
+            <gn-label block>
+                <label htmlFor="title">
                     {dispatch(translate("labelTitle", null, "Tittel"))}
                     <ToggleHelpText resourceKey="titleDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control name="title" value={registerItem.title} onChange={handleChange} />
-                    </div>
-                ) : (
-                    <div>{registerItem.title}</div>
-                )}
-            </Form.Group>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="title" name="title" defaultValue={newRegisterItem.title} onChange={handleChange} />
+                </gn-input>
+            ) : (
+                <div id="title">{newRegisterItem.title}</div>
+            )}
 
-            <Form.Group controlId="formName" className={formsStyle.form}>
-                <Form.Label>Status </Form.Label>
+                <gn-label block>
+                    <label htmlFor="status">Status</label>
+                </gn-label>
                 {editable ? (
-                    <div className={formsStyle.comboInput}>
-                        <SelectDropdown
-                            name="status"
-                            value={registerItem.status || 1}
-                            options={statuses}
-                            onSelect={handleChange}
-                            className={formsStyle.statusSelect}
-                        />
-                    </div>
+                    <gn-select>
+                        <select id="status" name="status" defaultValue={newRegisterItem.status || 1} onChange={handleChange}>
+                            {
+                                statuses.map(status => {
+                                    return <option key={status.value} value={status.value}>{status.label}</option>
+                                })
+                            }
+                        </select>
+                    </gn-select>
                 ) : (
-                    <span>{getStatusLabel(statuses, newRegisterItem)}</span>
+                    <div id="status">{getStatusLabel(statuses, newRegisterItem)}</div>
                 )}
-            </Form.Group>
 
-            <Form.Group controlId="labelOwner" className={formsStyle.form}>
-                <Form.Label>
-                    {dispatch(translate("labelOwner", null, "Eier"))}
-                    <ToggleHelpText resourceKey="ownerDescription" />
-                </Form.Label>
+                <gn-label block>
+                    <label htmlFor="owner">
+                        {dispatch(translate("labelOwner", null, "Eier"))}
+                        <ToggleHelpText resourceKey="ownerDescription" />
+                    </label>
+                </gn-label>
                 {editable ? (
                     <Typeahead
-                        id="basic-typeahead-single"
+                        id="owner"
                         labelKey="name"
                         onChange={handleOwnerSelect}
                         options={organizations}
@@ -600,11 +618,10 @@ const RegisterItemDetails = () => {
                         placeholder="Legg til eier..."
                     />
                 ) : (
-                    <React.Fragment>
-                        {registerItem.owner.name} ({registerItem.owner.orgNumber})
-                    </React.Fragment>
+                    <div id="owner">
+                        {newRegisterItem.owner.name} ({newRegisterItem.owner.orgNumber})
+                    </div>
                 )}
-            </Form.Group>
 
             <gb-label block>
                 <label htmlFor="description">
@@ -619,160 +636,147 @@ const RegisterItemDetails = () => {
                 <MDEditor.Markdown id="description" source={descriptionMarkdown}/>
                 )
                 }
-                    </div>
+            </div>
 
-            <Form.Group controlId="labelDialogText" className={formsStyle.form}>
-                <Form.Label>
+            <gn-label block>
+                <label htmlFor="dialogText">
                     {dispatch(translate("labelDialogText", null, "Dialogtekst"))}
                     <ToggleHelpText resourceKey="dialogTextDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control name="dialogText" value={registerItem.dialogText} onChange={handleChange} />
-                    </div>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="dialogText" name="dialogText" defaultValue={newRegisterItem.dialogText} onChange={handleChange} />
+                </gn-input>
                 ) : (
-                    <div>{registerItem.dialogText}</div>
+                    <div id="dialogText">{newRegisterItem.dialogText}</div>
                 )}
-            </Form.Group>
 
-            <Form.Group controlId="labelPossibleMeasures" className={formsStyle.form}>
-                <Form.Label>
+            <gn-label block>
+                <label htmlFor="possibleMeasures">
                     {dispatch(translate("labelPossibleMeasures", null, "Mulige tiltak"))}
                     <ToggleHelpText resourceKey="possibleMeasuresDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control
-                            as="textarea"
-                            rows={4}
-                            name="possibleMeasures"
-                            value={registerItem.possibleMeasures}
-                            onChange={handleChange}
-                        />
-                    </div>
-                ) : (
-                    <div>{registerItem.possibleMeasures}</div>
-                )}
-            </Form.Group>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-textarea block fullWidth>
+                    <textarea id="possibleMeasures" name="possibleMeasures" defaultValue={newRegisterItem.possibleMeasures} rows="4" onChange={handleChange} />
+                </gn-textarea>
+            ) : (
+                <div id="possibleMeasures">{newRegisterItem.possibleMeasures}</div>
+            )}
 
-            <Form.Group controlId="labelGuidance" className={formsStyle.form}>
-                <Form.Label>
+
+            <gn-label block>
+                <label htmlFor="guidance">
                     {dispatch(translate("labelGuidance", null, "Veiledning"))}
                     <ToggleHelpText resourceKey="guidanceDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control name="guidance" value={registerItem.guidance} onChange={handleChange} />
-                    </div>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="guidance" name="guidance" defaultValue={newRegisterItem.guidance} onChange={handleChange} />
+                </gn-input>
                 ) : (
-                    <div>{registerItem.guidance}</div>
+                    <div id="guidance">{newRegisterItem.dialogText}</div>
                 )}
-            </Form.Group>
 
-            <Form.Group controlId="labelDataSetBufferText" className={formsStyle.form}>
-                <Form.Label>
+
+            <gn-label block>
+                <label htmlFor="datasetBufferText">
                     {dispatch(translate("labelDataSetBufferText", null, "Buffertekst"))}
                     <ToggleHelpText resourceKey="dataSetBufferTextDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control
-                            name="bufferText"
-                            value={registerItem?.dataSet?.bufferText || ""}
-                            onChange={handleDatasetChange}
-                        />
-                    </div>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="datasetBufferText" name="bufferText" defaultValue={newRegisterItem?.dataset?.bufferText} onChange={handleDatasetChange} />
+                </gn-input>
                 ) : (
-                    <div>{registerItem?.dataSet?.bufferText || ""}</div>
+                    <div id="datasetBufferText">{newRegisterItem?.dataset?.bufferText}</div>
                 )}
-            </Form.Group>
 
-            <Form.Group controlId="labelBufferPossibleMeasures" className={formsStyle.form}>
-                <Form.Label>
+
+            <gn-label block>
+                <label htmlFor="datasetBufferPossibleMeasures">
                     {dispatch(translate("labelBufferPossibleMeasures", null, "Mulige tiltak buffer"))}
                     <ToggleHelpText resourceKey="bufferPossibleMeasuresDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control
-                            as="textarea"
-                            rows={4}
-                            name="bufferPossibleMeasures"
-                            value={registerItem?.dataSet?.bufferPossibleMeasures || ""}
-                            onChange={handleDatasetChange}
-                        />
-                    </div>
-                ) : (
-                    <div>{registerItem?.dataSet?.bufferPossibleMeasures || ""}</div>
-                )}
-            </Form.Group>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-textarea block fullWidth>
+                    <textarea id="datasetBufferPossibleMeasures" name="bufferPossibleMeasures" defaultValue={newRegisterItem?.dataSet?.bufferPossibleMeasures || ""} rows="4" onChange={handleDatasetChange} />
+                </gn-textarea>
+            ) : (
+                <div id="datasetBufferPossibleMeasures">{newRegisterItem?.dataSet?.bufferPossibleMeasures || ""}</div>
+            )}
 
-            <Form.Group controlId="labelDataSetBufferDistance" className={formsStyle.form}>
-                <Form.Label>
+
+            <gn-label block>
+                <label htmlFor="datasetBufferDistance">
                     {dispatch(translate("labelDataSetBufferDistance", null, "Buffer"))}
                     <ToggleHelpText resourceKey="dataSetBufferDistanceDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control
-                            name="bufferDistance"
-                            type="number"
-                            value={registerItem?.dataSet?.bufferDistance || ""}
-                            onChange={handleDatasetChange}
-                        />
-                    </div>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="datasetBufferDistance" name="bufferDistance" defaultValue={newRegisterItem?.dataSet?.bufferDistance || ""} onChange={handleDatasetChange} />
+                </gn-input>
                 ) : (
-                    <div>{registerItem?.dataSet?.bufferDistance || ""}</div>
+                    <div id="datasetBufferDistance">{newRegisterItem?.dataSet?.bufferDistance || ""}</div>
                 )}
-            </Form.Group>
 
-            <h2>Lenker</h2>
-            {renderLinks(registerItem.links)}
+            <heading-text>
+                <h2>Lenker</h2>
+            </heading-text>
+            {renderLinks(newRegisterItem.links)}
+            
+            <heading-text>
+                <h2>Kommentarer</h2>
+            </heading-text>
 
-            <h2>Kommentarer</h2>
-
-            <Form.Group controlId="labelTechnicalComment" className={formsStyle.form}>
-                <Form.Label>
+            <gn-label block>
+                <label htmlFor="technicalComment">
                     {dispatch(translate("labelTechnicalComment", null, "Teknisk kommentar"))}
                     <ToggleHelpText resourceKey="technicalCommentDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control
-                            name="technicalComment"
-                            value={registerItem.technicalComment}
-                            onChange={handleChange}
-                        />
-                    </div>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="technicalComment" name="technicalComment" defaultValue={newRegisterItem.technicalComment} onChange={handleChange} />
+                </gn-input>
                 ) : (
-                    <div>{registerItem.technicalComment}</div>
+                    <div id="technicalComment">{newRegisterItem.technicalComment}</div>
                 )}
-            </Form.Group>
 
-            <Form.Group controlId="labelOtherComment" className={formsStyle.form}>
-                <Form.Label>
+
+            <gn-label block>
+                <label htmlFor="otherComment">
                     {dispatch(translate("labelOtherComment", null, "Andre kommentarer"))}
                     <ToggleHelpText resourceKey="otherCommentDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control name="otherComment" value={registerItem.otherComment} onChange={handleChange} />
-                    </div>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="otherComment" name="otherComment" defaultValue={newRegisterItem.otherComment} onChange={handleChange} />
+                </gn-input>
                 ) : (
-                    <div>{registerItem.otherComment}</div>
+                    <div id="otherComment">{newRegisterItem.otherComment}</div>
                 )}
-            </Form.Group>
 
-            <h2>
-                Datasett
-                <ToggleHelpText resourceKey="dataSetTitleDescription" />
-            </h2>
-
-            <Form.Group controlId="labelDataSetTitle" className={formsStyle.form}>
-                <Form.Label>
-                    {dispatch(translate("labelDataSetTitle", null, "Datasett-tittel"))}
+            <heading-text>
+                <h2>
+                    Datasett
                     <ToggleHelpText resourceKey="dataSetTitleDescription" />
-                </Form.Label>
+                </h2>
+            </heading-text>
+
+                <gn-label block>
+                    <label htmlFor="datasetTitle">
+                        {dispatch(translate("labelDataSetTitle", null, "Datasett-tittel"))}
+                        <ToggleHelpText resourceKey="dataSetTitleDescription" />
+                    </label>
+                </gn-label>
                 {editable ? (
                     <AsyncTypeahead
                         id="dataset-search"
@@ -781,48 +785,40 @@ const RegisterItemDetails = () => {
                         onSearch={(query) => handleOnDatasetSearch(query)}
                         onChange={handleDatasetSelect}
                         options={datasetOptions}
-                        defaultSelected={getSelectedDatasetOption()}
+                        defaultValue={getSelectedDatasetOption()}
                         placeholder="Søk etter datasett"
                     />
                 ) : (
-                    <a href={registerItem?.dataSet?.urlMetadata || ""}>
-                        <h3>{registerItem?.dataSet?.title || ""}</h3>
+                    <a id="datasetTitle" href={newRegisterItem?.dataSet?.urlMetadata || ""}>
+                        <h3>{newRegisterItem?.dataSet?.title || ""}</h3>
                     </a>
                 )}
-            </Form.Group>
 
-            <Form.Group controlId="labelDataSetUrlMetadata" className={formsStyle.form}>
+
+            <gn-label block>
+                <label htmlFor="datasetUrlMetadata">
+                    {dispatch(translate("labelDataSetUrlMetadata", null, "Datasett-meta-url"))}
+                    <ToggleHelpText resourceKey="dataSetUrlMetadataDescription" />
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="datasetUrlMetadata" name="urlMetadata" defaultValue={newRegisterItem?.dataSet?.urlMetadata || ""} onChange={handleDatasetChange} />
+                </gn-input>
+                ) : null
+                }
+          
+
+                <gn-label block>
+                    <label htmlFor="datasetTypeReferenceType">
+                        {dispatch(translate("labelDataSetTypeReferenceType", null, "Objekttype"))}
+                        <ToggleHelpText resourceKey="dataSetTypeReferenceTypeDescription" />
+                    </label>
+                </gn-label>
                 {editable ? (
                     <React.Fragment>
-                        <Form.Label>
-                            {dispatch(translate("labelDataSetUrlMetadata", null, "Datasett-meta-url"))}
-                            <ToggleHelpText resourceKey="dataSetUrlMetadataDescription" />
-                        </Form.Label>
-                        <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                            <Form.Control
-                                name="urlMetadata"
-                                value={registerItem?.dataSet?.urlMetadata || ""}
-                                onChange={handleDatasetChange}
-                            />
-                        </div>
-                    </React.Fragment>
-                ) : null}
-            </Form.Group>
-
-            <Form.Group controlId="labelDataSetTypeReferenceType" className={formsStyle.form}>
-                <Form.Label>
-                    {dispatch(translate("labelDataSetTypeReferenceType", null, "Objekttype"))}
-                    <ToggleHelpText resourceKey="dataSetTypeReferenceTypeDescription" />
-                </Form.Label>
-                {editable ? (
-                    <React.Fragment>
-                        <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                            <Form.Control
-                                name="type"
-                                as="select"
-                                value={registerItem?.dataSet?.typeReference?.type || ""}
-                                onChange={handleDatasetTypeReferenceChange}
-                            >
+                        <gn-select block fullWidth>
+                            <select id="datasetTypeReferenceType" name="type" defaultValue={newRegisterItem?.dataSet?.typeReference?.type || ""} onChange={handleDatasetTypeReferenceChange}>
                                 {objectTypeOptions.map((objectTypeOption) => {
                                     return (
                                         <option key={objectTypeOption.id} value={objectTypeOption.label}>
@@ -830,273 +826,246 @@ const RegisterItemDetails = () => {
                                         </option>
                                     );
                                 })}
-                            </Form.Control>
-                        </div>
-                        {registerItem?.dataSet?.typeReference?.type ? (
+                            </select>
+                        </gn-select>
+                        {newRegisterItem?.dataSet?.typeReference?.type ? (
                             <a
                                 target="_blank"
                                 rel="noreferrer"
                                 href={`https://objektkatalog.geonorge.no/Objekttype/Index/${selectedObjectTypeId}`}
                             >
                                 Gå til objektkatalogen for å finne attributt og kodeverdi til{" "}
-                                {registerItem.dataSet?.typeReference?.type}
+                                {newRegisterItem.dataSet?.typeReference?.type}
                             </a>
-                        ) : (
-                            ""
-                        )}
+                        ) : null
+                        }
                     </React.Fragment>
                 ) : (
                     <div>
-                        <a href={`https://objektkatalog.geonorge.no/Objekttype/Index/${selectedObjectTypeId}`}>
-                            {registerItem.dataSet?.typeReference?.type}
+                        <a id="datasetTypeReferenceType" href={`https://objektkatalog.geonorge.no/Objekttype/Index/${selectedObjectTypeId}`}>
+                            {newRegisterItem.dataSet?.typeReference?.type}
                         </a>
                     </div>
                 )}
-            </Form.Group>
 
-            <Form.Group controlId="labelDataSetTypeReferenceAttribute" className={formsStyle.form}>
-                <Form.Label>
+            
+            <gn-label block>
+                <label htmlFor="datasetTypeReferenceAttribute">
                     {dispatch(translate("labelDataSetTypeReferenceAttribute", null, "Attributt"))}
                     <ToggleHelpText resourceKey="dataSetTypeReferenceAttributeDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control
-                            name="attribute"
-                            value={registerItem?.dataSet?.typeReference?.attribute || ""}
-                            onChange={handleDatasetTypeReferenceChange}
-                        />
-                    </div>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="datasetTypeReferenceAttribute" name="attribute" defaultValue={newRegisterItem?.dataSet?.typeReference?.attribute || ""} onChange={handleDatasetTypeReferenceChange} />
+                </gn-input>
                 ) : (
-                    <div>{registerItem?.dataSet?.typeReference?.attribute || ""}</div>
+                    <div id="datasetTypeReferenceAttribute">{newRegisterItem?.dataSet?.typeReference?.attribute || ""}</div>
                 )}
-            </Form.Group>
 
-            <Form.Group controlId="labelDataSetTypeReferenceCodeValue" className={formsStyle.form}>
-                <Form.Label>
+
+            <gn-label block>
+                <label htmlFor="datasetTypeReferenceCodeValue">
                     {dispatch(translate("labelDataSetTypeReferenceCodeValue", null, "Kodeverdi"))}
                     <ToggleHelpText resourceKey="dataSetTypeReferenceCodeValueDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control
-                            name="codeValue"
-                            value={registerItem?.dataSet?.typeReference?.codeValue || ""}
-                            onChange={handleDatasetTypeReferenceChange}
-                        />
-                    </div>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="datasetTypeReferenceCodeValue" name="codeValue" defaultValue={newRegisterItem?.dataSet?.typeReference?.codeValue || ""} onChange={handleDatasetTypeReferenceChange} />
+                </gn-input>
                 ) : (
-                    <div>{registerItem?.dataSet?.typeReference?.codeValue || ""}</div>
+                    <div id="datasetTypeReferenceCodeValue">{newRegisterItem?.dataSet?.typeReference?.codeValue || ""}</div>
                 )}
-            </Form.Group>
+            
 
-            <Form.Group controlId="labelDataSetNamespace" className={formsStyle.form}>
-                <Form.Label>
+            <gn-label block>
+                <label htmlFor="datasetNamespace">
                     {dispatch(translate("labelDataSetNamespace", null, "Navnerom (skjemaplassering)"))}
                     <ToggleHelpText resourceKey="dataSetNamespaceDescription" />
-                </Form.Label>
-                {editable ? (
-                    <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                        <Form.Control
-                            name="namespace"
-                            value={registerItem?.dataSet?.namespace || ""}
-                            onChange={handleDatasetChange}
-                        />
-                    </div>
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="datasetNamespace" name="namespace" defaultValue={newRegisterItem?.dataSet?.namespace || ""} onChange={handleDatasetChange} />
+                </gn-input>
                 ) : (
-                    <div>{registerItem?.dataSet?.namespace || ""}</div>
+                    <div id="datasetNamespace">{newRegisterItem?.dataSet?.namespace || ""}</div>
                 )}
-            </Form.Group>
-
-            <Form.Group controlId="labelDataSetUrlGmlSchema" className={formsStyle.form}>
-                {editable ? (
-                    <React.Fragment>
-                        <Form.Label>
-                            {dispatch(translate("labelDataSetUrlGmlSchema", null, "Lenke til GML-skjemaet"))}
-                            <ToggleHelpText resourceKey="dataSetUrlGmlSchemaDescription" />
-                        </Form.Label>
-                        <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                            <Form.Control
-                                name="urlGmlSchema"
-                                value={registerItem?.dataSet?.urlGmlSchema || ""}
-                                onChange={handleDatasetChange}
-                            />
-                        </div>
-                    </React.Fragment>
-                ) : registerItem?.dataSet?.urlGmlSchema?.length ? (
+            
+            <gn-label block>
+                <label htmlFor="datasetUrlGmlSchema">
+                    {dispatch(translate("labelDataSetUrlGmlSchema", null, "Lenke til GML-skjemaet"))}
+                    <ToggleHelpText resourceKey="dataSetUrlGmlSchemaDescription" />
+                </label>
+            </gn-label>
+            {editable ? (
+                <gn-input block fullWidth>
+                    <input id="datasetUrlGmlSchema" name="urlGmlSchema" defaultValue={newRegisterItem?.dataSet?.urlGmlSchema || ""} onChange={handleDatasetChange} />
+                </gn-input>
+                ) : newRegisterItem?.dataSet?.urlGmlSchema?.length ? (
                     <div>
-                        <a href={registerItem.dataSet.urlGmlSchema}>Lenke til GML-skjema</a>
+                        <a id="datasetUrlGmlSchema" href={newRegisterItem.dataSet.urlGmlSchema}>Lenke til GML-skjema</a>
                     </div>
                 ) : (
-                    ""
+                    <div id="datasetUrlGmlSchema">{newRegisterItem?.dataSet?.urlGmlSchema || ""}</div>
                 )}
-            </Form.Group>
 
-            <h2>Referanser</h2>
+
+            <heading-text>
+                <h2>Referanser</h2>
+            </heading-text>
 
             {editable ? (
                 <div className={formsStyle.flex}>
-                    <Form.Group controlId="labelReferenceTek17Text" className={formsStyle.form}>
-                        <Form.Label>
-                            {dispatch(translate("referenceTek17TextDescription", null, "ref-tek-17-tittel"))}
-                            <ToggleHelpText resourceKey="referenceTek17TextDescription" />
-                        </Form.Label>
-                        <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                            <Form.Control
-                                name="text"
-                                value={registerItem?.reference?.tek17?.text || ""}
-                                onChange={handleChangeReferenceTek17}
-                            />
-                        </div>
-                    </Form.Group>
-                    <Form.Group controlId="labelReferenceTek17Url" className={formsStyle.form}>
-                        <Form.Label>
-                            {dispatch(translate("labelReferenceTek17Url", null, "ref-tek-17-url"))}
-                            <ToggleHelpText resourceKey="referenceTek17UrlDescription" />
-                        </Form.Label>
-                        <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                            <Form.Control
-                                name="url"
-                                value={registerItem?.reference?.tek17?.url || ""}
-                                onChange={handleChangeReferenceTek17}
-                            />
-                        </div>
-                    </Form.Group>
+                    <div className={formsStyle.flex1}>
+                        <gn-label block>
+                            <label htmlFor="referenceTek17Text">
+                                {dispatch(translate("referenceTek17TextDescription", null, "ref-tek-17-tittel"))}
+                                <ToggleHelpText resourceKey="referenceTek17TextDescription" />
+                            </label>
+                        </gn-label>
+                        <gn-input block fullWidth>
+                            <input id="referenceTek17Text" name="text" defaultValue={newRegisterItem?.reference?.tek17?.text || ""} onChange={handleChangeReferenceTek17} />
+                        </gn-input>
+                    </div>
+                    <div className={formsStyle.flex1}>
+                        <gn-label block>
+                            <label htmlFor="referenceTek17Url">
+                                {dispatch(translate("labelReferenceTek17Url", null, "ref-tek-17-url"))}
+                                <ToggleHelpText resourceKey="referenceTek17UrlDescription" />
+                            </label>
+                        </gn-label>
+                        <gn-input block fullWidth>
+                            <input id="referenceTek17Url" name="url" defaultValue={newRegisterItem?.reference?.tek17?.url || ""} onChange={handleChangeReferenceTek17} />
+                        </gn-input>
+                    </div>
                 </div>
             ) : (
                 <div>
-                    <a href={registerItem?.reference?.tek17?.url || ""}>{registerItem?.reference?.tek17?.text || ""}</a>
+                    <a href={newRegisterItem?.reference?.tek17?.url || ""}>{newRegisterItem?.reference?.tek17?.text || ""}</a>
                 </div>
             )}
 
             {editable ? (
                 <div className={formsStyle.flex}>
-                    <Form.Group controlId="labelReferenceOtherLawText" className={formsStyle.form}>
-                        <Form.Label>
-                            {dispatch(translate("labelReferenceOtherLawText", null, "ref-annen lov/forskrift"))}
-                            <ToggleHelpText resourceKey="referenceOtherLawTextDescription" />
-                        </Form.Label>
-                        <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                            <Form.Control
-                                name="text"
-                                value={registerItem?.reference?.otherLaw?.text || ""}
-                                onChange={handleChangeReferenceOtherLaw}
-                            />
-                        </div>
-                    </Form.Group>
-                    <Form.Group controlId="labelReferenceOtherLawUrl" className={formsStyle.form}>
-                        <Form.Label>
-                            {dispatch(translate("labelReferenceOtherLawUrl", null, "ref-annen lov/forskrift-url"))}
-                            <ToggleHelpText resourceKey="referenceOtherLawUrlDescription" />
-                        </Form.Label>
-                        <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                            <Form.Control
-                                name="url"
-                                value={registerItem?.reference?.otherLaw?.url || ""}
-                                onChange={handleChangeReferenceOtherLaw}
-                            />
-                        </div>
-                    </Form.Group>
+                    <div className={formsStyle.flex1}>
+                        <gn-label block>
+                            <label htmlFor="referenceOtherLawText">
+                                {dispatch(translate("labelReferenceOtherLawText", null, "ref-annen lov/forskrift"))}
+                                <ToggleHelpText resourceKey="referenceOtherLawTextDescription" />
+                            </label>
+                        </gn-label>
+                        <gn-input block fullWidth>
+                            <input id="referenceOtherLawText" name="text" defaultValue={newRegisterItem?.reference?.otherLaw?.text || ""} onChange={handleChangeReferenceOtherLaw} />
+                        </gn-input>
+                    </div>
+                    <div className={formsStyle.flex1}>
+                        <gn-label block>
+                            <label htmlFor="referenceOtherLawUrl">
+                                {dispatch(translate("labelReferenceOtherLawUrl", null, "ref-annen lov/forskrift-url"))}
+                                <ToggleHelpText resourceKey="referenceOtherLawUrlDescription" />
+                            </label>
+                        </gn-label>
+                        <gn-input block fullWidth>
+                            <input id="referenceOtherLawUrl" name="url" defaultValue={newRegisterItem?.reference?.otherLaw?.url || ""} onChange={handleChangeReferenceOtherLaw} />
+                        </gn-input>
+                    </div>
                 </div>
             ) : (
                 <div>
-                    <a href={registerItem?.reference?.otherLaw?.url || ""}>
-                        {registerItem?.reference?.otherLaw?.text || ""}
+                    <a href={newRegisterItem?.reference?.otherLaw?.url || ""}>
+                        {newRegisterItem?.reference?.otherLaw?.text || ""}
                     </a>
                 </div>
             )}
 
             {editable ? (
                 <div className={formsStyle.flex}>
-                    <Form.Group controlId="labelReferenceCircularFromMinistryText" className={formsStyle.form}>
-                        <Form.Label>
-                            {dispatch(
-                                translate("labelReferenceCircularFromMinistryText", null, "ref-rundskriv fra dep")
-                            )}
-                            <ToggleHelpText resourceKey="referenceCircularFromMinistryTextDescription" />
-                        </Form.Label>
-                        <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                            <Form.Control
-                                name="text"
-                                value={registerItem?.reference?.circularFromMinistry?.text || ""}
-                                onChange={handleChangeReferenceCircularFromMinistry}
-                            />
-                        </div>
-                    </Form.Group>
-                    <Form.Group controlId="labelReferenceCircularFromMinistryUrl" className={formsStyle.form}>
-                        <Form.Label>
-                            {dispatch(
-                                translate("labelReferenceCircularFromMinistryUrl", null, "ref-rundskriv fra dep-url")
-                            )}
-                            <ToggleHelpText resourceKey="referenceCircularFromMinistryUrlDescription" />
-                        </Form.Label>
-                        <div className={`${formsStyle.comboInput} ${formsStyle.fullWidth}`}>
-                            <Form.Control
-                                name="url"
-                                value={registerItem?.reference?.circularFromMinistry?.url || ""}
-                                onChange={handleChangeReferenceCircularFromMinistry}
-                            />
-                        </div>
-                    </Form.Group>
+                    <div className={formsStyle.flex1}>
+                        <gn-label block>
+                            <label htmlFor="referenceCircularFromMinistryText">
+                                {dispatch(
+                                    translate("labelReferenceCircularFromMinistryText", null, "ref-rundskriv fra dep")
+                                )}
+                                <ToggleHelpText resourceKey="referenceCircularFromMinistryTextDescription" />
+                            </label>
+                        </gn-label>
+                        <gn-input block fullWidth>
+                            <input id="referenceCircularFromMinistryText" name="text" defaultValue={newRegisterItem?.reference?.circularFromMinistry?.text || ""} onChange={handleChangeReferenceCircularFromMinistry} />
+                        </gn-input>
+                    </div>
+                    <div className={formsStyle.flex1}>
+                        <gn-label block>
+                            <label htmlFor="referenceCircularFromMinistryUrl">
+                                {dispatch(
+                                    translate("labelReferenceCircularFromMinistryUrl", null, "ref-rundskriv fra dep-url")
+                                )}
+                                <ToggleHelpText resourceKey="referenceCircularFromMinistryUrlDescription" />
+                            </label>
+                        </gn-label>
+                        <gn-input block fullWidth>
+                            <input id="referenceCircularFromMinistryUrl" name="url" defaultValue={newRegisterItem?.reference?.circularFromMinistry?.url || ""} onChange={handleChangeReferenceCircularFromMinistry} />
+                        </gn-input>
+                    </div>
                 </div>
             ) : (
                 <div>
-                    <a href={registerItem?.reference?.circularFromMinistry?.url || ""}>
-                        {registerItem?.reference?.circularFromMinistry?.text || ""}
+                    <a href={newRegisterItem?.reference?.circularFromMinistry?.url || ""}>
+                        {newRegisterItem?.reference?.circularFromMinistry?.text || ""}
                     </a>
                 </div>
             )}
-
+            
+            
             <div className={formsStyle.btngroup}>
                 {editable ? (
                     <div>
                         {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
                             <React.Fragment>
-                                <Button
-                                    className="mr-2"
-                                    variant="secondary"
-                                    onClick={() => {
+                                <gn-button color="default">
+                                    <button onClick={() => {
                                         setEditable(false);
-                                    }}
-                                >
-                                    Avslutt redigering
-                                </Button>
-                                <Button
-                                    variant="primary"
-                                    disabled={!newRegisterItem?.contextType?.length || !newRegisterItem?.title?.length}
-                                    onClick={saveRegisterItem}
-                                >
-                                    Lagre
-                                </Button>
+                                    }}>
+                                        Avslutt redigering
+                                    </button>
+                                </gn-button>
+                                <gn-button color="primary">
+                                    <button disabled={!newRegisterItem?.contextType?.length || !newRegisterItem?.title?.length} onClick={saveRegisterItem}>
+                                        Lagre
+                                    </button>
+                                </gn-button>
                             </React.Fragment>
                         ) : null}
                     </div>
                 ) : (
                     <div>
                         {canDeleteRegisterItem(authInfo) ? (
-                            <Button className="mr-2" variant="secondary" onClick={openModal}>
-                                Slett konteksttype
-                            </Button>
+                            <gn-button color="default">
+                                <button onClick={openModal}>
+                                    Slett konteksttype
+                                </button>
+                            </gn-button>
                         ) : null}
                         {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
-                            <Button className="mr-2" variant="secondary" onClick={cloneRegister}>
-                                Dupliser konteksttype
-                            </Button>
+                            <gn-button color="default">
+                                <button onClick={cloneRegister}>Dupliser konteksttype</button>
+                            </gn-button>
                         ) : null}
                         {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
-                            <Button
-                                variant="primary"
-                                onClick={() => {
+                            <gn-button color="primary">
+                                <button onClick={() => {
                                     setEditable(true);
-                                }}
-                            >
-                                Rediger konteksttype
-                            </Button>
+                                }}>
+                                    Rediger konteksttype
+                                </button>
+                            </gn-button>
                         ) : null}
                     </div>
                 )}
             </div>
-
+            </div>   
+                            
             <Modal
                 show={modalOpen}
                 onHide={closeModal}
@@ -1113,18 +1082,17 @@ const RegisterItemDetails = () => {
                     <p>Er du sikker på at du vil slette {newRegisterItem.name}?</p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={closeModal}>
-                        {dispatch(translate("btnCancel", null, "Avbryt"))}{" "}
-                    </Button>
-                    <Button variant="danger" onClick={handleDelete}>
-                        {dispatch(translate("btnDelete", null, "Slett"))}{" "}
-                    </Button>
+                    <gn-button color="default">
+                        <button onClick={closeModal}>{dispatch(translate("btnCancel", null, "Avbryt"))}{" "}</button>
+                    </gn-button>
+                    <gn-button color="danger">
+                        <button onClick={handleDelete}>{dispatch(translate("btnDelete", null, "Slett"))}{" "}</button>
+                    </gn-button>
                 </Modal.Footer>
             </Modal>
+                        
         </React.Fragment>
-    ) : (
-        ""
-    );
+    ) : null;
 };
 
 export default RegisterItemDetails;
