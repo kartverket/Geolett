@@ -3,6 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+// Geonorge WebComponents
+// eslint-disable-next-line no-unused-vars
+import { BreadcrumbList } from "@kartverket/geonorge-web-components";
+
 // Components
 import Container from "components/template/Container";
 import CreateRegisterItem from "components/partials/CreateRegisterItem";
@@ -217,8 +221,21 @@ const RegisterItems = () => {
         return "";
     }
     const registerItems = newRegisterItems || savedRegisterItems;
+
+    const breadcrumbs = [
+        {
+            name: "Registrene",
+            url: config?.registerUrl || ""
+        },
+        {
+            name: "Geolett",
+            url: "/geolett"
+        }
+    ];
+
     return (
         <Container>
+            <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
             <h1>Konteksttyper</h1>
             <CreateRegisterItem newRegisterItem />
             {renderRegisterItems(registerItems)}

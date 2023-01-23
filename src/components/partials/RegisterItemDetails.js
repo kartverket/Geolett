@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useCallback, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toastr } from "react-redux-toastr";
 import Modal from "react-bootstrap/Modal";
@@ -8,8 +8,17 @@ import { useNavigate } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
 
 // Geonorge WebComponents
-// eslint-disable-next-line no-unused-vars
-import { GnButton, GnInput, GnLabel, GnSelect, GnTextarea, HeadingText } from "@kartverket/geonorge-web-components";
+/* eslint-disable */
+import {
+    BreadcrumbList,
+    GnButton,
+    GnInput,
+    GnLabel,
+    GnSelect,
+    GnTextarea,
+    HeadingText
+} from "@kartverket/geonorge-web-components";
+/* eslint-enable */
 
 // Components
 import ValidationErrors from "components/partials/ValidationErrors";
@@ -33,12 +42,14 @@ const AsyncTypeahead = withAsync(Typeahead);
 const RegisterItemDetails = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const params = useParams();
 
     // Redux store
     const savedRegisterItem = useSelector((state) => state.selectedRegisterItem);
     const statuses = useSelector((state) => state.options.statuses);
     const authToken = useSelector((state) => state.authToken);
     const authInfo = useSelector((state) => state.authInfo);
+    const config = useSelector((state) => state.config);
     const organizations = useSelector((state) =>
         state.organizations.map((organization) => {
             return {
@@ -510,7 +521,7 @@ const RegisterItemDetails = () => {
             <div>
                 {linkListElements?.length ? linkListElements : "Ingen lenker er lagt til"}
                 {editable ? (
-                    <React.Fragment>
+                    <Fragment>
                         <heading-text>
                             <h3>Legg til ny lenke</h3>
                         </heading-text>
@@ -553,7 +564,7 @@ const RegisterItemDetails = () => {
                                 </gn-button>
                             </div>
                         </div>
-                    </React.Fragment>
+                    </Fragment>
                 ) : null}
             </div>
         );
@@ -563,11 +574,29 @@ const RegisterItemDetails = () => {
         return null;
     }
 
-    return newRegisterItem ? (
-        <React.Fragment>
-            <div className={formsStyle.form}>
-                <heading-text>
-                    <h1>{registerItemTitle?.length ? registerItemTitle : newRegisterItem?.contextType}</h1>
+    const breadcrumbs = [
+        {
+            name: "Registrene",
+            url: config?.registerUrl || ""
+        },
+        {
+            name: "Geolett",
+            url: "/geolett"
+        },
+        {
+            name: newRegisterItem.title,
+            url: params?.registerItemId && `/geolett/${params?.registerItemId}/`
+        }
+    ];
+
+    return (
+        <Fragment>
+            <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
+            {newRegisterItem ? (
+                <Fragment>
+                    <div className={formsStyle.form}>
+                        <heading-text>
+                            <h1>{registerItemTitle?.length ? registerItemTitle : newRegisterItem?.contextType}</h1>
                 </heading-text>
 
                 <ValidationErrors errors={validationErrors} />
@@ -611,13 +640,18 @@ const RegisterItemDetails = () => {
                         {dispatch(translate("labelTitle", null, "Tittel"))}
                         <ToggleHelpText resourceKey="titleDescription" />
                     </label>
-                </gn-label>
-                {editable ? (
-                    <gn-input block fullWidth>
-                        <input id="title" name="title" defaultValue={newRegisterItem.title} onChange={handleChange} />
-                    </gn-input>
-                ) : (
-                    <div id="title">{newRegisterItem.title}</div>
+                        </gn-label>
+                        {editable ? (
+                            <gn-input block fullWidth>
+                                <input
+                                    id="title"
+                                    name="title"
+                                    defaultValue={newRegisterItem.title}
+                                    onChange={handleChange}
+                                />
+                            </gn-input>
+                        ) : (
+                            <div id="title">{newRegisterItem.title}</div>
                 )}
 
                 <gn-label block>
@@ -906,13 +940,13 @@ const RegisterItemDetails = () => {
                     <label htmlFor="datasetTypeReferenceType">
                         {dispatch(translate("labelDataSetTypeReferenceType", null, "Objekttype"))}
                         <ToggleHelpText resourceKey="dataSetTypeReferenceTypeDescription" />
-                    </label>
-                </gn-label>
-                {editable ? (
-                    <React.Fragment>
-                        <gn-select block fullWidth>
-                            <select
-                                id="datasetTypeReferenceType"
+                            </label>
+                        </gn-label>
+                        {editable ? (
+                            <Fragment>
+                                <gn-select block fullWidth>
+                                    <select
+                                        id="datasetTypeReferenceType"
                                 name="type"
                                 defaultValue={newRegisterItem?.dataSet?.typeReference?.type || ""}
                                 onChange={handleDatasetTypeReferenceChange}
@@ -933,13 +967,13 @@ const RegisterItemDetails = () => {
                                 href={`https://objektkatalog.geonorge.no/Objekttype/Index/${selectedObjectTypeId}`}
                             >
                                 Gå til objektkatalogen for å finne attributt og kodeverdi til{" "}
-                                {newRegisterItem.dataSet?.typeReference?.type}
-                            </a>
-                        ) : null}
-                    </React.Fragment>
-                ) : (
-                    <div>
-                        <a
+                                        {newRegisterItem.dataSet?.typeReference?.type}
+                                    </a>
+                                ) : null}
+                            </Fragment>
+                        ) : (
+                            <div>
+                                <a
                             id="datasetTypeReferenceType"
                             href={`https://objektkatalog.geonorge.no/Objekttype/Index/${selectedObjectTypeId}`}
                         >
@@ -1040,13 +1074,15 @@ const RegisterItemDetails = () => {
 
                 {editable ? (
                     <div className={formsStyle.flex}>
-                        <div className={formsStyle.flex1}>
-                            <gn-label block>
-                                <label htmlFor="referenceTek17Text">
-                                    {dispatch(translate("referenceTek17TextDescription", null, "ref-tek-17-tittel"))}
-                                    <ToggleHelpText resourceKey="referenceTek17TextDescription" />
-                                </label>
-                            </gn-label>
+                                <div className={formsStyle.flex1}>
+                                    <gn-label block>
+                                        <label htmlFor="referenceTek17Text">
+                                            {dispatch(
+                                                translate("referenceTek17TextDescription", null, "ref-tek-17-tittel")
+                                            )}
+                                            <ToggleHelpText resourceKey="referenceTek17TextDescription" />
+                                        </label>
+                                    </gn-label>
                             <gn-input block fullWidth>
                                 <input
                                     id="referenceTek17Text"
@@ -1083,13 +1119,15 @@ const RegisterItemDetails = () => {
 
                 {editable ? (
                     <div className={formsStyle.flex}>
-                        <div className={formsStyle.flex1}>
-                            <gn-label block>
-                                <label htmlFor="referenceOtherLawText">
-                                    {dispatch(translate("labelReferenceOtherLawText", null, "ref-annen lov/forskrift"))}
-                                    <ToggleHelpText resourceKey="referenceOtherLawTextDescription" />
-                                </label>
-                            </gn-label>
+                                <div className={formsStyle.flex1}>
+                                    <gn-label block>
+                                        <label htmlFor="referenceOtherLawText">
+                                            {dispatch(
+                                                translate("labelReferenceOtherLawText", null, "ref-annen lov/forskrift")
+                                            )}
+                                            <ToggleHelpText resourceKey="referenceOtherLawTextDescription" />
+                                        </label>
+                                    </gn-label>
                             <gn-input block fullWidth>
                                 <input
                                     id="referenceOtherLawText"
@@ -1100,13 +1138,17 @@ const RegisterItemDetails = () => {
                             </gn-input>
                         </div>
                         <div className={formsStyle.flex1}>
-                            <gn-label block>
-                                <label htmlFor="referenceOtherLawUrl">
-                                    {dispatch(
-                                        translate("labelReferenceOtherLawUrl", null, "ref-annen lov/forskrift-url")
-                                    )}
-                                    <ToggleHelpText resourceKey="referenceOtherLawUrlDescription" />
-                                </label>
+                                    <gn-label block>
+                                        <label htmlFor="referenceOtherLawUrl">
+                                            {dispatch(
+                                                translate(
+                                                    "labelReferenceOtherLawUrl",
+                                                    null,
+                                                    "ref-annen lov/forskrift-url"
+                                                )
+                                            )}
+                                            <ToggleHelpText resourceKey="referenceOtherLawUrlDescription" />
+                                        </label>
                             </gn-label>
                             <gn-input block fullWidth>
                                 <input
@@ -1182,33 +1224,34 @@ const RegisterItemDetails = () => {
                 )}
 
                 <div className={formsStyle.btngroup}>
-                    {editable ? (
-                        <div>
-                            {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
-                                <React.Fragment>
-                                    <gn-button color="default">
-                                        <button
-                                            onClick={() => {
+                            {editable ? (
+                                <div>
+                                    {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
+                                        <Fragment>
+                                            <gn-button color="default">
+                                                <button
+                                                    onClick={() => {
                                                 setEditable(false);
                                             }}
                                         >
                                             Avslutt redigering
                                         </button>
                                     </gn-button>
-                                    <gn-button color="primary">
-                                        <button
-                                            disabled={
-                                                !newRegisterItem?.contextType?.length || !newRegisterItem?.title?.length
-                                            }
-                                            onClick={saveRegisterItem}
-                                        >
-                                            Lagre
-                                        </button>
-                                    </gn-button>
-                                </React.Fragment>
-                            ) : null}
-                        </div>
-                    ) : (
+                                            <gn-button color="primary">
+                                                <button
+                                                    disabled={
+                                                        !newRegisterItem?.contextType?.length ||
+                                                        !newRegisterItem?.title?.length
+                                                    }
+                                                    onClick={saveRegisterItem}
+                                                >
+                                                    Lagre
+                                                </button>
+                                            </gn-button>
+                                        </Fragment>
+                                    ) : null}
+                                </div>
+                            ) : (
                         <div>
                             {canDeleteRegisterItem(authInfo) ? (
                                 <gn-button color="default">
@@ -1250,18 +1293,24 @@ const RegisterItemDetails = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <p>Er du sikker på at du vil slette {newRegisterItem.name}?</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <gn-button color="default">
-                        <button onClick={closeModal}>{dispatch(translate("btnCancel", null, "Avbryt"))} </button>
-                    </gn-button>
-                    <gn-button color="danger">
-                        <button onClick={handleDelete}>{dispatch(translate("btnDelete", null, "Slett"))} </button>
-                    </gn-button>
-                </Modal.Footer>
-            </Modal>
-        </React.Fragment>
-    ) : null;
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <gn-button color="default">
+                                <button onClick={closeModal}>
+                                    {dispatch(translate("btnCancel", null, "Avbryt"))}{" "}
+                                </button>
+                            </gn-button>
+                            <gn-button color="danger">
+                                <button onClick={handleDelete}>
+                                    {dispatch(translate("btnDelete", null, "Slett"))}{" "}
+                                </button>
+                            </gn-button>
+                        </Modal.Footer>
+                    </Modal>
+                </Fragment>
+            ) : null}
+        </Fragment>
+    );
 };
 
 export default RegisterItemDetails;
