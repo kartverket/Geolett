@@ -9,7 +9,7 @@ import MDEditor from "@uiw/react-md-editor";
 
 // Geonorge WebComponents
 // eslint-disable-next-line no-unused-vars
-import {GnButton, GnInput, GnLabel, GnSelect, GnTextarea, HeadingText } from '@kartverket/geonorge-web-components';
+import { GnButton, GnInput, GnLabel, GnSelect, GnTextarea, HeadingText } from "@kartverket/geonorge-web-components";
 
 // Components
 import ValidationErrors from "components/partials/ValidationErrors";
@@ -64,8 +64,8 @@ const RegisterItemDetails = () => {
     const [datasetOptions, setDatasetOptions] = useState([]);
     const [objectTypeOptions, setObjectTypeOptions] = useState([]);
 
-    const [descriptionMarkdown, setDescriptionMarkdown] = useState(savedRegisterItem?.description || '');
-    const [registerItemTitle, setRegisterItemTitle] = useState(savedRegisterItem?.contextType || '');
+    const [descriptionMarkdown, setDescriptionMarkdown] = useState(savedRegisterItem?.description || "");
+    const [registerItemTitle, setRegisterItemTitle] = useState(savedRegisterItem?.contextType || "");
 
     const handleChange = (data) => {
         const registerItem = savedRegisterItem;
@@ -320,23 +320,28 @@ const RegisterItemDetails = () => {
                     attribute: "",
                     codeValue: ""
                 }
-            }
+            };
             setNewRegisterItem(registerItem);
         }
     };
 
     const getObjectTypeOptionsFromObjectTypeinfo = (objectTypeInfo) => {
-        return objectTypeInfo?.result?.SearchRecords?.length ? objectTypeInfo.result.SearchRecords.filter(searchRecord => {
-            return (searchRecord.status === "Gyldig" || searchRecord.status === "Foreslått" || searchRecord.status === "Utkast") && searchRecord.stereotype === "objekttype";
-        }).map(searchRecord => {
-            return {
-                id: searchRecord.id,  // Use display link to find attribute and code value ex: https://objektkatalog.geonorge.no/Objekttype/Index/EAID_0108C6D9_3D9C_47ba_AD4B_673A6E3327AE
-                label: searchRecord.name
-            };
-        }) : null;
-    }
-
-    
+        return objectTypeInfo?.result?.SearchRecords?.length
+            ? objectTypeInfo.result.SearchRecords.filter((searchRecord) => {
+                  return (
+                      (searchRecord.status === "Gyldig" ||
+                          searchRecord.status === "Foreslått" ||
+                          searchRecord.status === "Utkast") &&
+                      searchRecord.stereotype === "objekttype"
+                  );
+              }).map((searchRecord) => {
+                  return {
+                      id: searchRecord.id, // Use display link to find attribute and code value ex: https://objektkatalog.geonorge.no/Objekttype/Index/EAID_0108C6D9_3D9C_47ba_AD4B_673A6E3327AE
+                      label: searchRecord.name
+                  };
+              })
+            : null;
+    };
 
     const getRegisterInfo = (url) => {
         url = url + ".json";
@@ -446,41 +451,53 @@ const RegisterItemDetails = () => {
                       const link = linkItem.link;
                       return editable ? (
                           <div key={linkIndex} className={formsStyle.flex}>
-                            <div className={formsStyle.flex1}>
-                                <gn-label block>
-                                    <label htmlFor={`linkText-${linkIndex}`}>
-                                        {dispatch(translate("labelLinkText", null, "Text"))}
-                                        <ToggleHelpText resourceKey="linkTextDescription" />
-                                    </label>
-                                </gn-label>
-                                <gn-input block fullWidth>
-                                    <input id={`linkText-${linkIndex}`} name="text" defaultValue={link.text} data-link-index={linkIndex} onChange={handleChangeLink} />
-                                </gn-input>
-                            </div>
+                              <div className={formsStyle.flex1}>
+                                  <gn-label block>
+                                      <label htmlFor={`linkText-${linkIndex}`}>
+                                          {dispatch(translate("labelLinkText", null, "Text"))}
+                                          <ToggleHelpText resourceKey="linkTextDescription" />
+                                      </label>
+                                  </gn-label>
+                                  <gn-input block fullWidth>
+                                      <input
+                                          id={`linkText-${linkIndex}`}
+                                          name="text"
+                                          defaultValue={link.text}
+                                          data-link-index={linkIndex}
+                                          onChange={handleChangeLink}
+                                      />
+                                  </gn-input>
+                              </div>
 
-                            <div className={formsStyle.flex1}>
-                                <gn-label block>
-                                    <label htmlFor={`linkUrl-${linkIndex}`}>
-                                        {dispatch(translate("labelLinkUrl", null, "URL"))}
-                                        <ToggleHelpText resourceKey="linkUrlDescription" />
-                                    </label>
-                                </gn-label>
-                                <gn-input block fullWidth>
-                                    <input id={`linkUrl-${linkIndex}`} name="url" defaultValue={link.url} data-link-index={linkIndex} onChange={handleChangeLink} />
-                                </gn-input>
-                            </div>
-                            <div>
-                                <gn-button color="danger">
-                              <button
-                                  onClick={() => {
-                                      handleDeleteLink(linkIndex);
-                                  }}
-                                  style={{marginBottom: "10px"}}
-                              >
-                                  Fjern
-                              </button>
-                              </gn-button>
-                            </div>
+                              <div className={formsStyle.flex1}>
+                                  <gn-label block>
+                                      <label htmlFor={`linkUrl-${linkIndex}`}>
+                                          {dispatch(translate("labelLinkUrl", null, "URL"))}
+                                          <ToggleHelpText resourceKey="linkUrlDescription" />
+                                      </label>
+                                  </gn-label>
+                                  <gn-input block fullWidth>
+                                      <input
+                                          id={`linkUrl-${linkIndex}`}
+                                          name="url"
+                                          defaultValue={link.url}
+                                          data-link-index={linkIndex}
+                                          onChange={handleChangeLink}
+                                      />
+                                  </gn-input>
+                              </div>
+                              <div>
+                                  <gn-button color="danger">
+                                      <button
+                                          onClick={() => {
+                                              handleDeleteLink(linkIndex);
+                                          }}
+                                          style={{ marginBottom: "10px" }}
+                                      >
+                                          Fjern
+                                      </button>
+                                  </gn-button>
+                              </div>
                           </div>
                       ) : (
                           <div key={linkIndex}>
@@ -505,7 +522,12 @@ const RegisterItemDetails = () => {
                                     </label>
                                 </gn-label>
                                 <gn-input block fullWidth>
-                                    <input id="newLinkText" name="text" defaultValue={newLinkText} onChange={(event) => setNewLinkText(event.target.value)} />
+                                    <input
+                                        id="newLinkText"
+                                        name="text"
+                                        defaultValue={newLinkText}
+                                        onChange={(event) => setNewLinkText(event.target.value)}
+                                    />
                                 </gn-input>
                             </div>
                             <div className={formsStyle.flex1}>
@@ -515,12 +537,19 @@ const RegisterItemDetails = () => {
                                     </label>
                                 </gn-label>
                                 <gn-input block fullWidth>
-                                    <input id="newLinkUrl" name="url" defaultValue={newLinkUrl} onChange={(event) => setNewLinkUrl(event.target.value)} />
+                                    <input
+                                        id="newLinkUrl"
+                                        name="url"
+                                        defaultValue={newLinkUrl}
+                                        onChange={(event) => setNewLinkUrl(event.target.value)}
+                                    />
                                 </gn-input>
                             </div>
                             <div>
                                 <gn-button color="primary">
-                                    <button onClick={(event) => handleAddLink()} style={{marginBottom: "10px"}}>Legg til</button>
+                                    <button onClick={(event) => handleAddLink()} style={{ marginBottom: "10px" }}>
+                                        Legg til
+                                    </button>
                                 </gn-button>
                             </div>
                         </div>
@@ -530,7 +559,6 @@ const RegisterItemDetails = () => {
         );
     };
 
-
     if (!dataFetched) {
         return null;
     }
@@ -538,63 +566,78 @@ const RegisterItemDetails = () => {
     return newRegisterItem ? (
         <React.Fragment>
             <div className={formsStyle.form}>
-            <heading-text>
-                <h1>{registerItemTitle?.length ? registerItemTitle : newRegisterItem?.contextType}</h1>
-            </heading-text>
+                <heading-text>
+                    <h1>{registerItemTitle?.length ? registerItemTitle : newRegisterItem?.contextType}</h1>
+                </heading-text>
 
-            <ValidationErrors errors={validationErrors} />
+                <ValidationErrors errors={validationErrors} />
 
-            <heading-text>
-                <h2>Kontekstbeskrivelse</h2>
-            </heading-text>
+                <heading-text>
+                    <h2>Kontekstbeskrivelse</h2>
+                </heading-text>
 
-            <gn-label block>
-                <label htmlFor="contextType">
-                    {dispatch(translate("labelContextType", null, "Konteksttype"))}
-                    <ToggleHelpText resourceKey="contextTypeDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="contextType" name="contextType" defaultValue={newRegisterItem.contextType} onChange={(event) => {handleChange({name: "contextType", value: event.target.value}); setRegisterItemTitle(event.target.value)}} />
-                </gn-input>
-            ) : (
-                <div id="contextType">{newRegisterItem.contextType}</div>
-            )}
-            
-            <gn-label block>
-                <label htmlFor="id">
-                    {dispatch(translate("labelId", null, "ID"))}
-                    <ToggleHelpText resourceKey="IdDescription" />
-                </label>
-            </gn-label>
-            <div id="id">{newRegisterItem.id}</div>
+                <gn-label block>
+                    <label htmlFor="contextType">
+                        {dispatch(translate("labelContextType", null, "Konteksttype"))}
+                        <ToggleHelpText resourceKey="contextTypeDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input
+                            id="contextType"
+                            name="contextType"
+                            defaultValue={newRegisterItem.contextType}
+                            onChange={(event) => {
+                                handleChange({ name: "contextType", value: event.target.value });
+                                setRegisterItemTitle(event.target.value);
+                            }}
+                        />
+                    </gn-input>
+                ) : (
+                    <div id="contextType">{newRegisterItem.contextType}</div>
+                )}
 
-            <gn-label block>
-                <label htmlFor="title">
-                    {dispatch(translate("labelTitle", null, "Tittel"))}
-                    <ToggleHelpText resourceKey="titleDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="title" name="title" defaultValue={newRegisterItem.title} onChange={handleChange} />
-                </gn-input>
-            ) : (
-                <div id="title">{newRegisterItem.title}</div>
-            )}
+                <gn-label block>
+                    <label htmlFor="id">
+                        {dispatch(translate("labelId", null, "ID"))}
+                        <ToggleHelpText resourceKey="IdDescription" />
+                    </label>
+                </gn-label>
+                <div id="id">{newRegisterItem.id}</div>
+
+                <gn-label block>
+                    <label htmlFor="title">
+                        {dispatch(translate("labelTitle", null, "Tittel"))}
+                        <ToggleHelpText resourceKey="titleDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input id="title" name="title" defaultValue={newRegisterItem.title} onChange={handleChange} />
+                    </gn-input>
+                ) : (
+                    <div id="title">{newRegisterItem.title}</div>
+                )}
 
                 <gn-label block>
                     <label htmlFor="status">Status</label>
                 </gn-label>
                 {editable ? (
                     <gn-select>
-                        <select id="status" name="status" defaultValue={newRegisterItem.status || 1} onChange={handleChange}>
-                            {
-                                statuses.map(status => {
-                                    return <option key={status.value} value={status.value}>{status.label}</option>
-                                })
-                            }
+                        <select
+                            id="status"
+                            name="status"
+                            defaultValue={newRegisterItem.status || 1}
+                            onChange={handleChange}
+                        >
+                            {statuses.map((status) => {
+                                return (
+                                    <option key={status.value} value={status.value}>
+                                        {status.label}
+                                    </option>
+                                );
+                            })}
                         </select>
                     </gn-select>
                 ) : (
@@ -623,153 +666,201 @@ const RegisterItemDetails = () => {
                     </div>
                 )}
 
-            <gb-label block>
-                <label htmlFor="description">
-                    {dispatch(translate("labelDescription", null, "Forklarende tekst"))}
-                    <ToggleHelpText resourceKey="descriptionDescription" />
-                </label>
-            </gb-label>
-            <div data-color-mode="light">
-                { editable ? (
-                    <MDEditor id="description" preview="edit" height={200} name="description" value={descriptionMarkdown || ''} onChange={(value) => {setDescriptionMarkdown(value); handleChange({name: "description", value: value})}} />
-                ) : (
-                <MDEditor.Markdown id="description" source={descriptionMarkdown}/>
-                )
-                }
-            </div>
+                <gb-label block>
+                    <label htmlFor="description">
+                        {dispatch(translate("labelDescription", null, "Forklarende tekst"))}
+                        <ToggleHelpText resourceKey="descriptionDescription" />
+                    </label>
+                </gb-label>
+                <div data-color-mode="light">
+                    {editable ? (
+                        <MDEditor
+                            id="description"
+                            preview="edit"
+                            height={200}
+                            name="description"
+                            value={descriptionMarkdown || ""}
+                            onChange={(value) => {
+                                setDescriptionMarkdown(value);
+                                handleChange({ name: "description", value: value });
+                            }}
+                        />
+                    ) : (
+                        <MDEditor.Markdown id="description" source={descriptionMarkdown} />
+                    )}
+                </div>
 
-            <gn-label block>
-                <label htmlFor="dialogText">
-                    {dispatch(translate("labelDialogText", null, "Dialogtekst"))}
-                    <ToggleHelpText resourceKey="dialogTextDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="dialogText" name="dialogText" defaultValue={newRegisterItem.dialogText} onChange={handleChange} />
-                </gn-input>
+                <gn-label block>
+                    <label htmlFor="dialogText">
+                        {dispatch(translate("labelDialogText", null, "Dialogtekst"))}
+                        <ToggleHelpText resourceKey="dialogTextDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input
+                            id="dialogText"
+                            name="dialogText"
+                            defaultValue={newRegisterItem.dialogText}
+                            onChange={handleChange}
+                        />
+                    </gn-input>
                 ) : (
                     <div id="dialogText">{newRegisterItem.dialogText}</div>
                 )}
 
-            <gn-label block>
-                <label htmlFor="possibleMeasures">
-                    {dispatch(translate("labelPossibleMeasures", null, "Mulige tiltak"))}
-                    <ToggleHelpText resourceKey="possibleMeasuresDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-textarea block fullWidth>
-                    <textarea id="possibleMeasures" name="possibleMeasures" defaultValue={newRegisterItem.possibleMeasures} rows="4" onChange={handleChange} />
-                </gn-textarea>
-            ) : (
-                <div id="possibleMeasures">{newRegisterItem.possibleMeasures}</div>
-            )}
+                <gn-label block>
+                    <label htmlFor="possibleMeasures">
+                        {dispatch(translate("labelPossibleMeasures", null, "Mulige tiltak"))}
+                        <ToggleHelpText resourceKey="possibleMeasuresDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-textarea block fullWidth>
+                        <textarea
+                            id="possibleMeasures"
+                            name="possibleMeasures"
+                            defaultValue={newRegisterItem.possibleMeasures}
+                            rows="4"
+                            onChange={handleChange}
+                        />
+                    </gn-textarea>
+                ) : (
+                    <div id="possibleMeasures">{newRegisterItem.possibleMeasures}</div>
+                )}
 
-
-            <gn-label block>
-                <label htmlFor="guidance">
-                    {dispatch(translate("labelGuidance", null, "Veiledning"))}
-                    <ToggleHelpText resourceKey="guidanceDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="guidance" name="guidance" defaultValue={newRegisterItem.guidance} onChange={handleChange} />
-                </gn-input>
+                <gn-label block>
+                    <label htmlFor="guidance">
+                        {dispatch(translate("labelGuidance", null, "Veiledning"))}
+                        <ToggleHelpText resourceKey="guidanceDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input
+                            id="guidance"
+                            name="guidance"
+                            defaultValue={newRegisterItem.guidance}
+                            onChange={handleChange}
+                        />
+                    </gn-input>
                 ) : (
                     <div id="guidance">{newRegisterItem.dialogText}</div>
                 )}
 
-
-            <gn-label block>
-                <label htmlFor="datasetBufferText">
-                    {dispatch(translate("labelDataSetBufferText", null, "Buffertekst"))}
-                    <ToggleHelpText resourceKey="dataSetBufferTextDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="datasetBufferText" name="bufferText" defaultValue={newRegisterItem?.dataset?.bufferText} onChange={handleDatasetChange} />
-                </gn-input>
+                <gn-label block>
+                    <label htmlFor="datasetBufferText">
+                        {dispatch(translate("labelDataSetBufferText", null, "Buffertekst"))}
+                        <ToggleHelpText resourceKey="dataSetBufferTextDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input
+                            id="datasetBufferText"
+                            name="bufferText"
+                            defaultValue={newRegisterItem?.dataset?.bufferText}
+                            onChange={handleDatasetChange}
+                        />
+                    </gn-input>
                 ) : (
                     <div id="datasetBufferText">{newRegisterItem?.dataset?.bufferText}</div>
                 )}
 
+                <gn-label block>
+                    <label htmlFor="datasetBufferPossibleMeasures">
+                        {dispatch(translate("labelBufferPossibleMeasures", null, "Mulige tiltak buffer"))}
+                        <ToggleHelpText resourceKey="bufferPossibleMeasuresDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-textarea block fullWidth>
+                        <textarea
+                            id="datasetBufferPossibleMeasures"
+                            name="bufferPossibleMeasures"
+                            defaultValue={newRegisterItem?.dataSet?.bufferPossibleMeasures || ""}
+                            rows="4"
+                            onChange={handleDatasetChange}
+                        />
+                    </gn-textarea>
+                ) : (
+                    <div id="datasetBufferPossibleMeasures">
+                        {newRegisterItem?.dataSet?.bufferPossibleMeasures || ""}
+                    </div>
+                )}
 
-            <gn-label block>
-                <label htmlFor="datasetBufferPossibleMeasures">
-                    {dispatch(translate("labelBufferPossibleMeasures", null, "Mulige tiltak buffer"))}
-                    <ToggleHelpText resourceKey="bufferPossibleMeasuresDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-textarea block fullWidth>
-                    <textarea id="datasetBufferPossibleMeasures" name="bufferPossibleMeasures" defaultValue={newRegisterItem?.dataSet?.bufferPossibleMeasures || ""} rows="4" onChange={handleDatasetChange} />
-                </gn-textarea>
-            ) : (
-                <div id="datasetBufferPossibleMeasures">{newRegisterItem?.dataSet?.bufferPossibleMeasures || ""}</div>
-            )}
-
-
-            <gn-label block>
-                <label htmlFor="datasetBufferDistance">
-                    {dispatch(translate("labelDataSetBufferDistance", null, "Buffer"))}
-                    <ToggleHelpText resourceKey="dataSetBufferDistanceDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="datasetBufferDistance" name="bufferDistance" defaultValue={newRegisterItem?.dataSet?.bufferDistance || ""} onChange={handleDatasetChange} />
-                </gn-input>
+                <gn-label block>
+                    <label htmlFor="datasetBufferDistance">
+                        {dispatch(translate("labelDataSetBufferDistance", null, "Buffer"))}
+                        <ToggleHelpText resourceKey="dataSetBufferDistanceDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input
+                            id="datasetBufferDistance"
+                            name="bufferDistance"
+                            defaultValue={newRegisterItem?.dataSet?.bufferDistance || ""}
+                            onChange={handleDatasetChange}
+                        />
+                    </gn-input>
                 ) : (
                     <div id="datasetBufferDistance">{newRegisterItem?.dataSet?.bufferDistance || ""}</div>
                 )}
 
-            <heading-text>
-                <h2>Lenker</h2>
-            </heading-text>
-            {renderLinks(newRegisterItem.links)}
-            
-            <heading-text>
-                <h2>Kommentarer</h2>
-            </heading-text>
+                <heading-text>
+                    <h2>Lenker</h2>
+                </heading-text>
+                {renderLinks(newRegisterItem.links)}
 
-            <gn-label block>
-                <label htmlFor="technicalComment">
-                    {dispatch(translate("labelTechnicalComment", null, "Teknisk kommentar"))}
-                    <ToggleHelpText resourceKey="technicalCommentDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="technicalComment" name="technicalComment" defaultValue={newRegisterItem.technicalComment} onChange={handleChange} />
-                </gn-input>
+                <heading-text>
+                    <h2>Kommentarer</h2>
+                </heading-text>
+
+                <gn-label block>
+                    <label htmlFor="technicalComment">
+                        {dispatch(translate("labelTechnicalComment", null, "Teknisk kommentar"))}
+                        <ToggleHelpText resourceKey="technicalCommentDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input
+                            id="technicalComment"
+                            name="technicalComment"
+                            defaultValue={newRegisterItem.technicalComment}
+                            onChange={handleChange}
+                        />
+                    </gn-input>
                 ) : (
                     <div id="technicalComment">{newRegisterItem.technicalComment}</div>
                 )}
 
-
-            <gn-label block>
-                <label htmlFor="otherComment">
-                    {dispatch(translate("labelOtherComment", null, "Andre kommentarer"))}
-                    <ToggleHelpText resourceKey="otherCommentDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="otherComment" name="otherComment" defaultValue={newRegisterItem.otherComment} onChange={handleChange} />
-                </gn-input>
+                <gn-label block>
+                    <label htmlFor="otherComment">
+                        {dispatch(translate("labelOtherComment", null, "Andre kommentarer"))}
+                        <ToggleHelpText resourceKey="otherCommentDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input
+                            id="otherComment"
+                            name="otherComment"
+                            defaultValue={newRegisterItem.otherComment}
+                            onChange={handleChange}
+                        />
+                    </gn-input>
                 ) : (
                     <div id="otherComment">{newRegisterItem.otherComment}</div>
                 )}
 
-            <heading-text>
-                <h2>
-                    Datasett
-                    <ToggleHelpText resourceKey="dataSetTitleDescription" />
-                </h2>
-            </heading-text>
+                <heading-text>
+                    <h2>
+                        Datasett
+                        <ToggleHelpText resourceKey="dataSetTitleDescription" />
+                    </h2>
+                </heading-text>
 
                 <gn-label block>
                     <label htmlFor="datasetTitle">
@@ -794,20 +885,22 @@ const RegisterItemDetails = () => {
                     </a>
                 )}
 
-
-            <gn-label block>
-                <label htmlFor="datasetUrlMetadata">
-                    {dispatch(translate("labelDataSetUrlMetadata", null, "Datasett-meta-url"))}
-                    <ToggleHelpText resourceKey="dataSetUrlMetadataDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="datasetUrlMetadata" name="urlMetadata" defaultValue={newRegisterItem?.dataSet?.urlMetadata || ""} onChange={handleDatasetChange} />
-                </gn-input>
-                ) : null
-                }
-          
+                <gn-label block>
+                    <label htmlFor="datasetUrlMetadata">
+                        {dispatch(translate("labelDataSetUrlMetadata", null, "Datasett-meta-url"))}
+                        <ToggleHelpText resourceKey="dataSetUrlMetadataDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input
+                            id="datasetUrlMetadata"
+                            name="urlMetadata"
+                            defaultValue={newRegisterItem?.dataSet?.urlMetadata || ""}
+                            onChange={handleDatasetChange}
+                        />
+                    </gn-input>
+                ) : null}
 
                 <gn-label block>
                     <label htmlFor="datasetTypeReferenceType">
@@ -818,7 +911,12 @@ const RegisterItemDetails = () => {
                 {editable ? (
                     <React.Fragment>
                         <gn-select block fullWidth>
-                            <select id="datasetTypeReferenceType" name="type" defaultValue={newRegisterItem?.dataSet?.typeReference?.type || ""} onChange={handleDatasetTypeReferenceChange}>
+                            <select
+                                id="datasetTypeReferenceType"
+                                name="type"
+                                defaultValue={newRegisterItem?.dataSet?.typeReference?.type || ""}
+                                onChange={handleDatasetTypeReferenceChange}
+                            >
                                 {objectTypeOptions.map((objectTypeOption) => {
                                     return (
                                         <option key={objectTypeOption.id} value={objectTypeOption.label}>
@@ -837,235 +935,307 @@ const RegisterItemDetails = () => {
                                 Gå til objektkatalogen for å finne attributt og kodeverdi til{" "}
                                 {newRegisterItem.dataSet?.typeReference?.type}
                             </a>
-                        ) : null
-                        }
+                        ) : null}
                     </React.Fragment>
                 ) : (
                     <div>
-                        <a id="datasetTypeReferenceType" href={`https://objektkatalog.geonorge.no/Objekttype/Index/${selectedObjectTypeId}`}>
+                        <a
+                            id="datasetTypeReferenceType"
+                            href={`https://objektkatalog.geonorge.no/Objekttype/Index/${selectedObjectTypeId}`}
+                        >
                             {newRegisterItem.dataSet?.typeReference?.type}
                         </a>
                     </div>
                 )}
 
-            
-            <gn-label block>
-                <label htmlFor="datasetTypeReferenceAttribute">
-                    {dispatch(translate("labelDataSetTypeReferenceAttribute", null, "Attributt"))}
-                    <ToggleHelpText resourceKey="dataSetTypeReferenceAttributeDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="datasetTypeReferenceAttribute" name="attribute" defaultValue={newRegisterItem?.dataSet?.typeReference?.attribute || ""} onChange={handleDatasetTypeReferenceChange} />
-                </gn-input>
+                <gn-label block>
+                    <label htmlFor="datasetTypeReferenceAttribute">
+                        {dispatch(translate("labelDataSetTypeReferenceAttribute", null, "Attributt"))}
+                        <ToggleHelpText resourceKey="dataSetTypeReferenceAttributeDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input
+                            id="datasetTypeReferenceAttribute"
+                            name="attribute"
+                            defaultValue={newRegisterItem?.dataSet?.typeReference?.attribute || ""}
+                            onChange={handleDatasetTypeReferenceChange}
+                        />
+                    </gn-input>
                 ) : (
-                    <div id="datasetTypeReferenceAttribute">{newRegisterItem?.dataSet?.typeReference?.attribute || ""}</div>
+                    <div id="datasetTypeReferenceAttribute">
+                        {newRegisterItem?.dataSet?.typeReference?.attribute || ""}
+                    </div>
                 )}
 
-
-            <gn-label block>
-                <label htmlFor="datasetTypeReferenceCodeValue">
-                    {dispatch(translate("labelDataSetTypeReferenceCodeValue", null, "Kodeverdi"))}
-                    <ToggleHelpText resourceKey="dataSetTypeReferenceCodeValueDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="datasetTypeReferenceCodeValue" name="codeValue" defaultValue={newRegisterItem?.dataSet?.typeReference?.codeValue || ""} onChange={handleDatasetTypeReferenceChange} />
-                </gn-input>
+                <gn-label block>
+                    <label htmlFor="datasetTypeReferenceCodeValue">
+                        {dispatch(translate("labelDataSetTypeReferenceCodeValue", null, "Kodeverdi"))}
+                        <ToggleHelpText resourceKey="dataSetTypeReferenceCodeValueDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input
+                            id="datasetTypeReferenceCodeValue"
+                            name="codeValue"
+                            defaultValue={newRegisterItem?.dataSet?.typeReference?.codeValue || ""}
+                            onChange={handleDatasetTypeReferenceChange}
+                        />
+                    </gn-input>
                 ) : (
-                    <div id="datasetTypeReferenceCodeValue">{newRegisterItem?.dataSet?.typeReference?.codeValue || ""}</div>
+                    <div id="datasetTypeReferenceCodeValue">
+                        {newRegisterItem?.dataSet?.typeReference?.codeValue || ""}
+                    </div>
                 )}
-            
 
-            <gn-label block>
-                <label htmlFor="datasetNamespace">
-                    {dispatch(translate("labelDataSetNamespace", null, "Navnerom (skjemaplassering)"))}
-                    <ToggleHelpText resourceKey="dataSetNamespaceDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="datasetNamespace" name="namespace" defaultValue={newRegisterItem?.dataSet?.namespace || ""} onChange={handleDatasetChange} />
-                </gn-input>
+                <gn-label block>
+                    <label htmlFor="datasetNamespace">
+                        {dispatch(translate("labelDataSetNamespace", null, "Navnerom (skjemaplassering)"))}
+                        <ToggleHelpText resourceKey="dataSetNamespaceDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input
+                            id="datasetNamespace"
+                            name="namespace"
+                            defaultValue={newRegisterItem?.dataSet?.namespace || ""}
+                            onChange={handleDatasetChange}
+                        />
+                    </gn-input>
                 ) : (
                     <div id="datasetNamespace">{newRegisterItem?.dataSet?.namespace || ""}</div>
                 )}
-            
-            <gn-label block>
-                <label htmlFor="datasetUrlGmlSchema">
-                    {dispatch(translate("labelDataSetUrlGmlSchema", null, "Lenke til GML-skjemaet"))}
-                    <ToggleHelpText resourceKey="dataSetUrlGmlSchemaDescription" />
-                </label>
-            </gn-label>
-            {editable ? (
-                <gn-input block fullWidth>
-                    <input id="datasetUrlGmlSchema" name="urlGmlSchema" defaultValue={newRegisterItem?.dataSet?.urlGmlSchema || ""} onChange={handleDatasetChange} />
-                </gn-input>
+
+                <gn-label block>
+                    <label htmlFor="datasetUrlGmlSchema">
+                        {dispatch(translate("labelDataSetUrlGmlSchema", null, "Lenke til GML-skjemaet"))}
+                        <ToggleHelpText resourceKey="dataSetUrlGmlSchemaDescription" />
+                    </label>
+                </gn-label>
+                {editable ? (
+                    <gn-input block fullWidth>
+                        <input
+                            id="datasetUrlGmlSchema"
+                            name="urlGmlSchema"
+                            defaultValue={newRegisterItem?.dataSet?.urlGmlSchema || ""}
+                            onChange={handleDatasetChange}
+                        />
+                    </gn-input>
                 ) : newRegisterItem?.dataSet?.urlGmlSchema?.length ? (
                     <div>
-                        <a id="datasetUrlGmlSchema" href={newRegisterItem.dataSet.urlGmlSchema}>Lenke til GML-skjema</a>
+                        <a id="datasetUrlGmlSchema" href={newRegisterItem.dataSet.urlGmlSchema}>
+                            Lenke til GML-skjema
+                        </a>
                     </div>
                 ) : (
                     <div id="datasetUrlGmlSchema">{newRegisterItem?.dataSet?.urlGmlSchema || ""}</div>
                 )}
 
+                <heading-text>
+                    <h2>Referanser</h2>
+                </heading-text>
 
-            <heading-text>
-                <h2>Referanser</h2>
-            </heading-text>
-
-            {editable ? (
-                <div className={formsStyle.flex}>
-                    <div className={formsStyle.flex1}>
-                        <gn-label block>
-                            <label htmlFor="referenceTek17Text">
-                                {dispatch(translate("referenceTek17TextDescription", null, "ref-tek-17-tittel"))}
-                                <ToggleHelpText resourceKey="referenceTek17TextDescription" />
-                            </label>
-                        </gn-label>
-                        <gn-input block fullWidth>
-                            <input id="referenceTek17Text" name="text" defaultValue={newRegisterItem?.reference?.tek17?.text || ""} onChange={handleChangeReferenceTek17} />
-                        </gn-input>
-                    </div>
-                    <div className={formsStyle.flex1}>
-                        <gn-label block>
-                            <label htmlFor="referenceTek17Url">
-                                {dispatch(translate("labelReferenceTek17Url", null, "ref-tek-17-url"))}
-                                <ToggleHelpText resourceKey="referenceTek17UrlDescription" />
-                            </label>
-                        </gn-label>
-                        <gn-input block fullWidth>
-                            <input id="referenceTek17Url" name="url" defaultValue={newRegisterItem?.reference?.tek17?.url || ""} onChange={handleChangeReferenceTek17} />
-                        </gn-input>
-                    </div>
-                </div>
-            ) : (
-                <div>
-                    <a href={newRegisterItem?.reference?.tek17?.url || ""}>{newRegisterItem?.reference?.tek17?.text || ""}</a>
-                </div>
-            )}
-
-            {editable ? (
-                <div className={formsStyle.flex}>
-                    <div className={formsStyle.flex1}>
-                        <gn-label block>
-                            <label htmlFor="referenceOtherLawText">
-                                {dispatch(translate("labelReferenceOtherLawText", null, "ref-annen lov/forskrift"))}
-                                <ToggleHelpText resourceKey="referenceOtherLawTextDescription" />
-                            </label>
-                        </gn-label>
-                        <gn-input block fullWidth>
-                            <input id="referenceOtherLawText" name="text" defaultValue={newRegisterItem?.reference?.otherLaw?.text || ""} onChange={handleChangeReferenceOtherLaw} />
-                        </gn-input>
-                    </div>
-                    <div className={formsStyle.flex1}>
-                        <gn-label block>
-                            <label htmlFor="referenceOtherLawUrl">
-                                {dispatch(translate("labelReferenceOtherLawUrl", null, "ref-annen lov/forskrift-url"))}
-                                <ToggleHelpText resourceKey="referenceOtherLawUrlDescription" />
-                            </label>
-                        </gn-label>
-                        <gn-input block fullWidth>
-                            <input id="referenceOtherLawUrl" name="url" defaultValue={newRegisterItem?.reference?.otherLaw?.url || ""} onChange={handleChangeReferenceOtherLaw} />
-                        </gn-input>
-                    </div>
-                </div>
-            ) : (
-                <div>
-                    <a href={newRegisterItem?.reference?.otherLaw?.url || ""}>
-                        {newRegisterItem?.reference?.otherLaw?.text || ""}
-                    </a>
-                </div>
-            )}
-
-            {editable ? (
-                <div className={formsStyle.flex}>
-                    <div className={formsStyle.flex1}>
-                        <gn-label block>
-                            <label htmlFor="referenceCircularFromMinistryText">
-                                {dispatch(
-                                    translate("labelReferenceCircularFromMinistryText", null, "ref-rundskriv fra dep")
-                                )}
-                                <ToggleHelpText resourceKey="referenceCircularFromMinistryTextDescription" />
-                            </label>
-                        </gn-label>
-                        <gn-input block fullWidth>
-                            <input id="referenceCircularFromMinistryText" name="text" defaultValue={newRegisterItem?.reference?.circularFromMinistry?.text || ""} onChange={handleChangeReferenceCircularFromMinistry} />
-                        </gn-input>
-                    </div>
-                    <div className={formsStyle.flex1}>
-                        <gn-label block>
-                            <label htmlFor="referenceCircularFromMinistryUrl">
-                                {dispatch(
-                                    translate("labelReferenceCircularFromMinistryUrl", null, "ref-rundskriv fra dep-url")
-                                )}
-                                <ToggleHelpText resourceKey="referenceCircularFromMinistryUrlDescription" />
-                            </label>
-                        </gn-label>
-                        <gn-input block fullWidth>
-                            <input id="referenceCircularFromMinistryUrl" name="url" defaultValue={newRegisterItem?.reference?.circularFromMinistry?.url || ""} onChange={handleChangeReferenceCircularFromMinistry} />
-                        </gn-input>
-                    </div>
-                </div>
-            ) : (
-                <div>
-                    <a href={newRegisterItem?.reference?.circularFromMinistry?.url || ""}>
-                        {newRegisterItem?.reference?.circularFromMinistry?.text || ""}
-                    </a>
-                </div>
-            )}
-            
-            
-            <div className={formsStyle.btngroup}>
                 {editable ? (
-                    <div>
-                        {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
-                            <React.Fragment>
-                                <gn-button color="default">
-                                    <button onClick={() => {
-                                        setEditable(false);
-                                    }}>
-                                        Avslutt redigering
-                                    </button>
-                                </gn-button>
-                                <gn-button color="primary">
-                                    <button disabled={!newRegisterItem?.contextType?.length || !newRegisterItem?.title?.length} onClick={saveRegisterItem}>
-                                        Lagre
-                                    </button>
-                                </gn-button>
-                            </React.Fragment>
-                        ) : null}
+                    <div className={formsStyle.flex}>
+                        <div className={formsStyle.flex1}>
+                            <gn-label block>
+                                <label htmlFor="referenceTek17Text">
+                                    {dispatch(translate("referenceTek17TextDescription", null, "ref-tek-17-tittel"))}
+                                    <ToggleHelpText resourceKey="referenceTek17TextDescription" />
+                                </label>
+                            </gn-label>
+                            <gn-input block fullWidth>
+                                <input
+                                    id="referenceTek17Text"
+                                    name="text"
+                                    defaultValue={newRegisterItem?.reference?.tek17?.text || ""}
+                                    onChange={handleChangeReferenceTek17}
+                                />
+                            </gn-input>
+                        </div>
+                        <div className={formsStyle.flex1}>
+                            <gn-label block>
+                                <label htmlFor="referenceTek17Url">
+                                    {dispatch(translate("labelReferenceTek17Url", null, "ref-tek-17-url"))}
+                                    <ToggleHelpText resourceKey="referenceTek17UrlDescription" />
+                                </label>
+                            </gn-label>
+                            <gn-input block fullWidth>
+                                <input
+                                    id="referenceTek17Url"
+                                    name="url"
+                                    defaultValue={newRegisterItem?.reference?.tek17?.url || ""}
+                                    onChange={handleChangeReferenceTek17}
+                                />
+                            </gn-input>
+                        </div>
                     </div>
                 ) : (
                     <div>
-                        {canDeleteRegisterItem(authInfo) ? (
-                            <gn-button color="default">
-                                <button onClick={openModal}>
-                                    Slett konteksttype
-                                </button>
-                            </gn-button>
-                        ) : null}
-                        {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
-                            <gn-button color="default">
-                                <button onClick={cloneRegister}>Dupliser konteksttype</button>
-                            </gn-button>
-                        ) : null}
-                        {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
-                            <gn-button color="primary">
-                                <button onClick={() => {
-                                    setEditable(true);
-                                }}>
-                                    Rediger konteksttype
-                                </button>
-                            </gn-button>
-                        ) : null}
+                        <a href={newRegisterItem?.reference?.tek17?.url || ""}>
+                            {newRegisterItem?.reference?.tek17?.text || ""}
+                        </a>
                     </div>
                 )}
+
+                {editable ? (
+                    <div className={formsStyle.flex}>
+                        <div className={formsStyle.flex1}>
+                            <gn-label block>
+                                <label htmlFor="referenceOtherLawText">
+                                    {dispatch(translate("labelReferenceOtherLawText", null, "ref-annen lov/forskrift"))}
+                                    <ToggleHelpText resourceKey="referenceOtherLawTextDescription" />
+                                </label>
+                            </gn-label>
+                            <gn-input block fullWidth>
+                                <input
+                                    id="referenceOtherLawText"
+                                    name="text"
+                                    defaultValue={newRegisterItem?.reference?.otherLaw?.text || ""}
+                                    onChange={handleChangeReferenceOtherLaw}
+                                />
+                            </gn-input>
+                        </div>
+                        <div className={formsStyle.flex1}>
+                            <gn-label block>
+                                <label htmlFor="referenceOtherLawUrl">
+                                    {dispatch(
+                                        translate("labelReferenceOtherLawUrl", null, "ref-annen lov/forskrift-url")
+                                    )}
+                                    <ToggleHelpText resourceKey="referenceOtherLawUrlDescription" />
+                                </label>
+                            </gn-label>
+                            <gn-input block fullWidth>
+                                <input
+                                    id="referenceOtherLawUrl"
+                                    name="url"
+                                    defaultValue={newRegisterItem?.reference?.otherLaw?.url || ""}
+                                    onChange={handleChangeReferenceOtherLaw}
+                                />
+                            </gn-input>
+                        </div>
+                    </div>
+                ) : (
+                    <div>
+                        <a href={newRegisterItem?.reference?.otherLaw?.url || ""}>
+                            {newRegisterItem?.reference?.otherLaw?.text || ""}
+                        </a>
+                    </div>
+                )}
+
+                {editable ? (
+                    <div className={formsStyle.flex}>
+                        <div className={formsStyle.flex1}>
+                            <gn-label block>
+                                <label htmlFor="referenceCircularFromMinistryText">
+                                    {dispatch(
+                                        translate(
+                                            "labelReferenceCircularFromMinistryText",
+                                            null,
+                                            "ref-rundskriv fra dep"
+                                        )
+                                    )}
+                                    <ToggleHelpText resourceKey="referenceCircularFromMinistryTextDescription" />
+                                </label>
+                            </gn-label>
+                            <gn-input block fullWidth>
+                                <input
+                                    id="referenceCircularFromMinistryText"
+                                    name="text"
+                                    defaultValue={newRegisterItem?.reference?.circularFromMinistry?.text || ""}
+                                    onChange={handleChangeReferenceCircularFromMinistry}
+                                />
+                            </gn-input>
+                        </div>
+                        <div className={formsStyle.flex1}>
+                            <gn-label block>
+                                <label htmlFor="referenceCircularFromMinistryUrl">
+                                    {dispatch(
+                                        translate(
+                                            "labelReferenceCircularFromMinistryUrl",
+                                            null,
+                                            "ref-rundskriv fra dep-url"
+                                        )
+                                    )}
+                                    <ToggleHelpText resourceKey="referenceCircularFromMinistryUrlDescription" />
+                                </label>
+                            </gn-label>
+                            <gn-input block fullWidth>
+                                <input
+                                    id="referenceCircularFromMinistryUrl"
+                                    name="url"
+                                    defaultValue={newRegisterItem?.reference?.circularFromMinistry?.url || ""}
+                                    onChange={handleChangeReferenceCircularFromMinistry}
+                                />
+                            </gn-input>
+                        </div>
+                    </div>
+                ) : (
+                    <div>
+                        <a href={newRegisterItem?.reference?.circularFromMinistry?.url || ""}>
+                            {newRegisterItem?.reference?.circularFromMinistry?.text || ""}
+                        </a>
+                    </div>
+                )}
+
+                <div className={formsStyle.btngroup}>
+                    {editable ? (
+                        <div>
+                            {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
+                                <React.Fragment>
+                                    <gn-button color="default">
+                                        <button
+                                            onClick={() => {
+                                                setEditable(false);
+                                            }}
+                                        >
+                                            Avslutt redigering
+                                        </button>
+                                    </gn-button>
+                                    <gn-button color="primary">
+                                        <button
+                                            disabled={
+                                                !newRegisterItem?.contextType?.length || !newRegisterItem?.title?.length
+                                            }
+                                            onClick={saveRegisterItem}
+                                        >
+                                            Lagre
+                                        </button>
+                                    </gn-button>
+                                </React.Fragment>
+                            ) : null}
+                        </div>
+                    ) : (
+                        <div>
+                            {canDeleteRegisterItem(authInfo) ? (
+                                <gn-button color="default">
+                                    <button onClick={openModal}>Slett konteksttype</button>
+                                </gn-button>
+                            ) : null}
+                            {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
+                                <gn-button color="default">
+                                    <button onClick={cloneRegister}>Dupliser konteksttype</button>
+                                </gn-button>
+                            ) : null}
+                            {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
+                                <gn-button color="primary">
+                                    <button
+                                        onClick={() => {
+                                            setEditable(true);
+                                        }}
+                                    >
+                                        Rediger konteksttype
+                                    </button>
+                                </gn-button>
+                            ) : null}
+                        </div>
+                    )}
+                </div>
             </div>
-            </div>   
-                            
+
             <Modal
                 show={modalOpen}
                 onHide={closeModal}
@@ -1083,14 +1253,13 @@ const RegisterItemDetails = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <gn-button color="default">
-                        <button onClick={closeModal}>{dispatch(translate("btnCancel", null, "Avbryt"))}{" "}</button>
+                        <button onClick={closeModal}>{dispatch(translate("btnCancel", null, "Avbryt"))} </button>
                     </gn-button>
                     <gn-button color="danger">
-                        <button onClick={handleDelete}>{dispatch(translate("btnDelete", null, "Slett"))}{" "}</button>
+                        <button onClick={handleDelete}>{dispatch(translate("btnDelete", null, "Slett"))} </button>
                     </gn-button>
                 </Modal.Footer>
             </Modal>
-                        
         </React.Fragment>
     ) : null;
 };

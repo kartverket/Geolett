@@ -21,6 +21,7 @@ const RegisterItems = () => {
     const savedRegisterItems = useSelector((state) => state.registerItems);
     const statuses = useSelector((state) => state.statuses);
     const authToken = useSelector((state) => state.authToken);
+    const config = useSelector((state) => state.config);
 
     // State
     const [registerItemsFetched, setRegisterItemsFetched] = useState(false);
@@ -177,9 +178,11 @@ const RegisterItems = () => {
                 <div>Eier </div>
                 <gn-select>
                     <select name="owner" defaultValue={ownerSelected || "0"} onChange={handleChange}>
-                        {getOwners().map(owner => {
+                        {getOwners().map((owner) => {
                             return (
-                                <option key={owner.value} value={owner.value}>{owner.label}</option>
+                                <option key={owner.value} value={owner.value}>
+                                    {owner.label}
+                                </option>
                             );
                         })}
                     </select>
