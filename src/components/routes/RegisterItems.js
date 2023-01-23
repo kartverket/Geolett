@@ -5,10 +5,9 @@ import { Link } from "react-router-dom";
 
 // Geonorge WebComponents
 // eslint-disable-next-line no-unused-vars
-import { BreadcrumbList } from "@kartverket/geonorge-web-components";
+import { BreadcrumbList, ContentContainer } from "@kartverket/geonorge-web-components";
 
 // Components
-import Container from "components/template/Container";
 import CreateRegisterItem from "components/partials/CreateRegisterItem";
 
 // Actions
@@ -234,12 +233,12 @@ const RegisterItems = () => {
     ];
 
     return (
-        <Container>
+        <content-container>
             <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
             <h1>Konteksttyper</h1>
             <CreateRegisterItem newRegisterItem />
             {renderRegisterItems(registerItems)}
-        </Container>
+        </content-container>
     );
 };
 

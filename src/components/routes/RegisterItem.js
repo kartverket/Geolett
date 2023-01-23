@@ -3,8 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+// Geonorge WebComponents
+// eslint-disable-next-line no-unused-vars
+import { ContentContainer } from "@kartverket/geonorge-web-components";
+
 // Components
-import Container from "components/template/Container";
 import RegisterItemDetails from "components/partials/RegisterItemDetails";
 
 // Actions
@@ -29,10 +32,11 @@ const RegisterItem = () => {
     if (!registerItemFetched) {
         return "";
     }
+
     return savedRegisterItem && Object.keys(savedRegisterItem).length ? (
-        <Container>
+        <content-container>
             <RegisterItemDetails />
-        </Container>
+        </content-container>
     ) : null;
 };
 
