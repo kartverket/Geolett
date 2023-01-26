@@ -1,12 +1,13 @@
 // Dependencies
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { toastr } from "react-redux-toastr";
 import ValidationErrors from "components/partials/ValidationErrors";
+
+// Geonorge Webcomponents
+// eslint-disable-next-line no-unused-vars
+import { GnButton, GnDialog, GnLabel, HeadingText } from "@kartverket/geonorge-web-components";
 
 // Models
 import { RegisterItem } from "models/registerItem";
@@ -31,7 +32,7 @@ const CreateRegisterItem = () => {
 
     // State
     const [dataFetched, setDataFetched] = useState(false);
-    const [modalOpen, setModalOpen] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
     const [registerItem, setRegisterItem] = useState(new RegisterItem());
     const [selectedOwner, setSelectedOwner] = useState([]);
     const [validationErrors, setValidationErrors] = useState([]);
@@ -61,7 +62,7 @@ const CreateRegisterItem = () => {
 
         dispatch(createRegisterItem(registerItem, token))
             .then(() => {
-                setModalOpen(false);
+                closeDialog();
                 setValidationErrors([]);
                 dispatch(fetchRegisterItems(token));
                 toastr.success("En ny konteksttype ble lagt til");
@@ -92,72 +93,84 @@ const CreateRegisterItem = () => {
         }
     }, [dataFetched, dispatch, getPreSelectedOwnerFromAuthInfo]);
 
+    const openDialog = () => {
+        setDialogOpen(false);
+        setTimeout(() => {
+            setDialogOpen(true);
+        });
+    };
+
+    const closeDialog = () => {
+        setDialogOpen(false);
+    };
+
     return dataFetched && showAddRegisterItemContent() ? (
         <React.Fragment>
-            <Button variant="primary" className="marginB-20" onClick={() => setModalOpen(true)}>
-                Opprett konteksttype
-            </Button>
-            <Modal
-                show={modalOpen}
-                onHide={() => setModalOpen(false)}
-                backdrop="static"
-                centered
-                keyboard={false}
-                animation={false}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>Ny konteksttype</Modal.Title>
-                </Modal.Header>
+            <gn-button color="primary">
+                <button onClick={() => openDialog()}>Opprett konteksttype</button>
+            </gn-button>
+            <gn-dialog show={dialogOpen}>
+                <heading-text>
+                    <h2>Ny konteksttype</h2>
+                </heading-text>
+                <ValidationErrors errors={validationErrors} />
+                <gn-label block>
+                    <label htmlFor="contextType">Konteksttype (påkrevd felt)</label>
+                </gn-label>
 
-                <Modal.Body>
-                    <ValidationErrors errors={validationErrors} />
-                    <Form.Group controlId="contextType">
-                        <Form.Label>Konteksttype (påkrevd felt)</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="contextType"
-                            defaultValue={registerItem.contextType}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
+                <gn-input block fullWidth>
+                    <input
+                        id="contextType"
+                        name="contextType"
+                        type="text"
+                        defaultValue={registerItem.contextType}
+                        onChange={handleChange}
+                        required
+                    />
+                </gn-input>
 
-                    <Form.Group controlId="title">
-                        <Form.Label>Tittel (påkrevd felt)</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="title"
-                            defaultValue={registerItem.title}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
+                <gn-label block>
+                    <label htmlFor="title">Tittel (påkrevd felt)</label>
+                </gn-label>
+                <gn-input block fullWidth>
+                    <input
+                        id="title"
+                        name="title"
+                        type="text"
+                        defaultValue={registerItem.title}
+                        onChange={handleChange}
+                        required
+                    />
+                </gn-input>
 
-                    <Form.Group controlId="formName">
-                        <Form.Label>Eier</Form.Label>
-                        <Typeahead
-                            id="basic-typeahead-single"
-                            labelKey="name"
-                            onChange={handleOwnerSelect}
-                            options={organizations}
-                            selected={selectedOwner}
-                            disabled={!canEditRegisterItemOwner(authInfo)}
-                            placeholder="Legg til eier..."
-                        />
-                    </Form.Group>
-                </Modal.Body>
-
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setModalOpen(false)}>
-                        Avbryt
-                    </Button>
-                    <Button
-                        variant="primary"
-                        disabled={!registerItem?.contextType?.length || !registerItem?.title?.length}
-                        onClick={saveRegisterItem}
-                    >
-                        Lagre
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                <gn-label block>
+                    <label htmlFor="owner">Eier</label>
+                </gn-label>
+                <gn-input block fullWidth>
+                    <Typeahead
+                        id="owner"
+                        labelKey="name"
+                        onChange={handleOwnerSelect}
+                        options={organizations}
+                        selected={selectedOwner}
+                        disabled={!canEditRegisterItemOwner(authInfo)}
+                        placeholder="Legg til eier..."
+                    />
+                </gn-input>
+                <div>
+                    <gn-button color="default">
+                        <button onClick={() => closeDialog()}>Avbryt</button>
+                    </gn-button>
+                    <gn-button color="primary">
+                        <button
+                            disabled={!registerItem?.contextType?.length || !registerItem?.title?.length}
+                            onClick={saveRegisterItem}
+                        >
+                            Lagre
+                        </button>
+                    </gn-button>
+                </div>
+            </gn-dialog>
         </React.Fragment>
     ) : null;
 };

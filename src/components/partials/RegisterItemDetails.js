@@ -2,7 +2,6 @@
 import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toastr } from "react-redux-toastr";
-import Modal from "react-bootstrap/Modal";
 import { Typeahead, withAsync } from "react-bootstrap-typeahead";
 import { useNavigate, useParams } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
@@ -12,6 +11,7 @@ import MDEditor from "@uiw/react-md-editor";
 import {
     BreadcrumbList,
     GnButton,
+    GnDialog,
     GnInput,
     GnLabel,
     GnSelect,
@@ -69,7 +69,7 @@ const RegisterItemDetails = () => {
     const [newLinkText, setNewLinkText] = useState("");
     const [newLinkUrl, setNewLinkUrl] = useState("");
     const [dataFetched, setDataFetched] = useState(false);
-    const [modalOpen, setModalOpen] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
     const [validationErrors, setValidationErrors] = useState([]);
     const [datasetSearchIsLoading, setDatasetSearchIsLoading] = useState(false);
     const [datasetOptions, setDatasetOptions] = useState([]);
@@ -215,10 +215,6 @@ const RegisterItemDetails = () => {
             });
     };
 
-    const openModal = () => {
-        setModalOpen(true);
-    };
-
     const cloneRegister = () => {
         const registerItem = savedRegisterItem;
         const token = authToken?.access_token || null;
@@ -246,8 +242,15 @@ const RegisterItemDetails = () => {
             });
     };
 
-    const closeModal = () => {
-        setModalOpen(false);
+    const openDialog = () => {
+        setDialogOpen(false);
+        setTimeout(() => {
+            setDialogOpen(true);
+        });
+    };
+
+    const closeDialog = () => {
+        setDialogOpen(false);
     };
 
     const handleOnDatasetSearch = (query) => {
@@ -1255,7 +1258,7 @@ const RegisterItemDetails = () => {
                                 <div>
                                     {canDeleteRegisterItem(authInfo) ? (
                                         <gn-button color="default">
-                                            <button onClick={openModal}>Slett konteksttype</button>
+                                            <button onClick={openDialog}>Slett konteksttype</button>
                                         </gn-button>
                                     ) : null}
                                     {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
@@ -1279,24 +1282,14 @@ const RegisterItemDetails = () => {
                         </div>
                     </div>
 
-                    <Modal
-                        show={modalOpen}
-                        onHide={closeModal}
-                        keyboard={false}
-                        animation={false}
-                        centered
-                        backdrop="static"
-                        aria-labelledby="form-dialog-title"
-                    >
-                        <Modal.Header closeButton>
-                            <Modal.Title>Slett konteksttype</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <p>Er du sikker på at du vil slette {newRegisterItem.name}?</p>
-                        </Modal.Body>
-                        <Modal.Footer>
+                    <gn-dialog show={dialogOpen}>
+                        <heading-text>
+                            <h2>Slett konteksttype</h2>
+                        </heading-text>
+                        <p>Er du sikker på at du vil slette {newRegisterItem.name}?</p>
+                        <div>
                             <gn-button color="default">
-                                <button onClick={closeModal}>
+                                <button onClick={closeDialog}>
                                     {dispatch(translate("btnCancel", null, "Avbryt"))}{" "}
                                 </button>
                             </gn-button>
@@ -1305,8 +1298,8 @@ const RegisterItemDetails = () => {
                                     {dispatch(translate("btnDelete", null, "Slett"))}{" "}
                                 </button>
                             </gn-button>
-                        </Modal.Footer>
-                    </Modal>
+                        </div>
+                    </gn-dialog>
                 </Fragment>
             ) : null}
         </Fragment>
