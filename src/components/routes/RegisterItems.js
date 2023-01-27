@@ -43,13 +43,11 @@ const RegisterItems = () => {
     }, [authToken?.access_token]);
 
     useEffect(() => {
-        if (!registerItemsFetched) {
-            dispatch(fetchRegisterItems(tokenRef.current)).then(() => {
-                setRegisterItemsFetched(true);
-                dispatch(fetchOptions()).then(() => {});
-            });
-        }
-    }, [dispatch, registerItemsFetched]);
+        dispatch(fetchRegisterItems(tokenRef.current)).then(() => {
+            setRegisterItemsFetched(true);
+            dispatch(fetchOptions()).then(() => {});
+        });
+    }, [dispatch, authToken]);
 
     const getStatusLabel = (statuses, registerItem) => {
         return statuses && registerItem?.status && statuses?.[registerItem.status - 1]?.label?.length
