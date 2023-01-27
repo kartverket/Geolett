@@ -44,11 +44,9 @@ const CreateRegisterItem = () => {
     const handleChange = (data) => {
         const updatedRegisterItem = registerItem;
         const { name, value } = data.target ? data.target : data;
-        console.log("data", value);
         const parsed = parseInt(value);
 
         updatedRegisterItem[name] = isNaN(parsed) ? value : parsed;
-        console.log(updatedRegisterItem);
         setRegisterItem(updatedRegisterItem);
     };
 

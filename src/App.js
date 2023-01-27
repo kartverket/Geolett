@@ -45,7 +45,6 @@ let store = null;
 let userManager = null;
 
 const App = (props) => {
-    //const dispatch = useDispatch();
 
     // State
     const [configIsLoaded, setConfigIsLoaded] = useState(false);
