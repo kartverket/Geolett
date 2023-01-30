@@ -1060,7 +1060,7 @@ const RegisterItemDetails = () => {
                                         rel="noreferrer"
                                         href={`https://objektkatalog.geonorge.no/Objekttype/Index/${selectedObjectTypeId}`}
                                     >
-                                        Gå til objektkatalogen for å finne attributt og kodeverdi til{" "}
+                                        Gå til objektkatalogen for detaljer om attributt og kodeverdi til{" "}
                                         {newRegisterItem.dataSet?.typeReference?.type}
                                     </a>
                                 ) : null}
