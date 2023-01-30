@@ -1,5 +1,5 @@
 // Dependencies
-import React, { Fragment, useCallback, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toastr } from "react-redux-toastr";
 import { Typeahead, withAsync } from "react-bootstrap-typeahead";
@@ -65,6 +65,14 @@ const RegisterItemDetails = () => {
         savedRegisterItem?.owner?.length ? [savedRegisterItem.owner] : []
     );
     const [selectedObjectTypeId, setSelectedObjectTypeId] = useState(null);
+    const [selectedObjectTypeAttributes, setSelectedObjectTypeAttributes] = useState(null);
+    const [selectedObjectTypeAttributeName, setSelectedObjectTypeAttributeName] = useState(
+        savedRegisterItem?.dataSet?.typeReference?.attribute
+    );
+    const [selectedObjectTypeAttributeCodeValues, setSelectedObjectTypeAttributeCodeValues] = useState(null);
+    const [selectedObjectTypeAttributeCodeValueValue, setSelectedObjectTypeAttributeCodeValueValue] = useState(
+        newRegisterItem?.dataSet?.typeReference?.codeValue
+    );
     const [editable, setEditable] = useState(false);
     const [newLinkText, setNewLinkText] = useState("");
     const [newLinkUrl, setNewLinkUrl] = useState("");
@@ -77,6 +85,10 @@ const RegisterItemDetails = () => {
 
     const [descriptionMarkdown, setDescriptionMarkdown] = useState(savedRegisterItem?.description || "");
     const [registerItemTitle, setRegisterItemTitle] = useState(savedRegisterItem?.contextType || "");
+
+    // Refs
+    const selectedObjectTypeAttributeNameRef = useRef(null);
+    const selectedObjectTypeAttributeCodeValueValueRef = useRef(null);
 
     const handleChange = (data) => {
         const registerItem = savedRegisterItem;
@@ -102,12 +114,49 @@ const RegisterItemDetails = () => {
         registerItem.dataSet = registerItem.dataSet || {};
         registerItem.dataSet.typeReference = registerItem.dataSet.typeReference || {};
         registerItem.dataSet.typeReference[name] = isNaN(parsed) ? value : parsed;
-        setNewRegisterItem(registerItem);
 
         if (name === "type") {
+            registerItem.dataSet.typeReference.attribute = null;
+            registerItem.dataSet.typeReference.codeValue = null;
+
+            setSelectedObjectTypeAttributeName(null);
+            selectedObjectTypeAttributeNameRef.current.value = "";
+
+            setSelectedObjectTypeAttributeCodeValues(null);
+
+            setSelectedObjectTypeAttributeCodeValueValue(null);
+            selectedObjectTypeAttributeCodeValueValueRef.current.value = "";
+
             const selectedObjectTypeOption = getSelectedObjectTypeOptionFromOptionValue(value);
             setSelectedObjectTypeId(selectedObjectTypeOption?.id);
         }
+
+        if (name === "attribute") {
+            registerItem.dataSet.typeReference.codeValue = null;
+
+            setSelectedObjectTypeAttributeCodeValueValue(null);
+            selectedObjectTypeAttributeCodeValueValueRef.current.value = "";
+
+            const selectedAttribute =
+                selectedObjectTypeAttributes?.Attributes?.length &&
+                selectedObjectTypeAttributes.Attributes.find((attribute) => {
+                    return attribute.Name === value;
+                });
+            if (selectedAttribute?.Name?.length) {
+            }
+            setSelectedObjectTypeAttributeName(selectedAttribute?.Name?.length ? selectedAttribute.Name : null);
+            setSelectedObjectTypeAttributeCodeValues(
+                selectedAttribute?.CodeValues ? selectedAttribute.CodeValues : null
+            );
+        }
+
+        if (name === "codeValue") {
+            registerItem.dataSet.typeReference.codeValue = null;
+
+            setSelectedObjectTypeAttributeCodeValueValue(value);
+        }
+
+        setNewRegisterItem(registerItem);
     };
 
     const handleChangeReferenceTek17 = (data) => {
@@ -191,6 +240,27 @@ const RegisterItemDetails = () => {
                 console.error("Error:", error);
             });
     };
+
+    const fetchObjectTypeAttributes = (objectTypeId) => {
+        const objectTypeAttributesApiUrl = `https://objektkatalog.dev.geonorge.no/api/attributes/${objectTypeId}`; // TODO make variable for objektkatalogUrl
+        const apiOptions = {
+            method: "GET",
+            headers: {
+                Accept: "application/json"
+            }
+        };
+        fetch(objectTypeAttributesApiUrl, apiOptions)
+            .then((res) => res.json())
+            .then((objectTypeAttributes) => {
+                setSelectedObjectTypeAttributes(objectTypeAttributes);
+            });
+    };
+
+    useEffect(() => {
+        if (selectedObjectTypeId?.length) {
+            fetchObjectTypeAttributes(selectedObjectTypeId);
+        }
+    }, [selectedObjectTypeId]);
 
     const saveRegisterItem = () => {
         const registerItem = newRegisterItem;
@@ -994,11 +1064,24 @@ const RegisterItemDetails = () => {
                         {editable ? (
                             <gn-input block fullWidth>
                                 <input
-                                    id="datasetTypeReferenceAttribute"
                                     name="attribute"
-                                    defaultValue={newRegisterItem?.dataSet?.typeReference?.attribute || ""}
+                                    defaultValue={selectedObjectTypeAttributeName || ""}
                                     onChange={handleDatasetTypeReferenceChange}
+                                    list="attribute-list"
+                                    autoComplete="off"
+                                    ref={selectedObjectTypeAttributeNameRef}
                                 />
+                                <datalist id="attribute-list">
+                                    {selectedObjectTypeAttributes?.Attributes.length
+                                        ? selectedObjectTypeAttributes.Attributes.map((attribute) => {
+                                              return (
+                                                  <option key={attribute.Nalue} value={attribute.Name}>
+                                                      {attribute.Name}
+                                                  </option>
+                                              );
+                                          })
+                                        : null}
+                                </datalist>
                             </gn-input>
                         ) : (
                             <div id="datasetTypeReferenceAttribute">
@@ -1017,9 +1100,23 @@ const RegisterItemDetails = () => {
                                 <input
                                     id="datasetTypeReferenceCodeValue"
                                     name="codeValue"
-                                    defaultValue={newRegisterItem?.dataSet?.typeReference?.codeValue || ""}
+                                    defaultValue={selectedObjectTypeAttributeCodeValueValue || ""}
                                     onChange={handleDatasetTypeReferenceChange}
+                                    list="codeValue-list"
+                                    autoComplete="off"
+                                    ref={selectedObjectTypeAttributeCodeValueValueRef}
                                 />
+                                <datalist id="codeValue-list">
+                                    {selectedObjectTypeAttributeCodeValues?.length
+                                        ? selectedObjectTypeAttributeCodeValues.map((codeValue) => {
+                                              return (
+                                                  <option key={codeValue.Value} value={codeValue.Value}>
+                                                      {codeValue.Name}
+                                                  </option>
+                                              );
+                                          })
+                                        : null}
+                                </datalist>
                             </gn-input>
                         ) : (
                             <div id="datasetTypeReferenceCodeValue">
