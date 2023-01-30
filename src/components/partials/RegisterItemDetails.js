@@ -142,8 +142,6 @@ const RegisterItemDetails = () => {
                 selectedObjectTypeAttributes.Attributes.find((attribute) => {
                     return attribute.Name === value;
                 });
-            if (selectedAttribute?.Name?.length) {
-            }
             setSelectedObjectTypeAttributeName(selectedAttribute?.Name?.length ? selectedAttribute.Name : null);
             setSelectedObjectTypeAttributeCodeValues(
                 selectedAttribute?.CodeValues ? selectedAttribute.CodeValues : null
@@ -524,6 +522,29 @@ const RegisterItemDetails = () => {
         savedRegisterItem?.dataSet?.uuidMetadata,
         dataFetched
     ]);
+
+    useEffect(() => {
+        if (savedRegisterItem?.dataSet?.typeReference?.type?.length) {
+            const selectedObjectTypeOption = getSelectedObjectTypeOptionFromOptionValue(
+                savedRegisterItem.dataSet.typeReference.type
+            );
+            setSelectedObjectTypeId(selectedObjectTypeOption?.id);
+        }
+    }, [getSelectedObjectTypeOptionFromOptionValue, savedRegisterItem?.dataSet?.typeReference?.type]);
+
+    useEffect(() => {
+        if (savedRegisterItem?.dataSet?.typeReference?.attribute?.length) {
+            const selectedAttribute =
+                selectedObjectTypeAttributes?.Attributes?.length &&
+                selectedObjectTypeAttributes.Attributes.find((attribute) => {
+                    return attribute.Name === savedRegisterItem.dataSet.typeReference.attribute;
+                });
+            setSelectedObjectTypeAttributeName(selectedAttribute?.Name?.length ? selectedAttribute.Name : null);
+            setSelectedObjectTypeAttributeCodeValues(
+                selectedAttribute?.CodeValues ? selectedAttribute.CodeValues : null
+            );
+        }
+    }, [savedRegisterItem?.dataSet?.typeReference?.attribute, selectedObjectTypeAttributes?.Attributes]);
 
     const renderLinks = (links) => {
         const linkListElements = links?.length
