@@ -18,6 +18,7 @@ const Footer = () => {
             language={selectedLanguage}
             environment={getEnvironmentVariable("environment")}
             version={getEnvironmentVariable("BuildVersionNumber")}
+            hideaccessibilitystatementlink
         />
     );
 };
