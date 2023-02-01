@@ -113,7 +113,7 @@ const RegisterItemDetails = () => {
         const parsed = parseInt(value);
         registerItem.dataSet = registerItem.dataSet || {};
         registerItem.dataSet.typeReference = registerItem.dataSet.typeReference || {};
-        registerItem.dataSet.typeReference[name] = isNaN(parsed) ? value : parsed;
+        registerItem.dataSet.typeReference[name] = isNaN(value) ? value : parsed;
 
         if (name === "type") {
             registerItem.dataSet.typeReference.attribute = null;
@@ -149,8 +149,6 @@ const RegisterItemDetails = () => {
         }
 
         if (name === "codeValue") {
-            registerItem.dataSet.typeReference.codeValue = null;
-
             setSelectedObjectTypeAttributeCodeValueValue(value);
         }
 
