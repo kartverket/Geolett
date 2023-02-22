@@ -38,7 +38,6 @@ export const deleteRegisterItem = (registerItem, token) => async (dispatch) => {
 export const cloneRegisterItem = (registerItem, token) => async (dispatch) => {
    let apiUrl = apiUrls.registerItem.clone;
    apiUrl = apiUrl.replace("{id}", registerItem.id);
-   console.log(apiUrl);
    const response = await appApi(token).post(apiUrl , null);
 
    dispatch({ type: CLONE_REGISTER_ITEM, payload: response.data });

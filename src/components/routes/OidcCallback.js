@@ -1,38 +1,30 @@
 // Dependencies
-import React from "react";
-import { connect } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { CallbackComponent } from "redux-oidc";
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
+const OidcCallback = ({ userManager }) => {
+    const navigate = useNavigate();
 
-class CallbackPage extends React.Component {
-  successCallback = () => {
-    const pathname = this.props && this.props.oidc && this.props.oidc.user && this.props.oidc.user.state && this.props.oidc.user.state.pathname ? this.props.oidc.user.state.pathname : '';
-    this.props.history.push(pathname);
-  };
+    const successCallback = () => {};
 
-  render() {
+    useEffect(() => {
+        const autoRedirectPath = sessionStorage?.autoRedirectPath || "/";
+        sessionStorage.removeItem("autoRedirectPath");
+        navigate(autoRedirectPath);
+    }, [navigate]);
+
     return (
-      <CallbackComponent
-        userManager={this.props.userManager}
-        successCallback={this.successCallback}
-        errorCallback={error => {
-          this.props.history.push("/");
-          console.error(error);
-        }}
-      >
-        <div>Logger inn...</div>
-      </CallbackComponent>
+        <CallbackComponent
+            userManager={userManager}
+            successCallback={successCallback}
+            errorCallback={() => {
+                navigate("/");
+            }}
+        >
+            <div>Logger inn...</div>
+        </CallbackComponent>
     );
-  }
-}
-
-CallbackPage.propTypes = {
-  userManager: PropTypes.object.isRequired,
-  pathname: PropTypes.string
 };
 
-const mapStateToProps = state => ({oidc: state.oidc});
-
-export default withRouter(connect(mapStateToProps, null)(CallbackPage));
+export default OidcCallback;

@@ -1,269 +1,243 @@
 // Dependencies
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
+// Geonorge WebComponents
+// eslint-disable-next-line no-unused-vars
+import { BreadcrumbList, ContentContainer } from "@kartverket/geonorge-web-components";
 
 // Components
-import { SelectDropdown } from 'components/custom-elements';
-import Container from 'components/template/Container';
-import CreateRegisterItem from 'components/partials/CreateRegisterItem';
+import CreateRegisterItem from "components/partials/CreateRegisterItem";
 
 // Actions
-import { fetchRegisterItems } from 'actions/RegisterItemActions';
-import { fetchOptions } from 'actions/OptionsActions';
+import { fetchRegisterItems } from "actions/RegisterItemActions";
+import { fetchOptions } from "actions/OptionsActions";
 
 // Stylesheets
-import style from 'components/routes/RegisterItems.module.scss'
-import formsStyle from 'components/partials/forms.module.scss';
+import style from "components/routes/RegisterItems.module.scss";
 
+const RegisterItems = () => {
+    const dispatch = useDispatch();
 
-class RegisterItems extends Component {
+    // Redux store
+    const savedRegisterItems = useSelector((state) => state.registerItems);
+    const statuses = useSelector((state) => state.statuses);
+    const authToken = useSelector((state) => state.authToken);
+    const config = useSelector((state) => state.config);
 
-   constructor(props) {
-      super(props);
-      this.state = {
-         registerItemsFetched: false,
-         registerItems: null,            
-         sort: {
-            column: null,
-            direction: 'desc',
-         }
-      };
+    // State
+    const [registerItemsFetched, setRegisterItemsFetched] = useState(false);
+    const [newRegisterItems, setNewRegisterItems] = useState(null);
+    const [ownerSelected, setOwnerSelected] = useState();
+    const [sort, setSort] = useState({
+        column: null,
+        direction: "desc"
+    });
 
-      this.handleChange = this.handleChange.bind(this);
-   }
+    // Refs
+    const tokenRef = useRef(null);
 
-   componentDidMount() {
+    useEffect(() => {
+        tokenRef.current = authToken?.access_token?.length ? authToken.access_token : null;
+    }, [authToken?.access_token]);
 
-      setTimeout(
-         function() {
-            const token = this.props.authToken && this.props.authToken.access_token ? this.props.authToken.access_token : null;
-            this.props.fetchRegisterItems(token) && this.props.fetchOptions().then(() => {
-               this.setState({ registerItemsFetched: true });
-            });
-         }
-         .bind(this),
-         200
-     );
-   }
+    useEffect(() => {
+        dispatch(fetchRegisterItems(tokenRef.current)).then(() => {
+            setRegisterItemsFetched(true);
+            dispatch(fetchOptions()).then(() => {});
+        });
+    }, [dispatch, authToken]);
 
-   getStatusLabel(statuses, registerItem) {
+    const getStatusLabel = (statuses, registerItem) => {
+        return statuses && registerItem?.status && statuses?.[registerItem.status - 1]?.label?.length
+            ? statuses[registerItem.status - 1].label
+            : "";
+    };
 
-      return statuses && registerItem.status && statuses[registerItem.status - 1] &&
-        statuses[registerItem.status -1].label ? statuses[registerItem.status - 1].label : '';
-   }
+    const getOwners = () => {
+        const uniqueOwners = [];
+        const owners = [];
 
-   exists(status, arr) {
-      return arr.some(function(el) {
-        return el.value === status;
-      }); 
-    }
+        let allOwners = { value: 0, label: "Alle" };
+        owners.unshift(allOwners);
 
-   getOwners() {
-
-      const uniqueOwners = [];
-      const owners = [];
-
-      let allOwners = {value:0, label: "Alle"};
-      owners.unshift(allOwners);
-
-         this.props.registerItems.map(item => {
+        savedRegisterItems.forEach((item) => {
             if (uniqueOwners.indexOf(item.owner.id) === -1) {
-               uniqueOwners.push(item.owner.id);
-               let obj = {value : item.owner.id, label : item.owner.name };
-               owners.push(obj);
+                uniqueOwners.push(item.owner.id);
+                let obj = { value: item.owner.id, label: item.owner.name };
+                owners.push(obj);
             }
-      });
+        });
 
-      owners.sort((a, b) => {
-         
-          let nameA = a.label;
-          let nameB = b.label;
+        owners.sort((a, b) => {
+            const nameA = a.label;
+            const nameB = b.label;
+            if (nameA < nameB) return -1;
+            if (nameA < nameB) return 1;
+            else return 0;
+        });
 
-          if (nameA < nameB)
-              return -1
-          if (nameA < nameB)
-              return 1
-          else return 0
+        return owners;
+    };
 
-      })
+    const handleChange = (data) => {
+        let ownerRegisterItems = savedRegisterItems;
+        const owner = data?.target?.value && parseInt(data?.target?.value);
 
-      return owners;
-   }
+        if (owner !== 0) {
+            ownerRegisterItems = ownerRegisterItems.filter(function (el) {
+                return el.owner.id === owner;
+            });
+        }
 
-   handleChange(data) {
+        setOwnerSelected(owner);
+        setNewRegisterItems(ownerRegisterItems);
+    };
 
-      let ownerRegisterItems = this.props.registerItems;
-      let owner = data.value;
+    const setArrow = (column) => {
+        let className = "sort-direction";
+        if (sort?.column === column) {
+            className += sort?.direction === "asc" ? ` ${style.asc}` : ` ${style.desc}`;
+        }
+        return className;
+    };
 
-      if(owner != 0)
-      {
-         ownerRegisterItems = ownerRegisterItems.filter(function (el) {
-         return el.owner.id == owner ;
-       });
-      }
+    const onSort = (column) => {
+        return (e) => {
+            const direction = sort?.column ? (sort?.direction === "asc" ? "desc" : "asc") : "asc";
+            const registerItems = newRegisterItems || savedRegisterItems;
+            const sortedRegisterItems = registerItems.sort((a, b) => {
+                if (column === "contextType") {
+                    const nameA = a.contextType;
+                    const nameB = b.contextType;
 
-      this.setState({
-         ownerSelected: owner,
-         registerItems: ownerRegisterItems
-     })
-    }
+                    if (nameA < nameB) return -1;
+                    if (nameA < nameB) return 1;
+                    else return 0;
+                } else if (column === "title") {
+                    const nameA = a.title;
+                    const nameB = b.title;
 
-   setArrow = (column) => {
-      let className = 'sort-direction';
-      
-      if (this.state.sort.column === column) {
-        className += this.state.sort.direction === 'asc' ? ` ${style.asc}` : ` ${style.desc}`;
-      }
-      
-      return className;
-      };
+                    if (nameA < nameB) return -1;
+                    if (nameA < nameB) return 1;
+                    else return 0;
+                } else if (column === "owner") {
+                    const nameA = a.owner.name;
+                    const nameB = b.owner.name;
 
-   onSort = column => {
-      return e => {
-          const direction = this.state.sort.column ? (this.state.sort.direction === 'asc' ? 'desc' : 'asc') : 'asc'
-          const registerItems = this.state.registerItems || this.props.registerItems;
-          const sortedRegisterItems = registerItems.sort((a, b) => {
-              if (column === 'contextType') {
-               const nameA = a.contextType;
-               const nameB = b.contextType;
+                    if (nameA < nameB) return -1;
+                    if (nameA < nameB) return 1;
+                    else return 0;
+                } else if (column === "status") {
+                    const nameA = getStatusLabel(statuses, a);
+                    const nameB = getStatusLabel(statuses, b);
 
-               if (nameA < nameB)
-                   return -1
-               if (nameA < nameB)
-                   return 1
-               else return 0
-               }
-               else if (column === 'title') {
-                  const nameA = a.title;
-                  const nameB = b.title;
-  
-                  if (nameA < nameB)
-                      return -1
-                  if (nameA < nameB)
-                      return 1
-                  else return 0
-               }
-               else if (column === 'owner') {
-                  const nameA = a.owner.name;
-                  const nameB = b.owner.name;
-  
-                  if (nameA < nameB)
-                      return -1
-                  if (nameA < nameB)
-                      return 1
-                  else return 0
-              }
-               else if (column === 'status') {
+                    if (nameA < nameB) return -1;
+                    if (nameA < nameB) return 1;
+                    else return 0;
+                } else {
+                    return a.first - b.first;
+                }
+            });
 
-                  const nameA = this.getStatusLabel(this.props.statuses, a)
-                  const nameB = this.getStatusLabel(this.props.statuses, b)
-   
-                  if (nameA < nameB)
-                     return -1
-                  if (nameA < nameB)
-                     return 1
-                  else return 0
+            if (direction === "desc") {
+                sortedRegisterItems.reverse();
+            }
 
-               }
-              else {
-                  return a.first - b.first
-              }
-          })
+            setNewRegisterItems(sortedRegisterItems);
+            setSort({
+                column,
+                direction
+            });
+        };
+    };
 
-          if (direction === 'desc') {
-            sortedRegisterItems.reverse()
-          }
-          
-
-          this.setState({
-            registerItems: sortedRegisterItems,
-              sort: {
-                  column,
-                  direction,
-              },
-          })
-      }
-  }   
-
-   renderRegisterItems(registerItems) {
-      const registerItemRows = registerItems?.length
-         ? registerItems.filter(registerItem => { return registerItem; }).map(registerItem => {
-            return (<tr key={registerItem.id}>
-               <td>
-                  <Link to={`${process.env.PUBLIC_URL}/${registerItem.id}/`}>
-                     {registerItem.contextType}
-                  </Link>
-               </td>
-               <td>
-                  {registerItem.title}
-               </td>
-               <td>
-                  {registerItem.owner?.name || ''}
-               </td>
-               <td>
-                  {this.getStatusLabel(this.props.statuses, registerItem )}
-               </td>
-            </tr>)
-         }) : null;
-      return registerItemRows
-         ? (
+    const renderRegisterItems = (registerItems) => {
+        const registerItemRows = registerItems?.length
+            ? registerItems
+                  .filter((registerItem) => {
+                      return registerItem;
+                  })
+                  .map((registerItem) => {
+                      return (
+                          <tr key={registerItem.id}>
+                              <td>
+                                  <Link to={`${process.env.PUBLIC_URL}/${registerItem.id}/`}>
+                                      {registerItem.contextType}
+                                  </Link>
+                              </td>
+                              <td>{registerItem.title}</td>
+                              <td>{registerItem.owner?.name || ""}</td>
+                              <td>{getStatusLabel(statuses, registerItem)}</td>
+                          </tr>
+                      );
+                  })
+            : null;
+        return registerItemRows ? (
             <React.Fragment>
-            <div>Eier </div>
-            <div className={formsStyle.comboInput}>
-                  <SelectDropdown
-                    name="owner"
-                    value={this.state.ownerSelected || 0}
-                    options={this.getOwners()}
-                    onSelect={this.handleChange}
-                    className={formsStyle.statusSelect}
-                  />
+                <div>Eier </div>
+                <gn-select>
+                    <select name="owner" defaultValue={ownerSelected || "0"} onChange={handleChange}>
+                        {getOwners().map((owner) => {
+                            return (
+                                <option key={owner.value} value={owner.value}>
+                                    {owner.label}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </gn-select>
 
-            </div>
-
-            <table className={style.registerItemsTable}>
-               <thead>
-                  <tr>
-                     <th style={{cursor : 'pointer'}} onClick={this.onSort('contextType')}>Konteksttype<span className={this.setArrow('contextType')}></span></th>
-                     <th style={{cursor : 'pointer'}} onClick={this.onSort('title')}>Tittel<span className={this.setArrow('title')}></span></th>
-                     <th style={{cursor : 'pointer'}} onClick={this.onSort('owner')}>Eier<span className={this.setArrow('owner')}></span></th>
-                     <th style={{cursor : 'pointer'}} onClick={this.onSort('status')}>Status<span className={this.setArrow('status')}></span></th>
-                  </tr>
-               </thead>
-               <tbody>{registerItemRows}</tbody>
-            </table>
-
+                <table className={style.registerItemsTable}>
+                    <thead>
+                        <tr>
+                            <th style={{ cursor: "pointer" }} onClick={onSort("contextType")}>
+                                Konteksttype<span className={setArrow("contextType")}></span>
+                            </th>
+                            <th style={{ cursor: "pointer" }} onClick={onSort("title")}>
+                                Tittel<span className={setArrow("title")}></span>
+                            </th>
+                            <th style={{ cursor: "pointer" }} onClick={onSort("owner")}>
+                                Eier<span className={setArrow("owner")}></span>
+                            </th>
+                            <th style={{ cursor: "pointer" }} onClick={onSort("status")}>
+                                Status<span className={setArrow("status")}></span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>{registerItemRows}</tbody>
+                </table>
             </React.Fragment>
-         )
-         : '';
-   }
+        ) : (
+            ""
+        );
+    };
 
-   render() {
-      if (!this.state.registerItemsFetched) {
-         return ''
-      }
-      const registerItems = this.state.registerItems || this.props.registerItems;
-      return (
-         <Container>
+    if (!registerItemsFetched) {
+        return "";
+    }
+    const registerItems = newRegisterItems || savedRegisterItems;
+
+    const breadcrumbs = [
+        {
+            name: "Registrene",
+            url: config?.registerUrl || ""
+        },
+        {
+            name: "Geolett",
+            url: "/geolett"
+        }
+    ];
+
+    return (
+        <content-container>
+            <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
             <h1>Konteksttyper</h1>
             <CreateRegisterItem newRegisterItem />
-            {this.renderRegisterItems(registerItems)}
-         </Container>
-      );
-   }
-}
-
-const mapStateToProps = state => ({
-   registerItems: state.registerItems,
-   options: state.options,
-   selectedLanguage: state.selectedLanguage,
-   statuses: state.options.statuses,
-   authToken: state.authToken
-});
-
-const mapDispatchToProps = {
-   fetchRegisterItems,
-   fetchOptions
+            {renderRegisterItems(registerItems)}
+        </content-container>
+    );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterItems);
+export default RegisterItems;

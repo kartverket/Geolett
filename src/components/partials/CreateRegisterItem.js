@@ -1,197 +1,176 @@
 // Dependencies
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import { toastr } from 'react-redux-toastr';
-import ValidationErrors from 'components/partials/ValidationErrors';
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Typeahead } from "react-bootstrap-typeahead";
+import { toastr } from "react-redux-toastr";
+import ValidationErrors from "components/partials/ValidationErrors";
+
+// Geonorge Webcomponents
+// eslint-disable-next-line no-unused-vars
+import { GnButton, GnDialog, GnLabel, HeadingText } from "@kartverket/geonorge-web-components";
 
 // Models
-import { RegisterItem } from 'models/registerItem';
+import { RegisterItem } from "models/registerItem";
 
 // Actions
-import { fetchOrganizations } from 'actions/OrganizationsActions';
-import { createRegisterItem, updateRegisterItem, fetchRegisterItems } from 'actions/RegisterItemActions';
+import { fetchOrganizations } from "actions/OrganizationsActions";
+import { createRegisterItem, fetchRegisterItems } from "actions/RegisterItemActions";
 
 // Helpers
-import { canAddRegisterItem, canEditRegisterItemOwner } from 'helpers/authorizationHelpers';
+import { canAddRegisterItem, canEditRegisterItemOwner } from "helpers/authorizationHelpers";
 
 // Stylesheets
-import 'react-bootstrap-typeahead/css/Typeahead.css';
+import "react-bootstrap-typeahead/css/Typeahead.css";
 
+const CreateRegisterItem = () => {
+    const dispatch = useDispatch();
 
-class CreateRegisterItem extends Component {
-   constructor(props) {
-      super(props);
+    // Redux store
+    const organizations = useSelector((state) => state.organizations);
+    const authInfo = useSelector((state) => state.authInfo);
+    const authToken = useSelector((state) => state.authToken);
 
-      this.state = {
-         dataFetched: false,
-         modalOpen: false,
-         registerItem: new RegisterItem(),
-         selectedOwner: [],
-         validationErrors: []
-      };
+    // State
+    const [dataFetched, setDataFetched] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [registerItem, setRegisterItem] = useState(new RegisterItem());
+    const [selectedOwner, setSelectedOwner] = useState([]);
+    const [validationErrors, setValidationErrors] = useState([]);
 
-      this.handleChange = this.handleChange.bind(this);
-      this.handleOwnerSelect = this.handleOwnerSelect.bind(this);
-      this.openModal = this.openModal.bind(this);
-      this.closeModal = this.closeModal.bind(this);
-      this.saveRegisterItem = this.saveRegisterItem.bind(this);
-   }
+    const handleOwnerSelect = (data) => {
+        setSelectedOwner(data);
+    };
 
-   componentDidMount() {
-      this.props.fetchOrganizations()
-         .then(() => {
-            const preSelectedOwner = this.getPreSelectedOwnerFromAuthInfo(this.props.authInfo);
-            this.setState({
-               dataFetched: true,
-               selectedOwner: preSelectedOwner ? [preSelectedOwner] : []
+    const handleChange = (data) => {
+        const updatedRegisterItem = registerItem;
+        const { name, value } = data.target ? data.target : data;
+        const parsed = parseInt(value);
+
+        updatedRegisterItem[name] = isNaN(parsed) ? value : parsed;
+        setRegisterItem(updatedRegisterItem);
+    };
+
+    const saveRegisterItem = () => {
+        const updatedRegisterItem = registerItem;
+        const token = authToken?.access_token || null;
+
+        if (!!selectedOwner?.length) {
+            updatedRegisterItem.owner.id = selectedOwner[0].id;
+        }
+
+        dispatch(createRegisterItem(registerItem, token))
+            .then(() => {
+                closeDialog();
+                setValidationErrors([]);
+                dispatch(fetchRegisterItems(token));
+                toastr.success("En ny konteksttype ble lagt til");
+            })
+            .catch(({ response }) => {
+                setValidationErrors(response.data);
+                toastr.error("Kunne ikke opprette konteksttype");
             });
-         });
-   }
+    };
 
-   componentDidUpdate(prevProps) {
-      if (this.props.authInfo && prevProps.authInfo !== this.props.authInfo) {
-         const preSelectedOwner = this.getPreSelectedOwnerFromAuthInfo(this.props.authInfo);
-         this.setState({
-            dataFetched: true,
-            selectedOwner: preSelectedOwner ? [preSelectedOwner] : []
-         });
-      }
-   }
+    const showAddRegisterItemContent = () => {
+        return !!registerItem && !!canAddRegisterItem(authInfo);
+    };
 
-   getPreSelectedOwnerFromAuthInfo(authInfo) {
-      return this.props.organizations.find(organization => {
-         return organization.orgNumber === authInfo?.organizationNumber;
-      });
-   }
+    const getPreSelectedOwnerFromAuthInfo = useCallback(() => {
+        return organizations.find((organization) => {
+            return organization.orgNumber === authInfo?.organizationNumber;
+        });
+    }, [authInfo?.organizationNumber, organizations]);
 
-   openModal() {
-      this.setState({
-         modalOpen: true
-      });
-   }
+    useEffect(() => {
+        if (!dataFetched) {
+            dispatch(fetchOrganizations()).then(() => {
+                const preSelectedOwner = getPreSelectedOwnerFromAuthInfo();
+                setDataFetched(true);
+                setSelectedOwner(preSelectedOwner ? [preSelectedOwner] : []);
+            });
+        }
+    }, [dataFetched, dispatch, getPreSelectedOwnerFromAuthInfo]);
 
-   closeModal() {
-      this.setState({ modalOpen: false });
-   }
+    const openDialog = () => {
+        setDialogOpen(false);
+        setTimeout(() => {
+            setDialogOpen(true);
+        });
+    };
 
-   handleOwnerSelect(data) {
-      this.setState({
-         selectedOwner: data
-      })
-   }
+    const closeDialog = () => {
+        setDialogOpen(false);
+    };
 
-   handleChange(data) {
-      const registerItem = this.state.registerItem;
-      const { name, value } = data.target ? data.target : data;
-      const parsed = parseInt(value);
+    return dataFetched && showAddRegisterItemContent() ? (
+        <React.Fragment>
+            <gn-button color="primary">
+                <button onClick={() => openDialog()}>Opprett konteksttype</button>
+            </gn-button>
+            <gn-dialog show={dialogOpen}>
+                <heading-text>
+                    <h2>Ny konteksttype</h2>
+                </heading-text>
+                <ValidationErrors errors={validationErrors} />
+                <gn-label block>
+                    <label htmlFor="contextType">Konteksttype (påkrevd felt)</label>
+                </gn-label>
 
-      registerItem[name] = isNaN(parsed) ? value : parsed;
+                <gn-input block fullWidth>
+                    <input
+                        id="contextType"
+                        name="contextType"
+                        type="text"
+                        defaultValue={registerItem.contextType}
+                        onChange={handleChange}
+                        required
+                    />
+                </gn-input>
 
-      this.setState({ registerItem });
-   }
+                <gn-label block>
+                    <label htmlFor="title">Tittel (påkrevd felt)</label>
+                </gn-label>
+                <gn-input block fullWidth>
+                    <input
+                        id="title"
+                        name="title"
+                        type="text"
+                        defaultValue={registerItem.title}
+                        onChange={handleChange}
+                        required
+                    />
+                </gn-input>
 
-   saveRegisterItem() {
-      const registerItem = this.state.registerItem;
-      const token = this.props.authToken && this.props.authToken.access_token ? this.props.authToken.access_token : null;
-
-      if (this.state.selectedOwner.length) {
-         registerItem.owner.id = this.state.selectedOwner[0].id
-      }
-
-      this.props.createRegisterItem(registerItem, token)
-         .then(() => {
-            this.closeModal();
-            this.setState({ validationErrors: [] });
-            this.props.fetchRegisterItems(token);
-            toastr.success('En ny konteksttype ble lagt til');
-         })
-         .catch(({ response }) => {
-            toastr.error('Kunne ikke opprette konteksttype');
-            this.setState({ validationErrors: response.data });
-         })
-   }
-
-   showAddRegisterItemContent() {
-      return this.state.registerItem && canAddRegisterItem(this.props.authInfo);
-   }
-
-   render() {
-      if (!this.state.dataFetched) {
-         return '';
-      }
-
-      return this.showAddRegisterItemContent() ? (
-         <React.Fragment>
-            <Button variant="primary" className="marginB-20" onClick={this.openModal}>Opprett konteksttype</Button>
-            <Modal
-               show={this.state.modalOpen}
-               onHide={this.closeModal}
-               backdrop="static"
-               centered
-               keyboard={false}
-               animation={false}
-            >
-               <Modal.Header closeButton>
-                  <Modal.Title>Ny konteksttype</Modal.Title>
-               </Modal.Header>
-
-               <Modal.Body>
-                  <ValidationErrors errors={this.state.validationErrors} />
-                  <Form.Group controlId="contextType">
-                     <Form.Label>Konteksttype (påkrevd felt)</Form.Label>
-                     <Form.Control type="text" name="contextType" value={this.state.registerItem.contextType} onChange={this.handleChange} />
-                  </Form.Group>
-
-                  <Form.Group controlId="title">
-                     <Form.Label>Tittel (påkrevd felt)</Form.Label>
-                     <Form.Control type="text" name="title" value={this.state.registerItem.title} onChange={this.handleChange} />
-                  </Form.Group>
-
-                  <Form.Group controlId="formName">
-                     <Form.Label>Eier</Form.Label>
-                     <Typeahead
-                        id="basic-typeahead-single"
+                <gn-label block>
+                    <label htmlFor="owner">Eier</label>
+                </gn-label>
+                <gn-input block fullWidth>
+                    <Typeahead
+                        id="owner"
                         labelKey="name"
-                        onChange={this.handleOwnerSelect}
-                        options={this.props.organizations}
-                        selected={this.state.selectedOwner}
-                        disabled={!canEditRegisterItemOwner(this.props.authInfo)}
+                        onChange={handleOwnerSelect}
+                        options={organizations}
+                        selected={selectedOwner}
+                        disabled={!canEditRegisterItemOwner(authInfo)}
                         placeholder="Legg til eier..."
-                     />
-                  </Form.Group>
-
-
-
-               </Modal.Body>
-
-               <Modal.Footer>
-                  <Button variant="secondary" onClick={this.closeModal}>Avbryt</Button>
-                  <Button variant="primary" disabled={!this.state.registerItem?.contextType?.length || !this.state.registerItem?.title?.length} onClick={this.saveRegisterItem}>Lagre</Button>
-               </Modal.Footer>
-            </Modal>
-         </React.Fragment>
-      ) : '';
-   }
-}
-
-const mapStateToProps = state => {
-   return ({
-      organizations: state.organizations,
-      user: state.oidc.user,
-      authInfo: state.authInfo,
-      authToken: state.authToken
-   });
+                    />
+                </gn-input>
+                <div>
+                    <gn-button color="default">
+                        <button onClick={() => closeDialog()}>Avbryt</button>
+                    </gn-button>
+                    <gn-button color="primary">
+                        <button
+                            disabled={!registerItem?.contextType?.length || !registerItem?.title?.length}
+                            onClick={saveRegisterItem}
+                        >
+                            Lagre
+                        </button>
+                    </gn-button>
+                </div>
+            </gn-dialog>
+        </React.Fragment>
+    ) : null;
 };
 
-const mapDispatchToProps = {
-   fetchOrganizations,
-   createRegisterItem,
-   updateRegisterItem,
-   fetchRegisterItems
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateRegisterItem);
+export default CreateRegisterItem;

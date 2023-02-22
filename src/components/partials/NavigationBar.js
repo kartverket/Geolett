@@ -1,94 +1,63 @@
 // Dependencies
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { MainNavigation } from '@kartverket/geonorge-web-components/MainNavigation';
+import React, { useEffect } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
+
+// Geonorge Webcomponents
+// eslint-disable-next-line no-unused-vars
+import { MainNavigation } from "@kartverket/geonorge-web-components/MainNavigation";
 
 // Actions
-import { updateOidcCookie } from 'actions/AuthenticationActions';
-import { updateAuthInfo } from 'actions/AuthorizationActions';
-import { updateSelectedLanguage } from 'actions/SelectedLanguageActions';
+import { updateOidcCookie } from "actions/AuthenticationActions";
+import { updateAuthInfo } from "actions/AuthorizationActions";
+import { updateSelectedLanguage } from "actions/SelectedLanguageActions";
 
 // Helpers
-import { getEnvironmentVariable } from 'helpers/environmentVariableHelpers.js';
+import { getEnvironmentVariable } from "helpers/environmentVariableHelpers.js";
 
-class NavigationBar extends Component {
+const NavigationBar = () => {
+    const dispatch = useDispatch();
 
-  // 
-  // Language logic is commented out as long as app is monolingual
-  //
+    // Redux store
+    const oidc = useSelector((state) => state.oidc);
+    const authToken = useSelector((state) => state.authToken);
+    const authInfo = useSelector((state) => state.authToken);
 
+    useEffect(() => {
+        const isLoggedIn = !!authToken?.access_token?.length;
+        const hasAuthInfo = !!authInfo?.organizationNumber?.length;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      mainNavigationIsInitialized: false
-    };
-  }
+        if (isLoggedIn || hasAuthInfo) {
+            dispatch(updateOidcCookie(oidc.user));
+            dispatch(updateAuthInfo());
+        }
+    }, [dispatch, authInfo?.organizationNumber, authToken?.access_token, oidc.user]);
 
-  componentDidMount() {
-    /*
-    if (!this.props.oidc.isLoadingUser) {
-      this.initMainNavigation();
-    }
-    */
-  }
+    const environment = getEnvironmentVariable("environment");
+    const signinurl = getEnvironmentVariable("signinurl");
+    const signouturl = getEnvironmentVariable("signouturl");
+    const isLoggedIn = !!authToken?.access_token?.length;
+    return (
+        <main-navigation
+            signinurl={signinurl}
+            signouturl={signouturl}
+            isLoggedIn={isLoggedIn}
+            environment={environment}
+        ></main-navigation>
+    );
+};
 
-  componentDidUpdate(prevProps) {
-    /*
-    if (!this.state.mainNavigationIsInitialized) {
-      this.initMainNavigation();
-    }
-    */
-
-    const wasLoggedIn = prevProps.authToken && prevProps.authToken.access_token && prevProps.authToken.access_token.length ? true : false;
-    const isLoggedIn = this.props.authToken && this.props.authToken.access_token && this.props.authToken.access_token.length ? true : false;
-
-    const hadAuthInfo = prevProps.authInfo && prevProps.authInfo.organizationNumber;
-    const hasAuthInfo = this.props.authInfo && this.props.authInfo.organizationNumber;
-    if ((isLoggedIn !== wasLoggedIn) || (hasAuthInfo !== hadAuthInfo)) {
-      this.props.updateOidcCookie(this.props.oidc.user);
-      this.props.updateAuthInfo();
-    }
-  }
-
-  /*
-  initMainNavigation() {
-    MainNavigation.setup('main-navigation', {
-      onNorwegianLanguageSelect: () => {
-        this.props.updateSelectedLanguage('nb-NO');
-      },
-      onEnglishLanguageSelect: () => {
-        this.props.updateSelectedLanguage('en-US');
-      }
-    });
-    this.setState({
-      mainNavigationIsInitialized: true
-    });
-  }
-*/
-
-  render() {
-    const environment = getEnvironmentVariable('environment');
-    const signinurl = getEnvironmentVariable('signinurl');
-    const signouturl = getEnvironmentVariable('signouturl');
-    const isLoggedIn = this.props.authToken && this.props.authToken.access_token && this.props.authToken.access_token.length ? true : false;
-   // const language = this.props.selectedLanguage === 'en-US' ? 'en' : 'no';
-    return <main-navigation signinurl={signinurl} signouturl={signouturl} isLoggedIn={isLoggedIn} environment={environment}></main-navigation>;
-  }
-}
-
-const mapStateToProps = state => ({
-  oidc: state.oidc,
-  config: state.config,
-  authInfo: state.authInfo,
-  authToken: state.authToken,
-  selectedLanguage: state.selectedLanguage
+const mapStateToProps = (state) => ({
+    oidc: state.oidc,
+    config: state.config,
+    authInfo: state.authInfo,
+    authToken: state.authToken,
+    selectedLanguage: state.selectedLanguage
 });
 
 const mapDispatchToProps = {
-  updateOidcCookie,
-  updateAuthInfo,
-  updateSelectedLanguage
-}
+    updateOidcCookie,
+    updateAuthInfo,
+    updateSelectedLanguage
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar);

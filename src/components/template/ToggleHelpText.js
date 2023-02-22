@@ -1,37 +1,41 @@
 // Dependencies
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import style from 'components/template/ToggleHelpText.module.scss';
+import React, { Fragment, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch } from "react-redux";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { translate } from 'actions/ConfigActions';
+// Actions
+import { translate } from "actions/ConfigActions";
 
+// Stylesheets
+import style from "components/template/ToggleHelpText.module.scss";
 
-class ToggleHelpText extends Component {
+const ToggleHelpText = (props) => {
+    const dispatch = useDispatch();
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            expanded: false,
-            content: this.props.translate(this.props.resourceKey),
-            initialized: false
-        };
-    }
+    // State
+    const [expanded, setExpanded] = useState(false);
+    const [initialized, setInitialized] = useState(false);
 
-    render() {
-        return this.state.content?.length
-            ? (
-                <React.Fragment>
-                    <FontAwesomeIcon className={`${style.toggleIcon} ${this.state.expanded ? style.expanded : ''}`} icon="info-circle" color="#007bff" onClick={() => { this.setState({ expanded: !this.state.expanded, initialized: true }) }} />
-                    <div ref="test" className={`${style.content} ${this.state.initialized ? style.initialized : ''} ${this.state.expanded ? style.expanded : ''}`}>
-                        <div>{this.state.content}</div>
-                    </div>
-                </React.Fragment>
-            ) : '';
-    }
-}
-const mapDispatchToProps = {
-    translate
+    const content = dispatch(translate(props.resourceKey));
+
+    return content ? (
+        <Fragment>
+            <FontAwesomeIcon
+                className={`${style.toggleIcon} ${expanded ? style.expanded : ""}`}
+                icon="info-circle"
+                color="#007bff"
+                onClick={() => {
+                    setExpanded(!expanded);
+                    setInitialized(true);
+                }}
+            />
+            <div
+                className={`${style.content} ${initialized ? style.initialized : ""} ${expanded ? style.expanded : ""}`}
+            >
+                <div>{content}</div>
+            </div>
+        </Fragment>
+    ) : null;
 };
 
-export default connect(null, mapDispatchToProps)(ToggleHelpText);
+export default ToggleHelpText;
