@@ -2,7 +2,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import * as serviceWorker from "./serviceWorker";
-import WebFont from "webfontloader";
 import "extensions";
 
 // Components
@@ -14,11 +13,6 @@ import ConfigLoader from "components/ConfigLoader";
 // Stylesheets
 import "index.scss";
 
-WebFont.load({
-    google: {
-        families: ["Raleway:100,400,500,700", "Open Sans:400,600,700", "sans-serif"]
-    }
-});
 
 const Main = () => {
     return <ConfigLoader ready={(config) => <App config={config} />} />;

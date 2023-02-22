@@ -688,7 +688,7 @@ const RegisterItemDetails = () => {
                 <Fragment>
                     <div className={formsStyle.form}>
                         <heading-text>
-                            <h1>{registerItemTitle?.length ? registerItemTitle : newRegisterItem?.contextType}</h1>
+                            <h1 underline="true">{registerItemTitle?.length ? registerItemTitle : newRegisterItem?.contextType}</h1>
                         </heading-text>
 
                         <ValidationErrors errors={validationErrors} />

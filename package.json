@@ -52,8 +52,7 @@
     "redux-first-history": "^5.0.12",
     "redux-oidc": "^4.0.0-beta1",
     "redux-thunk": "^2.3.0",
-    "sass": "^1.32.8",
-    "webfontloader": "^1.6.28"
+    "sass": "^1.32.8"
   },
   "devDependencies": {
     "redux-devtools-extension": "^2.13.8"
