@@ -694,12 +694,13 @@ const RegisterItemDetails = () => {
                         <ValidationErrors errors={validationErrors} />
 
                         <heading-text>
-                            <h2>Kontekstbeskrivelse</h2>
+                            <h2>Kontekstbeskrivelse </h2>
                         </heading-text>
-
-                        <gn-label block>
+<div className={formsStyle.metadata}>
+    <h3> Metadata </h3>
+    <gn-label block>
                             <label htmlFor="contextType">
-                                {dispatch(translate("labelContextType", null, "Konteksttype"))}
+                                {dispatch(translate("labelContextType", null, "Type treff"))}
                                 <ToggleHelpText resourceKey="contextTypeDescription" />
                             </label>
                         </gn-label>
@@ -708,6 +709,7 @@ const RegisterItemDetails = () => {
                                 <input
                                     id="contextType"
                                     name="contextType"
+                                    placeholder={dispatch(translate("contextTypeDescription", null, "titleDescription"))}
                                     defaultValue={newRegisterItem.contextType}
                                     onChange={(event) => {
                                         handleChange({ name: "contextType", value: event.target.value });
@@ -715,21 +717,25 @@ const RegisterItemDetails = () => {
                                     }}
                                 />
                             </gn-input>
+                           
                         ) : (
                             <div id="contextType">{newRegisterItem.contextType}</div>
                         )}
 
-                        <gn-label block>
+<gn-label block>
                             <label htmlFor="id">
                                 {dispatch(translate("labelId", null, "ID"))}
                                 <ToggleHelpText resourceKey="IdDescription" />
                             </label>
                         </gn-label>
                         <div id="id">{newRegisterItem.id}</div>
+</div>
+                      
+                    
 
                         <gn-label block>
                             <label htmlFor="title">
-                                {dispatch(translate("labelTitle", null, "Tittel"))}
+                                {dispatch(translate("labelTitle", null, "Navn på veiledningstekst"))}
                                 <ToggleHelpText resourceKey="titleDescription" />
                             </label>
                         </gn-label>
@@ -738,6 +744,7 @@ const RegisterItemDetails = () => {
                                 <input
                                     id="title"
                                     name="title"
+                                    placeholder={dispatch(translate("titleDescription", null, "titleDescription   "))}
                                     defaultValue={newRegisterItem.title}
                                     onChange={handleChange}
                                 />
@@ -801,8 +808,9 @@ const RegisterItemDetails = () => {
                         <div data-color-mode="light">
                             {editable ? (
                                 <MDEditor
+                                    textareaProps={{ placeholder:  dispatch(translate("descriptionDescription", null, "Forklarende tekst")) }}
                                     id="description"
-                                    preview="edit"
+                                    preview="edit"                                   
                                     height={200}
                                     name="description"
                                     value={descriptionMarkdown || ""}
