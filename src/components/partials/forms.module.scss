@@ -2,9 +2,9 @@
 
 :local(.form) {
    label {
-      font-weight: 600;
+      font-weight: 600;     
    }
-
+   
    :local(.star) {
       width: 18px;
       height: 18px;
@@ -82,6 +82,7 @@
       }
 
       textarea {
+        
          padding-right: 38px;
          &:focus {
             box-shadow: none;
@@ -234,3 +235,9 @@
    padding: 20px;
    margin: auto -20px;
  }
+:local(.inputs) {
+   border: 1px solid red;
+}
+:local(.buffercontent) {
+   border: 1px dotted red;
+}
