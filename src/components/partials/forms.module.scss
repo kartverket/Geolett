@@ -190,6 +190,23 @@
       position: relative;
    }
 }
+:local(.introbox) {
+   display: flex;
+   flex-direction: column;
+   :local(.imageprofile) {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 100px;
+      > img:first-of-type {
+         width: 200px;
+        
+      }
+   }
+   
+   :local(.textcontent) {
+      white-space: pre-wrap;
+   }
+}
 :local(.buttonGroup) {
    button {
       margin-right: 10px;
@@ -233,7 +250,8 @@
    flex-direction: column;
    background-color: rgba(223,157,136,0.3);
    padding: 20px;
-   margin: auto -20px;
+   margin: 20px -20px;
+
  }
 :local(.inputs) {
    border: 1px solid red;

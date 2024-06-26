@@ -22,13 +22,14 @@ const ToggleHelpText = (props) => {
         <Fragment>
             <FontAwesomeIcon
                 className={`${style.toggleIcon} ${expanded ? style.expanded : ""}`}
-                icon="info-circle"
-                color="#007bff"
+                icon="fa-regular fa-circle-question"
+                color="#00000"
                 onClick={() => {
                     setExpanded(!expanded);
                     setInitialized(true);
                 }}
             />
+          
             <div
                 className={`${style.content} ${initialized ? style.initialized : ""} ${expanded ? style.expanded : ""}`}
             >

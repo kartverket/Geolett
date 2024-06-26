@@ -37,8 +37,9 @@
             "sign3Description": "Tegnforklaring 3",
             "sign4Description": "Tegnforklaring 4",
             "sign5Description": "Tegnforklaring 5",
-            "sign6Description": "Tegnforklaring 6"
-        }
+            "sign6Description": "Tegnforklaring 6",
+            "introGeolettDescriptionTitle": "Hvorfor lager vi disse tekstene?",
+            "introGeolettDescription": "Å utforme standardiserte, forståelige veiledningstekster har flere fordeler. For dere som fagmyndighet vil dere kunne redusere antall henvendelser, forebygge konflikt og forvalte deres ansvar som fagmyndighet mer effektivt. \n\n For brukerne av temadatasett gjør det at de kan identifisere risiko tidlig og enten justere for den, eller gå videre med en bevissthet om mulige konflikter ved prosjektet. Med denne typen veiledningstekster, vil personer med begrenset ekspertise innen temaet datasettet tar for seg, fremdeles kunne gjøre nytte av informasjonen i relevante saker.\n\nI denne editoren kan du redigere veiledningstekster for temadatasett. Tekstfeltene er med på å strukturere tekstene i et standardformat, slik at de enkelt kan brukes på tvers av ulike kartverktøy.\n Når vi skriver veiledningstekster, er det viktig at vi tar hensyn til hvem som skal bruke dem, hva de skal bruke det til og hvilke forkunnskaper disse brukerne har. \n\n Tips! Bruke Temadata Assistent (TeA) til å utforme tekster som er lette å forstå for brukerne! Du finner den her."}
     },
     {
         "culture": "en-US",
