@@ -5,6 +5,8 @@ import { toastr } from "react-redux-toastr";
 import { Typeahead, withAsync } from "react-bootstrap-typeahead";
 import { useNavigate, useParams } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
+import dama from "images/svg/dama.svg";
+import dibkscreenshot from "images/svg/dibk-screenshot.png";
 
 // Geonorge WebComponents
 /* eslint-disable */
@@ -617,7 +619,7 @@ const RegisterItemDetails = () => {
                 {editable ? (
                     <Fragment>
                         <heading-text>
-                            <h3>Legg til ny lenke</h3>
+                            <h4>Legg til ny lenke</h4>
                         </heading-text>
                         <div key="newLink" className={formsStyle.flex}>
                             <div className={formsStyle.flex1}>
@@ -695,7 +697,12 @@ const RegisterItemDetails = () => {
                         </heading-text>
 
                         <ValidationErrors errors={validationErrors} />
-
+                        <div className={formsStyle.introbox}>
+                        <heading-text><h5>{dispatch(translate("introGeolettDescriptionTitle", null, "tittel"))}</h5></heading-text>
+                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}</div>
+                        <div className={formsStyle.imageprofile}><img src={dama} alt="Dama" /></div>
+                        <img src={dibkscreenshot} />
+                        </div>
                         <heading-text>
                             <h2>Kontekstbeskrivelse </h2>
                         </heading-text>
@@ -814,7 +821,7 @@ const RegisterItemDetails = () => {
 
                             <gn-label block>
                                 <label htmlFor="guidance">
-                                    {dispatch(translate("labelGuidance", null, "Veiledning"))}
+                                    {dispatch(translate("labelGuidance", null, "Tillegsinformasjon om tiltak"))}
                                     <ToggleHelpText resourceKey="guidanceDescription" />
                                 </label>
                             </gn-label>
@@ -823,6 +830,7 @@ const RegisterItemDetails = () => {
                                     <input
                                         id="guidance"
                                         name="guidance"
+                                        placeholder={dispatch(translate("guidanceDescription", null, "Tillegsinformasjon"))}
                                         defaultValue={newRegisterItem.guidance}
                                         onChange={handleChange}
                                     />
@@ -833,12 +841,27 @@ const RegisterItemDetails = () => {
 
                            <ToggleBuffer onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />
                               
-                            
+                           <gn-label block>
+                            <label>
+                            Lenker
+                            </label>
+                        </gn-label>
+                        {renderLinks(newRegisterItem.links)} 
                         
 
                         </div>
                         <div className={formsStyle.metadata}>
-                            <h3> Metadata </h3>
+                            <header-text><h2>Metadata, vises ikke for brukerne </h2></header-text>
+                            <em>Data om dataene, til bruk i Geonorge</em>
+
+                            <gn-label block>
+                                <label htmlFor="id">
+                                    {dispatch(translate("labelId", null, "ID"))}
+                                    <ToggleHelpText resourceKey="IdDescription" />
+                                </label>
+                            </gn-label>
+                            <div id="id">{newRegisterItem.id}</div>
+
                             <gn-label block>
                             <label htmlFor="contextType">
                                 {dispatch(translate("labelContextType", null, "Type treff"))}
@@ -861,20 +884,12 @@ const RegisterItemDetails = () => {
                             
                             ) : (
                                 <div id="contextType">{newRegisterItem.contextType}</div>
-                            )}
+                            )}                          
 
-                            <gn-label block>
-                                <label htmlFor="id">
-                                    {dispatch(translate("labelId", null, "ID"))}
-                                    <ToggleHelpText resourceKey="IdDescription" />
-                                </label>
+
+                            <gn-label>
+                            <label>Kommentarer</label>
                             </gn-label>
-                            <div id="id">{newRegisterItem.id}</div>
-
-
-                            <heading-text>
-                            <h2>Kommentarer</h2>
-                        </heading-text>
 
                         <gn-label block>
                             <label htmlFor="technicalComment">
@@ -914,48 +929,11 @@ const RegisterItemDetails = () => {
                             <div id="otherComment">{newRegisterItem.otherComment}</div>
                         )}
 
-                        </div>
-                      
-                        
-
-                       
-
-                        <gn-label block>
-                            <label htmlFor="status">Status</label>
-                        </gn-label>
-                        {editable ? (
-                            <gn-select>
-                                <select
-                                    id="status"
-                                    name="status"
-                                    defaultValue={newRegisterItem.status || 1}
-                                    onChange={handleChange}
-                                >
-                                    {statuses.map((status) => {
-                                        return (
-                                            <option key={status.value} value={status.value}>
-                                                {status.label}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                            </gn-select>
-                        ) : (
-                            <div id="status">{getStatusLabel(statuses, newRegisterItem)}</div>
-                        )}
-                       
-                        <heading-text>
-                            <h2>Lenker</h2>
-                        </heading-text>
-                        {renderLinks(newRegisterItem.links)}
-
-
-                        <heading-text>
-                            <h2>
-                                Datasett
-                                <ToggleHelpText resourceKey="dataSetTitleDescription" />
-                            </h2>
-                        </heading-text>
+                        <gn-label>
+                            <label>  Datasett
+                                <ToggleHelpText resourceKey="dataSetTitleDescription" /></label>
+                            </gn-label>
+                           
 
                         <gn-label block>
                             <label htmlFor="datasetTitle">
@@ -1054,6 +1032,7 @@ const RegisterItemDetails = () => {
                                 <input
                                     name="attribute"
                                     defaultValue={selectedObjectTypeAttributeName || ""}
+                                    placeholder={dispatch(translate("dataSetTypeReferenceAttributeDescription", null, "Beskrives av attributt   "))}
                                     onChange={handleDatasetTypeReferenceChange}
                                     list="attribute-list"
                                     autoComplete="off"
@@ -1157,7 +1136,7 @@ const RegisterItemDetails = () => {
                         )}
 
                         <heading-text>
-                            <h2>Referanser</h2>
+                            <h4>Referanser</h4>
                         </heading-text>
 
                         {editable ? (
@@ -1311,7 +1290,42 @@ const RegisterItemDetails = () => {
                             </div>
                         )}
 
-                        <div className={formsStyle.btngroup}>
+
+
+                        </div>
+                      
+                        
+
+                       
+
+                        <gn-label block>
+                            <label htmlFor="status">Status</label>
+                        </gn-label>
+                        {editable ? (
+                            <gn-select>
+                                <select
+                                    id="status"
+                                    name="status"
+                                    defaultValue={newRegisterItem.status || 1}
+                                    onChange={handleChange}
+                                >
+                                    {statuses.map((status) => {
+                                        return (
+                                            <option key={status.value} value={status.value}>
+                                                {status.label}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                            </gn-select>
+                        ) : (
+                            <div id="status">{getStatusLabel(statuses, newRegisterItem)}</div>
+                        )}
+                       
+                       
+
+
+                                               <div className={formsStyle.btngroup}>
                             {editable ? (
                                 <div>
                                     {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
@@ -1358,7 +1372,7 @@ const RegisterItemDetails = () => {
                                                     setEditable(true);
                                                 }}
                                             >
-                                                Rediger konteksttype
+                                                Rediger
                                             </button>
                                         </gn-button>
                                     ) : null}
