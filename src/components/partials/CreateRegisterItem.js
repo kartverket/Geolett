@@ -105,15 +105,15 @@ const CreateRegisterItem = () => {
     return dataFetched && showAddRegisterItemContent() ? (
         <React.Fragment>
             <gn-button color="primary">
-                <button onClick={() => openDialog()}>Opprett konteksttype</button>
+                <button onClick={() => openDialog()}>Opprett veiledningstekst</button>
             </gn-button>
             <gn-dialog show={dialogOpen}>
                 <heading-text>
-                    <h2>Ny konteksttype</h2>
+                    <h2>Ny veiledningstekst</h2>
                 </heading-text>
                 <ValidationErrors errors={validationErrors} />
                 <gn-label block>
-                    <label htmlFor="contextType">Konteksttype (påkrevd felt)</label>
+                    <label htmlFor="contextType">Veiledningstekst    (påkrevd felt)</label>
                 </gn-label>
 
                 <gn-input block fullWidth>
@@ -128,7 +128,7 @@ const CreateRegisterItem = () => {
                 </gn-input>
 
                 <gn-label block>
-                    <label htmlFor="title">Tittel (påkrevd felt)</label>
+                    <label htmlFor="title">Navn på veiledningstekst (påkrevd felt)</label>
                 </gn-label>
                 <gn-input block fullWidth>
                     <input

@@ -2,9 +2,9 @@
 
 :local(.form) {
    label {
-      font-weight: 600;
+      font-weight: 600;     
    }
-
+   
    :local(.star) {
       width: 18px;
       height: 18px;
@@ -82,6 +82,7 @@
       }
 
       textarea {
+        
          padding-right: 38px;
          &:focus {
             box-shadow: none;
@@ -189,6 +190,23 @@
       position: relative;
    }
 }
+:local(.introbox) {
+   display: flex;
+   flex-direction: column;
+   :local(.imageprofile) {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 100px;
+      > img:first-of-type {
+         width: 200px;
+        
+      }
+   }
+   
+   :local(.textcontent) {
+      white-space: pre-wrap;
+   }
+}
 :local(.buttonGroup) {
    button {
       margin-right: 10px;
@@ -226,4 +244,18 @@
 }
 :local(.block) {
    margin: 20px 0;
+}
+:local(.metadata) {
+   display: flex;
+   flex-direction: column;
+   background-color: rgba(223,157,136,0.3);
+   padding: 20px;
+   margin: 20px -20px;
+
+ }
+:local(.inputs) {
+   border: 1px solid red;
+}
+:local(.buffercontent) {
+   border: 1px dotted red;
 }
