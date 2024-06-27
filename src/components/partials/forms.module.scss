@@ -220,11 +220,19 @@
 :local(.hiddn) {
    visibility: hidden;
 }
+:local(.flexradio) {
+   display: flex;
+   align-items: center;
+   label {
+      max-width: 290px;
+   }
+}
 :local(.flex) {
    display: flex;
    justify-content: space-between;
    align-items: flex-end;
    column-gap: 32px;
+  
    @media screen and (max-width: 600px) {
       flex-direction: column;
    }

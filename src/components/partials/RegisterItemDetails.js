@@ -718,12 +718,12 @@ const RegisterItemDetails = () => {
 
                             
                             <div className={formsStyle.flex}>
-                            <div>
-                            <gn-input><input id="highrisk" name="risk" type="radio" /></gn-input><gn-label><label for="highrisk">Høy risiko</label></gn-label>
-                            </div><div>
-                            <gn-input><input id="mediumrisk" name="risk" type="radio" /></gn-input><gn-label><label for="mediumrisk">Moderat risiko</label></gn-label>
-                            </div><div>
-                            <gn-input><input id="lowrisk" name="risk" type="radio" /></gn-input><gn-label><label for="lowrisk">Lav risiko</label></gn-label>
+                            <div className={formsStyle.flexradio}>
+                            <gn-input><input id="highrisk" name="risk" type="radio" /></gn-input><gn-label><label for="highrisk">Høy grad av konflikt, risiko for byggeforbud</label></gn-label>
+                            </div><div className={formsStyle.flexradio}>
+                            <gn-input><input id="mediumrisk" name="risk" type="radio" /></gn-input><gn-label><label for="mediumrisk">Noe konflikt, aktsomhets-vurdering kan behøves</label></gn-label>
+                            </div><div className={formsStyle.flexradio}>
+                            <gn-input><input id="lowrisk" name="risk" type="radio" /></gn-input><gn-label><label for="lowrisk">Lav grad av konflikt, informasjon om området</label></gn-label>
                             </div>
                             </div>
 
