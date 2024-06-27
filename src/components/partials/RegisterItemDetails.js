@@ -716,17 +716,21 @@ const RegisterItemDetails = () => {
                                 </label>
                             </gn-label>
 
-                            
+                            {editable ? (
                             <div className={formsStyle.flex}>
                             <div className={formsStyle.flexradio}>
-                            <gn-input><input id="highrisk" name="risk" type="radio" /></gn-input><gn-label><label for="highrisk">Høy grad av konflikt, risiko for byggeforbud</label></gn-label>
+                            <input id="highrisk" name="risk" type="radio" value="high" onChange={handleChange} defaultChecked={newRegisterItem.risk === "high"} /><label htmlFor="highrisk">Høy grad av konflikt, risiko for byggeforbud</label>
                             </div><div className={formsStyle.flexradio}>
-                            <gn-input><input id="mediumrisk" name="risk" type="radio" /></gn-input><gn-label><label for="mediumrisk">Noe konflikt, aktsomhets-vurdering kan behøves</label></gn-label>
+                            <input id="mediumrisk" name="risk" type="radio" value="medium" onChange={handleChange} defaultChecked={newRegisterItem.risk === "medium"} /><label htmlFor="mediumrisk">Noe konflikt, aktsomhets-vurdering kan behøves</label>
                             </div><div className={formsStyle.flexradio}>
-                            <gn-input><input id="lowrisk" name="risk" type="radio" /></gn-input><gn-label><label for="lowrisk">Lav grad av konflikt, informasjon om området</label></gn-label>
+                            <input id="lowrisk" name="risk" type="radio" value="low" onChange={handleChange} defaultChecked={newRegisterItem.risk === "low"} /><label htmlFor="lowrisk">Lav grad av konflikt, informasjon om området</label>
                             </div>
                             </div>
-
+                            ) : (
+                                <div>
+                                    {newRegisterItem.risk === "high" ? "Høy grad av konflikt, risiko for byggeforbud" : newRegisterItem.risk === "medium" ? "Noe konflikt, aktsomhets-vurdering kan behøves" : newRegisterItem.risk === "low" ? "Lav grad av konflikt, informasjon om området" : "Ikke satt"}
+                                </div>
+                            )}
                             </div>
                         <div className={formsStyle.opendata}>
                             <h3>Veiledningstekst, vises for sluttbrukerne</h3>
