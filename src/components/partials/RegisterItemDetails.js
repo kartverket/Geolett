@@ -709,7 +709,24 @@ const RegisterItemDetails = () => {
                         <div className={formsStyle.metadata}>   
                        Navn i Geonorge 
                             <br />
-                            Grad av konflikt
+                            
+                            <gn-label block>
+                                <label>Grad av konflikt - type treff
+                                <ToggleHelpText resourceKey="introDegreeRisk" />
+                                </label>
+                            </gn-label>
+
+                            
+                            <div className={formsStyle.flex}>
+                            <div>
+                            <gn-input><input id="highrisk" name="risk" type="radio" /></gn-input><gn-label><label for="highrisk">Høy risiko</label></gn-label>
+                            </div><div>
+                            <gn-input><input id="mediumrisk" name="risk" type="radio" /></gn-input><gn-label><label for="mediumrisk">Moderat risiko</label></gn-label>
+                            </div><div>
+                            <gn-input><input id="lowrisk" name="risk" type="radio" /></gn-input><gn-label><label for="lowrisk">Lav risiko</label></gn-label>
+                            </div>
+                            </div>
+
                             </div>
                         <div className={formsStyle.opendata}>
                             <h3>Veiledningstekst, vises for sluttbrukerne</h3>
