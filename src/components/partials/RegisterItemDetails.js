@@ -1202,7 +1202,6 @@ const RegisterItemDetails = () => {
                                             <gn-button color="primary">
                                                 <button
                                                     disabled={
-                                                        !newRegisterItem?.contextType?.length ||
                                                         !newRegisterItem?.title?.length
                                                     }
                                                     onClick={saveRegisterItem}

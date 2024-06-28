@@ -50,6 +50,7 @@ const RegisterItems = () => {
     }, [dispatch, authToken]);
 
     const getStatusLabel = (statuses, registerItem) => {
+        console.log(registerItem?.status);
         return statuses && registerItem?.status && statuses?.[registerItem.status - 1]?.label?.length
             ? statuses[registerItem.status - 1].label
             : "";
@@ -164,10 +165,9 @@ const RegisterItems = () => {
                           <tr key={registerItem.id}>
                               <td>
                                   <Link to={`${process.env.PUBLIC_URL}/${registerItem.id}/`}>
-                                      {registerItem.contextType}
+                                    {registerItem.title}  
                                   </Link>
                               </td>
-                              <td>{registerItem.title}</td>
                               <td>{registerItem.owner?.name || ""}</td>
                               <td>{getStatusLabel(statuses, registerItem)}</td>
                           </tr>
@@ -192,11 +192,8 @@ const RegisterItems = () => {
                 <table className={style.registerItemsTable}>
                     <thead>
                         <tr>
-                            <th style={{ cursor: "pointer" }} onClick={onSort("contextType")}>
-                                Veiledningstekst<span className={setArrow("contextType")}></span>
-                            </th>
                             <th style={{ cursor: "pointer" }} onClick={onSort("title")}>
-                                Tittel<span className={setArrow("title")}></span>
+                                Navn på veiledningstekst<span className={setArrow("title")}></span>
                             </th>
                             <th style={{ cursor: "pointer" }} onClick={onSort("owner")}>
                                 Eier<span className={setArrow("owner")}></span>
@@ -236,7 +233,7 @@ const RegisterItems = () => {
                 <div style={{position: 'absolute',  top: '20px',  right: '16px'}}><a href="geolett/api/swagger">API</a></div>
             </div>
             <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
-            <heading-text><h1 underline="true">Veiledningstekst</h1></heading-text>
+            <heading-text><h1 underline="true">Veiledningstekster</h1></heading-text>
             
             <CreateRegisterItem newRegisterItem />
             {renderRegisterItems(registerItems)}

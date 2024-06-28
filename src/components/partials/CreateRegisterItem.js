@@ -112,20 +112,6 @@ const CreateRegisterItem = () => {
                     <h2>Ny veiledningstekst</h2>
                 </heading-text>
                 <ValidationErrors errors={validationErrors} />
-                <gn-label block>
-                    <label htmlFor="contextType">Veiledningstekst    (påkrevd felt)</label>
-                </gn-label>
-
-                <gn-input block fullWidth>
-                    <input
-                        id="contextType"
-                        name="contextType"
-                        type="text"
-                        defaultValue={registerItem.contextType}
-                        onChange={handleChange}
-                        required
-                    />
-                </gn-input>
 
                 <gn-label block>
                     <label htmlFor="title">Navn på veiledningstekst (påkrevd felt)</label>
@@ -161,7 +147,7 @@ const CreateRegisterItem = () => {
                     </gn-button>
                     <gn-button color="primary">
                         <button
-                            disabled={!registerItem?.contextType?.length || !registerItem?.title?.length}
+                            disabled={!registerItem?.title?.length}
                             onClick={saveRegisterItem}
                         >
                             Lagre
