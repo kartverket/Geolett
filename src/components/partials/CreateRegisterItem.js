@@ -63,11 +63,11 @@ const CreateRegisterItem = () => {
                 closeDialog();
                 setValidationErrors([]);
                 dispatch(fetchRegisterItems(token));
-                toastr.success("En ny konteksttype ble lagt til");
+                toastr.success("En ny veiledningstekst ble lagt til");
             })
             .catch(({ response }) => {
                 setValidationErrors(response.data);
-                toastr.error("Kunne ikke opprette konteksttype");
+                toastr.error("Kunne ikke opprette veiledningstekst");
             });
     };
 

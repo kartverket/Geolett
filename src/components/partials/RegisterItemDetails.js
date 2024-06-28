@@ -276,10 +276,10 @@ const RegisterItemDetails = () => {
             .then(() => {
                 setValidationErrors([]);
                 setEditable(false);
-                toastr.success("Konteksttypen ble oppdatert");
+                toastr.success("Veiledningsteksten ble oppdatert");
             })
             .catch(({ response }) => {
-                toastr.error("Kunne ikke oppdatere konteksttype");
+                toastr.error("Kunne ikke oppdatere veiledningsteksten");
                 setValidationErrors(response.data);
                 window.scroll(0, 0);
             });
@@ -300,13 +300,13 @@ const RegisterItemDetails = () => {
                 setNewRegisterItem(result?.data);
                 setValidationErrors([]);
                 setEditable(true);
-                toastr.success("Konteksttypen ble opprettet");
+                toastr.success("Veiledningsteksten ble opprettet");
                 window.scroll(0, 0);
                 navigate(`/geolett/${result.data.id}`);
             })
             .catch((response) => {
                 console.log(response);
-                toastr.error("Kunne ikke opprette konteksttype");
+                toastr.error("Kunne ikke opprette veilendningsteksten");
                 setValidationErrors(response?.data);
                 window.scroll(0, 0);
             });
@@ -1217,12 +1217,12 @@ const RegisterItemDetails = () => {
                                 <div>
                                     {canDeleteRegisterItem(authInfo) ? (
                                         <gn-button color="default">
-                                            <button onClick={openDialog}>Slett konteksttype</button>
+                                            <button onClick={openDialog}>Slett veiledningstekst</button>
                                         </gn-button>
                                     ) : null}
                                     {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
                                         <gn-button color="default">
-                                            <button onClick={cloneRegister}>Dupliser konteksttype</button>
+                                            <button onClick={cloneRegister}>Dupliser veiledningstekst</button>
                                         </gn-button>
                                     ) : null}
                                     {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
@@ -1243,7 +1243,7 @@ const RegisterItemDetails = () => {
 
                     <gn-dialog show={dialogOpen}>
                         <heading-text>
-                            <h2>Slett konteksttype</h2>
+                            <h2>Slett veiledningstekst</h2>
                         </heading-text>
                         <p>Er du sikker på at du vil slette {newRegisterItem.name}?</p>
                         <div>

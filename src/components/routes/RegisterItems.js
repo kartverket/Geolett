@@ -193,7 +193,7 @@ const RegisterItems = () => {
                     <thead>
                         <tr>
                             <th style={{ cursor: "pointer" }} onClick={onSort("contextType")}>
-                                Konteksttype<span className={setArrow("contextType")}></span>
+                                Veiledningstekst<span className={setArrow("contextType")}></span>
                             </th>
                             <th style={{ cursor: "pointer" }} onClick={onSort("title")}>
                                 Tittel<span className={setArrow("title")}></span>
@@ -236,7 +236,7 @@ const RegisterItems = () => {
                 <div style={{position: 'absolute',  top: '20px',  right: '16px'}}><a href="geolett/api/swagger">API</a></div>
             </div>
             <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
-            <heading-text><h1 underline="true">Konteksttyper</h1></heading-text>
+            <heading-text><h1 underline="true">Veiledningstekst</h1></heading-text>
             
             <CreateRegisterItem newRegisterItem />
             {renderRegisterItems(registerItems)}
