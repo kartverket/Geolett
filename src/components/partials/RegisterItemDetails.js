@@ -242,7 +242,7 @@ const RegisterItemDetails = () => {
     };
 
     const fetchObjectTypeAttributes = (objectTypeId) => {
-        const objectTypeAttributesApiUrl = `https://objektkatalog.dev.geonorge.no/api/attributes/${objectTypeId}`; // TODO make variable for objektkatalogUrl
+        const objectTypeAttributesApiUrl = `https://objektkatalog.geonorge.no/api/attributes/${objectTypeId}`;
         const apiOptions = {
             method: "GET",
             headers: {
