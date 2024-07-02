@@ -22,7 +22,7 @@ const RegisterItems = () => {
 
     // Redux store
     const savedRegisterItems = useSelector((state) => state.registerItems);
-    const statuses = useSelector((state) => state.statuses);
+    const statuses = useSelector((state) => state.options.statuses);
     const authToken = useSelector((state) => state.authToken);
     const config = useSelector((state) => state.config);
 
@@ -50,7 +50,6 @@ const RegisterItems = () => {
     }, [dispatch, authToken]);
 
     const getStatusLabel = (statuses, registerItem) => {
-        console.log(registerItem?.status);
         return statuses && registerItem?.status && statuses?.[registerItem.status - 1]?.label?.length
             ? statuses[registerItem.status - 1].label
             : "";

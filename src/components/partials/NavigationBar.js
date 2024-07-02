@@ -51,6 +51,7 @@ const mapStateToProps = (state) => ({
     config: state.config,
     authInfo: state.authInfo,
     authToken: state.authToken,
+    statuses: state.options.statuses,
     selectedLanguage: state.selectedLanguage
 });
 
