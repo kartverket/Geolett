@@ -5,6 +5,11 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { toastr } from "react-redux-toastr";
 import ValidationErrors from "components/partials/ValidationErrors";
 
+import ToggleHelpText from "components/template/ToggleHelpText";
+
+import dama from "images/svg/dama.svg";
+import dibkscreenshot from "images/svg/dibk-screenshot.png";
+
 // Geonorge Webcomponents
 // eslint-disable-next-line no-unused-vars
 import { GnButton, GnDialog, GnLabel, HeadingText } from "@kartverket/geonorge-web-components";
@@ -15,12 +20,14 @@ import { RegisterItem } from "models/registerItem";
 // Actions
 import { fetchOrganizations } from "actions/OrganizationsActions";
 import { createRegisterItem, fetchRegisterItems } from "actions/RegisterItemActions";
+import { translate } from "actions/ConfigActions";
 
 // Helpers
 import { canAddRegisterItem, canEditRegisterItemOwner } from "helpers/authorizationHelpers";
 
 // Stylesheets
 import "react-bootstrap-typeahead/css/Typeahead.css";
+import formsStyle from "components/partials/forms.module.scss";
 
 const CreateRegisterItem = () => {
     const dispatch = useDispatch();
@@ -107,14 +114,20 @@ const CreateRegisterItem = () => {
             <gn-button color="primary">
                 <button onClick={() => openDialog()}>Opprett veiledningstekst</button>
             </gn-button>
-            <gn-dialog show={dialogOpen}>
+            <gn-dialog overflow="auto" show={dialogOpen}>
                 <heading-text>
                     <h2>Ny veiledningstekst</h2>
                 </heading-text>
                 <ValidationErrors errors={validationErrors} />
-
+                <div className={formsStyle.introbox}>
+                        <heading-text><h5>{dispatch(translate("introGeolettDescriptionTitle", null, "tittel"))}</h5></heading-text>
+                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}</div>
+                        <div className={formsStyle.imageprofile}><img src={dama} alt="Dama" /></div>
+                        <img src={dibkscreenshot} />
+                        </div>
                 <gn-label block>
                     <label htmlFor="title">Navn på veiledningstekst (påkrevd felt)</label>
+                    <ToggleHelpText expanded="true"  resourceKey="titleDescription" />
                 </gn-label>
                 <gn-input block fullWidth>
                     <input

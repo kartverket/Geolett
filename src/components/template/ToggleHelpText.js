@@ -11,9 +11,8 @@ import style from "components/template/ToggleHelpText.module.scss";
 
 const ToggleHelpText = (props) => {
     const dispatch = useDispatch();
-
     // State
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(props.expanded == "true" ? true : false);
     const [initialized, setInitialized] = useState(false);
 
     const content = dispatch(translate(props.resourceKey));
