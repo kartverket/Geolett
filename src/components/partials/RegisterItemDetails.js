@@ -225,7 +225,7 @@ const RegisterItemDetails = () => {
     const handleDeleteLink = (linkIndex) => {
         const registerItem = savedRegisterItem;
         registerItem.links.splice(linkIndex, 1);
-        setNewRegisterItem(registerItem);
+        setNewRegisterItem({ ...registerItem});
     };
 
     const fetchDatasetDetails = (uuid) => {
