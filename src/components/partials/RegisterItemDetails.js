@@ -272,6 +272,9 @@ const RegisterItemDetails = () => {
             };
         }
 
+        //set to empty since removed from UI
+        registerItem.reference = {};
+
         dispatch(updateRegisterItem(registerItem, token))
             .then(() => {
                 setValidationErrors([]);
