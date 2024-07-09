@@ -35,7 +35,7 @@ const [bufferText, setBufferText] = useState(false)
                
                          
                             {editable ? (<gn-input><input id="bufferja" name="buffersone" type="checkbox" onClick={toggleBuffertext} /></gn-input>) : ('')  }
-                            <gn-label><label for="bufferja">Vis innhold for bufferverdier <ToggleHelpText resourceKey="bufferDescription" /></label></gn-label>                           
+                            <gn-label><label htmlFor="bufferja">Vis innhold for bufferverdier <ToggleHelpText resourceKey="bufferDescription" /></label></gn-label>                           
 
 
                         {showBufferValues() ? <div className={style.buffercontent}>
