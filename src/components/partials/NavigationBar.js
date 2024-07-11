@@ -37,8 +37,9 @@ const NavigationBar = () => {
     const signouturl = getEnvironmentVariable("signouturl");
     const isLoggedIn = !!authToken?.access_token?.length;
 
-    // Redirect to signin page after 24 minutes
-    setTimeout(() => {location.href = signinurl }, 1440000);
+    // Redirect to signin page after token expire, todo handle browser reload using localstorage and date
+    if (isLoggedIn)
+        setTimeout(() => {location.href = signinurl }, 1560000);
 
     return (
         <main-navigation
