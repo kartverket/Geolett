@@ -36,6 +36,10 @@ const NavigationBar = () => {
     const signinurl = getEnvironmentVariable("signinurl");
     const signouturl = getEnvironmentVariable("signouturl");
     const isLoggedIn = !!authToken?.access_token?.length;
+
+    // Redirect to signin page after 24 minutes
+    setTimeout(() => {location.href = signinurl }, 1440000);
+
     return (
         <main-navigation
             signinurl={signinurl}
