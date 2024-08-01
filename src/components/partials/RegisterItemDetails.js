@@ -81,6 +81,7 @@ const RegisterItemDetails = () => {
     const [newLinkUrl, setNewLinkUrl] = useState("");
     const [dataFetched, setDataFetched] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [isActive, setIsActive] = useState(false);
     const [validationErrors, setValidationErrors] = useState([]);
     const [datasetSearchIsLoading, setDatasetSearchIsLoading] = useState(false);
     const [datasetOptions, setDatasetOptions] = useState([]);
@@ -325,6 +326,11 @@ const RegisterItemDetails = () => {
     const closeDialog = () => {
         setDialogOpen(false);
     };
+
+    const toggleMetadata = () => {
+        setIsActive(!isActive);
+      };
+   
 
     const handleOnDatasetSearch = (query) => {
         setDatasetSearchIsLoading(true);
@@ -874,8 +880,11 @@ const RegisterItemDetails = () => {
                         
 
                         </div>
-                        <div className={formsStyle.metadata}>
+                        <div className={isActive ? `${formsStyle.metadata} ${formsStyle.open}` : formsStyle.metadata}>
+                            <div className={formsStyle.flexhorizontal}>
+                            <button onClick={toggleMetadata} >{isActive ? 'Skjul': 'Vis'}</button>
                             <header-text><h2>Metadata, vises ikke for brukerne </h2></header-text>
+                            </div>
                             <em>Data om dataene, til bruk i Geonorge</em>
 
                             <gn-label block>
@@ -1188,9 +1197,9 @@ const RegisterItemDetails = () => {
                        
 
 
-                                               <div className={formsStyle.btngroup}>
+                            <div>
                             {editable ? (
-                                <div>
+                                <div className={formsStyle.btnGroup}>
                                     {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
                                         <Fragment>
                                             <gn-button color="default">
@@ -1199,7 +1208,7 @@ const RegisterItemDetails = () => {
                                                         setEditable(false);
                                                     }}
                                                 >
-                                                    Avslutt redigering
+                                                    Fortsett senere
                                                 </button>
                                             </gn-button>
                                             <gn-button color="primary">
@@ -1209,14 +1218,14 @@ const RegisterItemDetails = () => {
                                                     }
                                                     onClick={saveRegisterItem}
                                                 >
-                                                    Lagre
+                                                    Publiser
                                                 </button>
                                             </gn-button>
                                         </Fragment>
                                     ) : null}
                                 </div>
                             ) : (
-                                <div>
+                                <div className={formsStyle.btnGroup}>
                                     {canDeleteRegisterItem(authInfo) ? (
                                         <gn-button color="default">
                                             <button onClick={openDialog}>Slett veiledningstekst</button>
@@ -1251,7 +1260,7 @@ const RegisterItemDetails = () => {
                         <div>
                             <gn-button color="default">
                                 <button onClick={closeDialog}>
-                                    {dispatch(translate("btnCancel", null, "Avbryt"))}{" "}
+                                    {dispatch(translate("btnCancel", null, "Fortsett senere"))}{" "}
                                 </button>
                             </gn-button>
                             <gn-button color="danger">

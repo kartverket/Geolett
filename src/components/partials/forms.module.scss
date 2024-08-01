@@ -227,6 +227,11 @@
       max-width: 290px;
    }
 }
+:local(.btnGroup) {
+   display: flex;
+   justify-content: space-between;
+   margin-top: 20px; }
+
 :local(.flex) {
    display: flex;
    justify-content: space-between;
@@ -259,11 +264,31 @@
    background-color: rgba(223,157,136,0.3);
    padding: 20px;
    margin: 20px -20px;
+   max-height: 1000px;
+   transition: all 0.3s ease-in-out;
+   &.open {
+      max-height: 90px;
+      overflow: hidden;
+   }
 
  }
+
 :local(.inputs) {
    border: 1px solid red;
 }
 :local(.buffercontent) {
    border: 1px dotted red;
+}
+:local(.flexhorizontal) {
+   display: flex;
+   flex-direction: row;
+   button {
+      margin-right: 10px;
+      margin-top: 18px;
+      height: 30px;
+      width: 60px;
+      background-color: #E49371; 
+      border: none;
+      border-radius: 4px;
+   }
 }
