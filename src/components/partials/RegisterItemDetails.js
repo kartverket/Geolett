@@ -881,6 +881,7 @@ const RegisterItemDetails = () => {
 
                         </div>
                         <div className={isActive ? `${formsStyle.metadata} ${formsStyle.open}` : formsStyle.metadata}>
+                            <div>
                             <div className={formsStyle.flexhorizontal}>
                             <button onClick={toggleMetadata} >{isActive ? 'Skjul': 'Vis'}</button>
                             <header-text><h2>Metadata, vises ikke for brukerne </h2></header-text>
@@ -1167,7 +1168,7 @@ const RegisterItemDetails = () => {
                         ) : (
                             <div id="datasetUrlGmlSchema">{newRegisterItem?.dataSet?.urlGmlSchema || ""}</div>
                         )}
-
+                        </div>
                         </div>
 
                         <gn-label block>
