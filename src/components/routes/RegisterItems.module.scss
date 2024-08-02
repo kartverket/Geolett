@@ -40,3 +40,9 @@
 :local(.desc:after){
    content: '\25BC';
 }
+:local(.listcontainer) {
+   button {
+      margin-bottom: 12px;
+   }
+   
+}

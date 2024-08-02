@@ -231,11 +231,13 @@ const RegisterItems = () => {
             <div style={{position: 'relative'}}>
                 <div style={{position: 'absolute',  top: '20px',  right: '16px'}}><a href="geolett/api/swagger">API</a></div>
             </div>
+           
             <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
             <heading-text><h1 underline="true">Veiledningstekster</h1></heading-text>
-            
-            <CreateRegisterItem newRegisterItem />
-            {renderRegisterItems(registerItems)}
+             <div className={style.listcontainer}>
+                <CreateRegisterItem newRegisterItem />            
+                {renderRegisterItems(registerItems)}
+            </div>
         </content-container>
     );
 };

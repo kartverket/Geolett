@@ -733,7 +733,7 @@ const RegisterItemDetails = () => {
                             <input id="mediumrisk" name="risk" type="radio" value="medium" onChange={handleChange} defaultChecked={newRegisterItem.risk === "medium"} /><label htmlFor="mediumrisk">Noe konflikt, aktsomhets-vurdering kan behøves</label>
                             </div><div className={formsStyle.flexradio}>
                             <input id="lowrisk" name="risk" type="radio" value="low" onChange={handleChange} defaultChecked={newRegisterItem.risk === "low"} /><label htmlFor="lowrisk">Lav grad av konflikt, informasjon om området</label>
-                            </div>
+                            </div>                            
                             </div>
                             ) : (
                                 <div>
@@ -883,7 +883,7 @@ const RegisterItemDetails = () => {
                         <div className={isActive ? `${formsStyle.metadata} ${formsStyle.open}` : formsStyle.metadata}>
                             <div>
                             <div className={formsStyle.flexhorizontal}>
-                            <button onClick={toggleMetadata} >{isActive ? 'Skjul': 'Vis'}</button>
+                            <button onClick={toggleMetadata} >{isActive ? 'Vis': 'Skjul'}</button>
                             <header-text><h2>Metadata, vises ikke for brukerne </h2></header-text>
                             </div>
                             <em>Data om dataene, til bruk i Geonorge</em>
