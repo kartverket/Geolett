@@ -80,7 +80,7 @@ const RegisterItemDetails = () => {
     const [newLinkText, setNewLinkText] = useState("");
     const [newLinkUrl, setNewLinkUrl] = useState("");
     const [dataFetched, setDataFetched] = useState(false);
-    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogOpen, setDialogOpen]   = useState(false);
     const [isActive, setIsActive] = useState(true);
     const [validationErrors, setValidationErrors] = useState([]);
     const [datasetSearchIsLoading, setDatasetSearchIsLoading] = useState(false);
@@ -693,7 +693,7 @@ const RegisterItemDetails = () => {
             url: params?.registerItemId && `/geolett/${params?.registerItemId}/`
         }
     ];
-
+    const risklevel = newRegisterItem.risk;
     return (
         <Fragment>
             <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
@@ -728,16 +728,16 @@ const RegisterItemDetails = () => {
                             {editable ? (
                             <div className={formsStyle.flex}>
                             <div className={formsStyle.flexradio}>
-                            <input id="highrisk" name="risk" type="radio" value="high" onChange={handleChange} defaultChecked={newRegisterItem.risk === "high"} /><label htmlFor="highrisk">Høy grad av konflikt, risiko for byggeforbud</label>
+                            <input id="highrisk" name="risk" type="radio" value="high" onChange={handleChange} defaultChecked={risklevel === "high"} /><label htmlFor="highrisk">Høy grad av konflikt, risiko for byggeforbud</label>
                             </div><div className={formsStyle.flexradio}>
-                            <input id="mediumrisk" name="risk" type="radio" value="medium" onChange={handleChange} defaultChecked={newRegisterItem.risk === "medium"} /><label htmlFor="mediumrisk">Noe konflikt, aktsomhets-vurdering kan behøves</label>
+                            <input id="mediumrisk" name="risk" type="radio" value="medium" onChange={handleChange} defaultChecked={risklevel === "medium"} /><label htmlFor="mediumrisk">Noe konflikt, aktsomhets-vurdering kan behøves</label>
                             </div><div className={formsStyle.flexradio}>
-                            <input id="lowrisk" name="risk" type="radio" value="low" onChange={handleChange} defaultChecked={newRegisterItem.risk === "low"} /><label htmlFor="lowrisk">Lav grad av konflikt, informasjon om området</label>
+                            <input id="lowrisk" name="risk" type="radio" value="low" onChange={handleChange} defaultChecked={risklevel === "low"} /><label htmlFor="lowrisk">Lav grad av konflikt, informasjon om området</label>
                             </div>                            
                             </div>
                             ) : (
                                 <div>
-                                    {newRegisterItem.risk === "high" ? "Høy grad av konflikt, risiko for byggeforbud" : newRegisterItem.risk === "medium" ? "Noe konflikt, aktsomhets-vurdering kan behøves" : newRegisterItem.risk === "low" ? "Lav grad av konflikt, informasjon om området" : "Ikke satt"}
+                                    {risklevel === "high" ? "Høy grad av konflikt, risiko for byggeforbud" : risklevel === "medium" ? "Noe konflikt, aktsomhets-vurdering kan behøves" : risklevel === "low" ? "Lav grad av konflikt, informasjon om området" : "Ikke satt"}
                                 </div>
                             )}
                             </div>
@@ -745,7 +745,7 @@ const RegisterItemDetails = () => {
                             <h3>Veiledningstekst, vises for sluttbrukerne</h3>
                             <gn-label block>
                             <label htmlFor="owner">
-                                {dispatch(translate("labelOwner", null, "Eier"))}
+                                {dispatch(translate("labelOwner", null, "Eier av temadatasettet"))}
                                 <ToggleHelpText resourceKey="ownerDescription" />
                             </label>
                             </gn-label>
@@ -812,7 +812,7 @@ const RegisterItemDetails = () => {
 
                         <gn-label block>
                             <label htmlFor="dialogText">
-                                {dispatch(translate("labelDialogText", null, "Varslingstekst"))}
+                                {dispatch(translate("labelDialogText", null, "Informasjonsvarsel"))}
                                 <ToggleHelpText resourceKey="dialogTextDescription" />
                             </label>
                         </gn-label>
@@ -829,13 +829,13 @@ const RegisterItemDetails = () => {
                                 <div id="dialogText">{newRegisterItem.dialogText}</div>
                             )}
 
-                            <gn-label block>
+                            { risklevel === 'low'? '' : <gn-label block>
                                 <label htmlFor="possibleMeasures">
                                     {dispatch(translate("labelPossibleMeasures", null, "Mulige tiltak"))}
                                     <ToggleHelpText resourceKey="possibleMeasuresDescription" />
                                 </label>
-                            </gn-label>
-                            {editable ? (
+                            </gn-label> }
+                            {editable && risklevel !== 'low' ? (
                                 <gn-textarea block fullWidth>
                                     <textarea
                                         id="possibleMeasures"
@@ -851,7 +851,7 @@ const RegisterItemDetails = () => {
 
                             <gn-label block>
                                 <label htmlFor="guidance">
-                                    {dispatch(translate("labelGuidance", null, "Tillegsinformasjon om tiltak"))}
+                                    {risklevel === 'low' ? dispatch(translate("labelGuidance", null, "Hva betyr dette for deg?/ Hvordan bruke denne informasjonen")) : dispatch(translate("labelGuidance", null, "Tilleggsinformasjon om tiltak")) }
                                     <ToggleHelpText resourceKey="guidanceDescription" />
                                 </label>
                             </gn-label>
@@ -869,7 +869,7 @@ const RegisterItemDetails = () => {
                                 <div id="guidance">{newRegisterItem.dialogText}</div>
                             )}
 
-                           <ToggleBuffer onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />
+                           { risklevel === "low" ? '' : <ToggleBuffer onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
                               
                            <gn-label block>
                             <label>
