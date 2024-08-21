@@ -88,6 +88,7 @@ const RegisterItemDetails = () => {
     const [objectTypeOptions, setObjectTypeOptions] = useState([]);
 
     const [descriptionMarkdown, setDescriptionMarkdown] = useState(savedRegisterItem?.description || "");
+    const [possibleMeasuresMarkdown, setPossbileMeasuresMarkdown] = useState(savedRegisterItem?.possibleMeasures || "");
     const [registerItemTitle, setRegisterItemTitle] = useState(savedRegisterItem?.contextType || "");
 
     // Refs
@@ -816,6 +817,7 @@ const RegisterItemDetails = () => {
                                 <ToggleHelpText resourceKey="dialogTextDescription" />
                             </label>
                         </gn-label>
+                        
                         {editable ? (
                             <gn-input block fullWidth>
                                 <input
@@ -835,21 +837,28 @@ const RegisterItemDetails = () => {
                                     <ToggleHelpText resourceKey="possibleMeasuresDescription" />
                                 </label>
                             </gn-label> }
-                            {risklevel === 'low' ? '' : 
+                            
+                            <div data-color-mode="light">
+                            {risklevel === 'low' ? '' :                              
                             editable ? (
-                                <gn-textarea block fullWidth>
-                                    <textarea
-                                        id="possibleMeasures"
-                                        name="possibleMeasures"
-                                        defaultValue={newRegisterItem.possibleMeasures}
-                                        rows="4"
-                                        onChange={handleChange}
-                                    />
-                                </gn-textarea>
+                                
+                                <MDEditor
+                                    textareaProps={{placeholder: dispatch(translate("possibleMeasuresDescription", null, "Mulige tiltak"))}}
+                                    id="possibleMeasures"
+                                    preview="edit"
+                                    name="possibleMeasures"
+                                    value={newRegisterItem.possibleMeasures || ""}
+                                    onChange={(value) => {
+                                        setPossbileMeasuresMarkdown(value);
+                                        handleChange({ name: "possibleMeasures", value: value });
+                                    }} />
                             ) : (
-                                <div id="possibleMeasures">{newRegisterItem.possibleMeasures}</div>
-                            )}
-
+                                
+                                <MDEditor.Markdown id="possibleMeasures" source={possibleMeasuresMarkdown} />
+                               
+                            ) 
+                            }
+                            </div>
                             <gn-label block>
                                 <label htmlFor="guidance">
                                     {risklevel === 'low' ? dispatch(translate("labelGuidance", null, "Hva betyr dette for deg?/ Hvordan bruke denne informasjonen")) : dispatch(translate("labelGuidance", null, "Tilleggsinformasjon om tiltak")) }
