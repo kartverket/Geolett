@@ -279,7 +279,7 @@ const RegisterItemDetails = () => {
         dispatch(updateRegisterItem(registerItem, token))
             .then(() => {
                 setValidationErrors([]);
-                setEditable(false);
+                setEditable(true);
                 toastr.success("Veiledningsteksten ble oppdatert");
             })
             .catch(({ response }) => {
@@ -835,7 +835,8 @@ const RegisterItemDetails = () => {
                                     <ToggleHelpText resourceKey="possibleMeasuresDescription" />
                                 </label>
                             </gn-label> }
-                            {editable && risklevel !== 'low' ? (
+                            {risklevel === 'low' ? '' : 
+                            editable ? (
                                 <gn-textarea block fullWidth>
                                     <textarea
                                         id="possibleMeasures"
@@ -856,20 +857,21 @@ const RegisterItemDetails = () => {
                                 </label>
                             </gn-label>
                             {editable ? (
-                                <gn-input block fullWidth>
-                                    <input
+                                <gn-textarea block fullWidth>
+                                    <textarea
                                         id="guidance"
                                         name="guidance"
+                                        rows="6"
                                         placeholder={dispatch(translate("guidanceDescription", null, "Tillegsinformasjon"))}
                                         defaultValue={newRegisterItem.guidance}
                                         onChange={handleChange}
                                     />
-                                </gn-input>
+                                </gn-textarea>
                             ) : (
                                 <div id="guidance">{newRegisterItem.dialogText}</div>
                             )}
 
-                           { risklevel === "low" ? '' : <ToggleBuffer onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
+                         
                               
                            <gn-label block>
                             <label>
@@ -878,8 +880,66 @@ const RegisterItemDetails = () => {
                         </gn-label>
                         {renderLinks(newRegisterItem.links)} 
                         
-
+                        { risklevel === "low" ? '' : <ToggleBuffer onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
+                        
                         </div>
+
+                        <div>
+                            {editable ? (
+                                <div className={formsStyle.btnGroup}>
+                                    {canDeleteRegisterItem(authInfo) ? (
+                                        <gn-button color="danger">
+                                            <button onClick={openDialog}>Slett veiledningstekst</button>
+                                        </gn-button>
+                                    ) : null}
+                                    {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
+                                        
+                                        <Fragment>
+                                            <gn-button color="default">
+                                                <button
+                                                    onClick={() => {
+                                                        setEditable(false);
+                                                    }}
+                                                >
+                                                    Fortsett senere
+                                                </button>
+                                            </gn-button>
+                                            <gn-button color="success">
+                                                <button
+                                                    disabled={
+                                                        !newRegisterItem?.title?.length
+                                                    }
+                                                    onClick={saveRegisterItem}
+                                                >
+                                                    Publiser
+                                                </button>
+                                            </gn-button>
+                                        </Fragment>
+                                    ) : null}
+                                </div>
+                            ) : (
+                                <div className={formsStyle.btnGroup}>
+                                    
+                                    {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
+                                        <gn-button color="default">
+                                            <button onClick={cloneRegister}>Dupliser veiledningstekst</button>
+                                        </gn-button>
+                                    ) : null}
+                                    {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
+                                        <gn-button color="primary">
+                                            <button
+                                                onClick={() => {
+                                                    setEditable(true);
+                                                }}
+                                            >
+                                                Rediger
+                                            </button>
+                                        </gn-button>
+                                    ) : null}
+                                </div>
+                            )}
+                        </div>
+
                         <div className={isActive ? `${formsStyle.metadata} ${formsStyle.open}` : formsStyle.metadata}>
                             <div>
                             <div className={formsStyle.flexhorizontal}>
@@ -1201,6 +1261,11 @@ const RegisterItemDetails = () => {
                             <div>
                             {editable ? (
                                 <div className={formsStyle.btnGroup}>
+                                     {canDeleteRegisterItem(authInfo) ? (
+                                        <gn-button color="danger">
+                                            <button onClick={openDialog}>Slett veiledningstekst</button>
+                                        </gn-button>
+                                    ) : null}
                                     {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
                                         <Fragment>
                                             <gn-button color="default">
@@ -1212,14 +1277,14 @@ const RegisterItemDetails = () => {
                                                     Fortsett senere
                                                 </button>
                                             </gn-button>
-                                            <gn-button color="primary">
+                                            <gn-button color="success">
                                                 <button
                                                     disabled={
                                                         !newRegisterItem?.title?.length
                                                     }
                                                     onClick={saveRegisterItem}
                                                 >
-                                                    Publiser
+                                                    Oppdater metadata
                                                 </button>
                                             </gn-button>
                                         </Fragment>
@@ -1227,11 +1292,7 @@ const RegisterItemDetails = () => {
                                 </div>
                             ) : (
                                 <div className={formsStyle.btnGroup}>
-                                    {canDeleteRegisterItem(authInfo) ? (
-                                        <gn-button color="default">
-                                            <button onClick={openDialog}>Slett veiledningstekst</button>
-                                        </gn-button>
-                                    ) : null}
+                                   
                                     {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
                                         <gn-button color="default">
                                             <button onClick={cloneRegister}>Dupliser veiledningstekst</button>
