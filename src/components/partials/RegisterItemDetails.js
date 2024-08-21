@@ -279,7 +279,7 @@ const RegisterItemDetails = () => {
         dispatch(updateRegisterItem(registerItem, token))
             .then(() => {
                 setValidationErrors([]);
-                setEditable(true);
+                setEditable(false);
                 toastr.success("Veiledningsteksten ble oppdatert");
             })
             .catch(({ response }) => {
@@ -708,7 +708,7 @@ const RegisterItemDetails = () => {
                         <ValidationErrors errors={validationErrors} />
                         <div className={formsStyle.introbox}>
                         <heading-text><h5>{dispatch(translate("introGeolettDescriptionTitle", null, "tittel"))}</h5></heading-text>
-                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}</div>
+                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}<a href="https://chatgpt.com/g/g-XcoxhsvyS-temadata-assistent">Du finner den her.</a></div>
                         <div className={formsStyle.imageprofile}><img src={dama} alt="Dama" /></div>
                         <img src={dibkscreenshot} />
                         </div>
@@ -881,7 +881,7 @@ const RegisterItemDetails = () => {
                         {renderLinks(newRegisterItem.links)} 
                         
                         { risklevel === "low" ? '' : <ToggleBuffer onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
-                        
+
                         </div>
 
                         <div>
