@@ -710,7 +710,10 @@ const RegisterItemDetails = () => {
                         <div className={formsStyle.introbox}>
                         <heading-text><h5>{dispatch(translate("introGeolettDescriptionTitle", null, "tittel"))}</h5></heading-text>
                         <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}<a href="https://chatgpt.com/g/g-XcoxhsvyS-temadata-assistent">Du finner den her.</a></div>
+                        <div className={formsStyle.flexbio}>
+                        <div className={formsStyle.textcontentbio}>{dispatch(translate("introBioAnita", null, "tittel"))}</div>
                         <div className={formsStyle.imageprofile}><img src={dama} alt="Dama" /></div>
+                        </div>
                         <img src={dibkscreenshot} />
                         </div>
                         <heading-text>

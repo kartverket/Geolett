@@ -40,7 +40,9 @@
             "sign6Description": "Tegnforklaring 6",
             "introGeolettDescriptionTitle": "Hvorfor lager vi disse tekstene?",
             "introGeolettDescription": "Å utforme standardiserte, forståelige veiledningstekster har flere fordeler. For dere som fagmyndighet vil dere kunne redusere antall henvendelser, forebygge konflikt og forvalte deres ansvar som fagmyndighet mer effektivt. \n\n For brukerne av temadatasett gjør det at de kan identifisere risiko tidlig og enten justere for den, eller gå videre med en bevissthet om mulige konflikter ved prosjektet. Med denne typen veiledningstekster, vil personer med begrenset ekspertise innen temaet datasettet tar for seg, fremdeles kunne gjøre nytte av informasjonen i relevante saker.\n\nI denne editoren kan du redigere veiledningstekster for temadatasett. Tekstfeltene er med på å strukturere tekstene i et standardformat, slik at de enkelt kan brukes på tvers av ulike kartverktøy.\n Når vi skriver veiledningstekster, er det viktig at vi tar hensyn til hvem som skal bruke dem, hva de skal bruke det til og hvilke forkunnskaper disse brukerne har. \n\n Tips! Bruke Temadata Assistent (TeA) til å utforme tekster som er lette å forstå for brukerne! ",
-            "introDegreeRisk": "Hva slags konsekvenser gir det at planlagt bygg får treff i dette temadatasettet? Vil det bety en høy risiko for forbud mot å bygge i området? Krever det mer utredning? Eller er det nyttig informasjon til bruk i videre planlegging, uten særlig konflikt?"}
+            "introDegreeRisk": "Hva slags konsekvenser gir det at planlagt bygg får treff i dette temadatasettet? Vil det bety en høy risiko for forbud mot å bygge i området? Krever det mer utredning? Eller er det nyttig informasjon til bruk i videre planlegging, uten særlig konflikt?",
+            "introBioAnita": "Et eksempel på en bruker kan være Anita Arkitekt.\n\nHun skal utforme et nybygg for en kunde, som ønsker å bygge et hus til barna på tomten sin. \n\nAnita bruker tegneverktøy for å få oversikt over hensyn hun må ta i utformingen av bygget."
+        }            
     },
     {
         "culture": "en-US",
