@@ -36,6 +36,7 @@ import { fetchOptions } from "actions/OptionsActions";
 // Helpers
 import { canDeleteRegisterItem, canEditRegisterItem, canEditRegisterItemOwner } from "helpers/authorizationHelpers";
 import { getEnvironmentVariable } from "helpers/environmentVariableHelpers.js";
+const urlAI = 'https://chatgpt.com/g/g-XcoxhsvyS-temadata-assistent'
 
 // Stylesheets
 import formsStyle from "components/partials/forms.module.scss";
@@ -709,7 +710,9 @@ const RegisterItemDetails = () => {
                         <ValidationErrors errors={validationErrors} />
                         <div className={formsStyle.introbox}>
                         <heading-text><h5>{dispatch(translate("introGeolettDescriptionTitle", null, "tittel"))}</h5></heading-text>
-                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}<a href="https://chatgpt.com/g/g-XcoxhsvyS-temadata-assistent">Du finner den her.</a></div>
+                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}
+                        {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
+                        {editable ? <a href={urlAI}>Du finner den her</a>  : null}</div>
                         <div className={formsStyle.flexbio}>
                         <div className={formsStyle.textcontentbio}>{dispatch(translate("introBioAnita", null, "tittel"))}</div>
                         <div className={formsStyle.imageprofile}><img src={dama} alt="Dama" /></div>
