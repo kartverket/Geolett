@@ -6,7 +6,7 @@ import { Typeahead, withAsync } from "react-bootstrap-typeahead";
 import { useNavigate, useParams } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
 import dama from "images/svg/dama.svg";
-import dibkscreenshot from "images/svg/dibk-screenshot.png";
+import dibkscreenshot from "images/svg/screenshot-clean.png";
 
 // Geonorge WebComponents
 /* eslint-disable */
@@ -629,9 +629,7 @@ const RegisterItemDetails = () => {
                 {linkListElements?.length ? linkListElements : "Ingen lenker er lagt til"}
                 {editable ? (
                     <Fragment>
-                        <heading-text>
-                            <h4>Legg til ny lenke</h4>
-                        </heading-text>
+                        
                         <div key="newLink" className={formsStyle.flex}>
                             <div className={formsStyle.flex1}>
                                 <gn-label block>
@@ -717,10 +715,10 @@ const RegisterItemDetails = () => {
                         <div className={formsStyle.textcontentbio}>{dispatch(translate("introBioAnita", null, "tittel"))}</div>
                         <div className={formsStyle.imageprofile}><img src={dama} alt="Dama" /></div>
                         </div>
-                        <img src={dibkscreenshot} />
+                        <img className={formsStyle.screenshot} src={dibkscreenshot} />
                         </div>
                         <heading-text>
-                            <h2>Kontekstbeskrivelse </h2>
+                        <h2>Veiledningstekst, vises for sluttbrukerne</h2>
                         </heading-text>
                         <div className={formsStyle.metadata}>   
                        Navn i Geonorge 
@@ -748,8 +746,7 @@ const RegisterItemDetails = () => {
                                 </div>
                             )}
                             </div>
-                        <div className={formsStyle.opendata}>
-                            <h3>Veiledningstekst, vises for sluttbrukerne</h3>
+                        <div className={formsStyle.opendata}>                           
                             <gn-label block>
                             <label htmlFor="owner">
                                 {dispatch(translate("labelOwner", null, "Eier av temadatasettet"))}
