@@ -771,7 +771,7 @@ const RegisterItemDetails = () => {
                         <div className={formsStyle.smallheader}>Brukereksempel</div>
                         {dispatch(translate("introGeolettDescriptionDel4", null, "tittel"))}
                         {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
-                        <a onClick={() => openscreenDialog()} >Her kan du se et eksempel på hvordan veiledningstekstene kan se ut i en slik kartløsning.</a></div>
+                        <a className={formsStyle.link} onClick={() => openscreenDialog()} >Her kan du se et eksempel på hvordan veiledningstekstene kan se ut i en slik kartløsning.</a></div>
                         <div className={formsStyle.flexbio}>    
                         
                     
@@ -780,7 +780,7 @@ const RegisterItemDetails = () => {
                         <heading-text>
                         <h2>Veiledningstekst, vises for sluttbrukerne {newRegisterItem?.status} </h2>
                         </heading-text>
-                       <gn-dialog show={screenDialogOpen} onClose={closescreenDialog}>
+                       <gn-dialog width="1024px" show={screenDialogOpen} onClose={closescreenDialog}>
                         <img className={formsStyle.screenshot} src={dibkscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />
                        </gn-dialog>
 

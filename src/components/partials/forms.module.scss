@@ -339,3 +339,8 @@
    font-size: .8em;   
    margin-top: 10px;
 }
+:local(.link) {
+   &:hover {
+      cursor: pointer;
+   }
+}
