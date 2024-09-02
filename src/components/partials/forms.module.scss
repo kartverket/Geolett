@@ -332,6 +332,7 @@
 :local(.screenshot) {
    height: auto;
    margin-top: 24px;
+   max-width: 100%;
 }
 :local(.caption) {
    font-style: italic;

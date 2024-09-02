@@ -82,6 +82,7 @@ const RegisterItemDetails = () => {
     const [newLinkUrl, setNewLinkUrl] = useState("");
     const [dataFetched, setDataFetched] = useState(false);
     const [dialogOpen, setDialogOpen]   = useState(false);
+    const [screenDialogOpen, setScreenDialogOpen]   = useState(false);
     const [isActive, setIsActive] = useState(true);
     const [validationErrors, setValidationErrors] = useState([]);
     const [datasetSearchIsLoading, setDatasetSearchIsLoading] = useState(false);
@@ -92,6 +93,7 @@ const RegisterItemDetails = () => {
     const [possibleMeasuresMarkdown, setPossbileMeasuresMarkdown] = useState(savedRegisterItem?.possibleMeasures || "");
     const [registerItemTitle, setRegisterItemTitle] = useState(savedRegisterItem?.contextType || "");
     const [registerItemStatus, setRegisterItemStatus] = useState(savedRegisterItem?.status || "");
+    
 
     // Refs
     const selectedObjectTypeAttributeNameRef = useRef(null);
@@ -266,6 +268,8 @@ const RegisterItemDetails = () => {
         }
     }, [selectedObjectTypeId]);
 
+
+    
     const saveRegisterItem = () => {
         const registerItem = newRegisterItem;
         const token = authToken?.access_token || null;
@@ -276,6 +280,7 @@ const RegisterItemDetails = () => {
             };
         }
 
+       
         //set to empty since removed from UI
         registerItem.reference = {};
 
@@ -338,6 +343,16 @@ const RegisterItemDetails = () => {
 
     const closeDialog = () => {
         setDialogOpen(false);
+    };
+    const openscreenDialog = () => {
+        setScreenDialogOpen(false);
+        setTimeout(() => {
+            setScreenDialogOpen(true);
+        });
+    };
+
+    const closescreenDialog = () => {
+        setScreenDialogOpen(false);
     };
 
     const toggleMetadata = () => {
@@ -690,6 +705,8 @@ const RegisterItemDetails = () => {
         return null;
     }
 
+   
+
     const breadcrumbs = [
         {
             name: "Registrene",
@@ -754,16 +771,18 @@ const RegisterItemDetails = () => {
                         <div className={formsStyle.smallheader}>Brukereksempel</div>
                         {dispatch(translate("introGeolettDescriptionDel4", null, "tittel"))}
                         {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
-                        {editable ? <a href={urlAI}>Du finner den her</a>  : null}</div>
-                        <div className={formsStyle.flexbio}>
+                        <a onClick={() => openscreenDialog()} >Her kan du se et eksempel på hvordan veiledningstekstene kan se ut i en slik kartløsning.</a></div>
+                        <div className={formsStyle.flexbio}>    
                         
-                        
+                    
                         </div>                        
                         </div>
                         <heading-text>
                         <h2>Veiledningstekst, vises for sluttbrukerne {newRegisterItem?.status} </h2>
                         </heading-text>
-                       
+                       <gn-dialog show={screenDialogOpen} onClose={closescreenDialog}>
+                        <img className={formsStyle.screenshot} src={dibkscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />
+                       </gn-dialog>
 
                         
                         <div className={formsStyle.opendata}>                           
