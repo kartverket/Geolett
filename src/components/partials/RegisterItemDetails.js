@@ -91,6 +91,7 @@ const RegisterItemDetails = () => {
     const [descriptionMarkdown, setDescriptionMarkdown] = useState(savedRegisterItem?.description || "");
     const [possibleMeasuresMarkdown, setPossbileMeasuresMarkdown] = useState(savedRegisterItem?.possibleMeasures || "");
     const [registerItemTitle, setRegisterItemTitle] = useState(savedRegisterItem?.contextType || "");
+    const [registerItemStatus, setRegisterItemStatus] = useState(savedRegisterItem?.status || "");
 
     // Refs
     const selectedObjectTypeAttributeNameRef = useRef(null);
@@ -281,8 +282,9 @@ const RegisterItemDetails = () => {
         dispatch(updateRegisterItem(registerItem, token))
             .then(() => {
                 setValidationErrors([]);
-                setEditable(false);
-                toastr.success("Veiledningsteksten ble oppdatert");
+                setEditable(false);                  
+                registerItem.status = 1;              
+                toastr.success("Veiledningsteksten ble lagret");
             })
             .catch(({ response }) => {
                 toastr.error("Kunne ikke oppdatere veiledningsteksten");
@@ -290,6 +292,15 @@ const RegisterItemDetails = () => {
                 window.scroll(0, 0);
             });
     };
+
+    const publishRegisterItem = () => {
+        if(registerItemStatus !== 2) { 
+            handleChange({name: "status", value: 2});
+        }        
+        saveRegisterItem();
+
+        //set to empty since removed from UI     
+    }
 
     const cloneRegister = () => {
         const registerItem = savedRegisterItem;
@@ -706,20 +717,6 @@ const RegisterItemDetails = () => {
                         </heading-text>
 
                         <ValidationErrors errors={validationErrors} />
-                        <div className={formsStyle.introbox}>
-                        <heading-text><h5>{dispatch(translate("introGeolettDescriptionTitle", null, "tittel"))}</h5></heading-text>
-                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}
-                        {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
-                        {editable ? <a href={urlAI}>Du finner den her</a>  : null}</div>
-                        <div className={formsStyle.flexbio}>
-                        <div className={formsStyle.textcontentbio}>{dispatch(translate("introBioAnita", null, "tittel"))}</div>
-                        <div className={formsStyle.imageprofile}><img src={dama} alt="Dama" /></div>
-                        </div>
-                        <img className={formsStyle.screenshot} src={dibkscreenshot} />
-                        </div>
-                        <heading-text>
-                        <h2>Veiledningstekst, vises for sluttbrukerne</h2>
-                        </heading-text>
                         <div className={formsStyle.metadata}>   
                        Navn i Geonorge 
                             <br />
@@ -746,10 +743,33 @@ const RegisterItemDetails = () => {
                                 </div>
                             )}
                             </div>
+                        <div className={formsStyle.introbox}>                        
+                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}
+                        <div className={formsStyle.smallheader}>Hvorfor lage disse veiledningstekstene?</div>
+                        {dispatch(translate("introGeolettDescriptionDel1", null, "tittel"))}
+                        <div className={formsStyle.smallheader}>Tips til bruk av editor</div>
+                        {dispatch(translate("introGeolettDescriptionDel2", null, "tittel"))}
+                        
+                        {dispatch(translate("introGeolettDescriptionDel3", null, "tittel"))}
+                        <div className={formsStyle.smallheader}>Brukereksempel</div>
+                        {dispatch(translate("introGeolettDescriptionDel4", null, "tittel"))}
+                        {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
+                        {editable ? <a href={urlAI}>Du finner den her</a>  : null}</div>
+                        <div className={formsStyle.flexbio}>
+                        
+                        
+                        </div>                        
+                        </div>
+                        <heading-text>
+                        <h2>Veiledningstekst, vises for sluttbrukerne {newRegisterItem?.status} </h2>
+                        </heading-text>
+                       
+
+                        
                         <div className={formsStyle.opendata}>                           
                             <gn-label block>
                             <label htmlFor="owner">
-                                {dispatch(translate("labelOwner", null, "Eier av temadatasettet"))}
+                                {dispatch(translate("labelOwner", null, "Eier"))}
                                 <ToggleHelpText resourceKey="ownerDescription" />
                             </label>
                             </gn-label>
@@ -791,14 +811,14 @@ const RegisterItemDetails = () => {
 
                         <gb-label block>
                             <label htmlFor="description">
-                                {dispatch(translate("labelDescription", null, "Forklarende tekst"))}
+                                {dispatch(translate("labelDescription", null, "Hva handler treffet om?"))}
                                 <ToggleHelpText resourceKey="descriptionDescription" />
                             </label>
                             </gb-label>
                             <div data-color-mode="light">
                                 {editable ? (
                                     <MDEditor
-                                        textareaProps={{ placeholder:  dispatch(translate("descriptionDescription", null, "Forklarende tekst")) }}
+                                        textareaProps={{ placeholder:  dispatch(translate("descriptionDescription", null, "Hva handler treffet om?")) }}
                                         id="description"
                                         preview="edit"                                   
                                         height={200}
@@ -816,7 +836,7 @@ const RegisterItemDetails = () => {
 
                         <gn-label block>
                             <label htmlFor="dialogText">
-                                {dispatch(translate("labelDialogText", null, "Informasjonsvarsel"))}
+                                {dispatch(translate("labelDialogText", null, "Varsel"))}
                                 <ToggleHelpText resourceKey="dialogTextDescription" />
                             </label>
                         </gn-label>
@@ -836,7 +856,7 @@ const RegisterItemDetails = () => {
 
                             { risklevel === 'low'? '' : <gn-label block>
                                 <label htmlFor="possibleMeasures">
-                                    {dispatch(translate("labelPossibleMeasures", null, "Mulige tiltak"))}
+                                    {dispatch(translate("labelPossibleMeasures", null, "Hvilke tiltak kan gjøres?"))}
                                     <ToggleHelpText resourceKey="possibleMeasuresDescription" />
                                 </label>
                             </gn-label> }
@@ -846,7 +866,7 @@ const RegisterItemDetails = () => {
                             editable ? (
                                 
                                 <MDEditor
-                                    textareaProps={{placeholder: dispatch(translate("possibleMeasuresDescription", null, "Mulige tiltak"))}}
+                                    textareaProps={{placeholder: dispatch(translate("possibleMeasuresDescription", null, "Hvilke tiltak kan gjøres?"))}}
                                     id="possibleMeasures"
                                     preview="edit"
                                     name="possibleMeasures"
@@ -864,7 +884,7 @@ const RegisterItemDetails = () => {
                             </div>
                             <gn-label block>
                                 <label htmlFor="guidance">
-                                    {risklevel === 'low' ? dispatch(translate("labelGuidance", null, "Hva betyr dette for deg?/ Hvordan bruke denne informasjonen")) : dispatch(translate("labelGuidance", null, "Tilleggsinformasjon om tiltak")) }
+                                    {risklevel === 'low' ? dispatch(translate("labelGuidance", null, "Tips til hvordan følge opp tiltak")) : dispatch(translate("labelGuidance", null, "Tilleggsinformasjon om tiltak")) }
                                     <ToggleHelpText resourceKey="guidanceDescription" />
                                 </label>
                             </gn-label>
@@ -874,7 +894,7 @@ const RegisterItemDetails = () => {
                                         id="guidance"
                                         name="guidance"
                                         rows="6"
-                                        placeholder={dispatch(translate("guidanceDescription", null, "Tillegsinformasjon"))}
+                                        placeholder={dispatch(translate("guidanceDescription", null, "Tips til hvordan følge opp tiltak"))}
                                         defaultValue={newRegisterItem.guidance}
                                         onChange={handleChange}
                                     />
@@ -913,18 +933,33 @@ const RegisterItemDetails = () => {
                                                         setEditable(false);
                                                     }}
                                                 >
-                                                    Fortsett senere
+                                                    Avbryt
                                                 </button>
                                             </gn-button>
                                             <gn-button color="success">
-                                                <button
+                                                    {newRegisterItem?.status === 2 ? (
+                                                        <button
+                                                    disabled={
+                                                        !newRegisterItem?.title?.length
+                                                    }
+                                                    onClick={publishRegisterItem}                                                   
+                                                >
+                                                    Ja publiser teksten
+                                                </button>
+
+                                                    ) : (
+                                                        <button
                                                     disabled={
                                                         !newRegisterItem?.title?.length
                                                     }
                                                     onClick={saveRegisterItem}
+                                                   
                                                 >
-                                                    Publiser
+                                                    Lagre
                                                 </button>
+                                                    )}
+                                                
+
                                             </gn-button>
                                         </Fragment>
                                     ) : null}
@@ -1242,7 +1277,6 @@ const RegisterItemDetails = () => {
                         )}
                         </div>
                         </div>
-
                         <gn-label block>
                             <label htmlFor="status">Status</label>
                         </gn-label>
@@ -1267,9 +1301,6 @@ const RegisterItemDetails = () => {
                             <div id="status">{getStatusLabel(statuses, newRegisterItem)}</div>
                         )}
                        
-                       
-
-
                             <div>
                             {editable ? (
                                 <div className={formsStyle.btnGroup}>
@@ -1286,20 +1317,33 @@ const RegisterItemDetails = () => {
                                                         setEditable(false);
                                                     }}
                                                 >
-                                                    Fortsett senere
+                                                    Avbryt
                                                 </button>
                                             </gn-button>
                                             <gn-button color="success">
-                                                <button
+                                            {newRegisterItem?.status === 2 ? (
+                                                "") : (<button
                                                     disabled={
                                                         !newRegisterItem?.title?.length
                                                     }
                                                     onClick={saveRegisterItem}
                                                 >
-                                                    Oppdater metadata
+                                                    Lagre
+                                                </button>  ) }
+                                            </gn-button>
+                                            <div>
+                                            <gn-button color="success">
+                                                <button
+                                                    disabled={
+                                                        !newRegisterItem?.title?.length
+                                                    }
+                                                    onClick={publishRegisterItem}                                                    
+                                                >
+                                                    Ja publiser teksten
                                                 </button>
                                             </gn-button>
-                                        </Fragment>
+                                            </div>
+                                        </Fragment>                                        
                                     ) : null}
                                 </div>
                             ) : (
@@ -1334,7 +1378,7 @@ const RegisterItemDetails = () => {
                         <div>
                             <gn-button color="default">
                                 <button onClick={closeDialog}>
-                                    {dispatch(translate("btnCancel", null, "Fortsett senere"))}{" "}
+                                    {dispatch(translate("btnCancel", null, "Avbryt"))}{" "}
                                 </button>
                             </gn-button>
                             <gn-button color="danger">

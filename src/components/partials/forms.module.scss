@@ -190,6 +190,10 @@
       position: relative;
    }
 }
+:local(.smallheader) {
+   font-style: italic;
+   margin-top: 16px;
+}
 :local(.introbox) {
    display: flex;
    flex-direction: column;
