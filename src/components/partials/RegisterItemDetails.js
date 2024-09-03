@@ -778,7 +778,7 @@ const RegisterItemDetails = () => {
                         </div>                        
                         </div>
                         <heading-text>
-                        <h2>Veiledningstekst, vises for sluttbrukerne {newRegisterItem?.status} </h2>
+                        <h2>Veiledningstekst, vises for sluttbrukerne </h2>
                         </heading-text>
                        <gn-dialog width="1024px" show={screenDialogOpen} onClose={closescreenDialog}>
                         <img className={formsStyle.screenshot} src={dibkscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />
