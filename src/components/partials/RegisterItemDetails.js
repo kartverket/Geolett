@@ -778,7 +778,7 @@ const RegisterItemDetails = () => {
                             </div>
                            
                              
-                            <img src={dama} alt="Dama" />                             
+                            <img className={formsStyle.screenshot} src={dibkscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                            
                             
                          </div>
                     
