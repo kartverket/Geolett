@@ -5,7 +5,7 @@ import { toastr } from "react-redux-toastr";
 import { Typeahead, withAsync } from "react-bootstrap-typeahead";
 import { useNavigate, useParams } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
-import dama from "images/svg/dama.svg";
+import dama from "images/svg/workgirl.webp";
 import dibkscreenshot from "images/svg/screenshot-clean.png";
 
 // Geonorge WebComponents
@@ -764,16 +764,23 @@ const RegisterItemDetails = () => {
                         <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}
                         <div className={formsStyle.smallheader}>Hvorfor lage disse veiledningstekstene?</div>
                         {dispatch(translate("introGeolettDescriptionDel1", null, "tittel"))}
+                        <div className={formsStyle.biocontainer}>
+                            <div>
                         <div className={formsStyle.smallheader}>Tips til bruk av editor</div>
                         {dispatch(translate("introGeolettDescriptionDel2", null, "tittel"))}
                         
                         {dispatch(translate("introGeolettDescriptionDel3", null, "tittel"))}
-                        <div className={formsStyle.smallheader}>Brukereksempel</div>
-                        {dispatch(translate("introGeolettDescriptionDel4", null, "tittel"))}
-                        {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
-                        <a className={formsStyle.link} onClick={() => openscreenDialog()} >Her kan du se et eksempel på hvordan veiledningstekstene kan se ut i en slik kartløsning.</a></div>
-                        <div className={formsStyle.flexbio}>    
                         
+                            <div className={formsStyle.smallheader}>Brukereksempel</div>
+                            {dispatch(translate("introGeolettDescriptionDel4", null, "tittel"))}
+                            {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
+                            <a className={formsStyle.link} onClick={() => openscreenDialog()} >Her kan du se et eksempel på hvordan veiledningstekstene kan se ut i en slik kartløsning.</a>
+                            </div>
+                           
+                             
+                            <img src={dama} alt="Dama" />                             
+                            
+                         </div>
                     
                         </div>                        
                         </div>

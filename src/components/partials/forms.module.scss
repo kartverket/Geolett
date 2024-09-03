@@ -344,3 +344,12 @@
       cursor: pointer;
    }
 }
+:local(.biocontainer) {
+   display: flex;
+   flex-direction: row;
+   img {
+      max-width: 250px;
+      margin-top: 16px;
+      margin-left: 16px;
+   }
+}
