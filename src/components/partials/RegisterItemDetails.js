@@ -774,7 +774,6 @@ const RegisterItemDetails = () => {
                             <div className={formsStyle.smallheader}>Brukereksempel</div>
                             {dispatch(translate("introGeolettDescriptionDel4", null, "tittel"))}
                             {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
-                            <a className={formsStyle.link} onClick={() => openscreenDialog()} >Her kan du se et eksempel på hvordan veiledningstekstene kan se ut i en slik kartløsning.</a>
                             </div>
                            
                              
@@ -787,11 +786,7 @@ const RegisterItemDetails = () => {
                         <heading-text>
                         <h2>Veiledningstekst, vises for sluttbrukerne </h2>
                         </heading-text>
-                       <gn-dialog width="1024px" show={screenDialogOpen} onClose={closescreenDialog}>
-                        <img className={formsStyle.screenshot} src={dibkscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />
-                       </gn-dialog>
-
-                        
+    
                         <div className={formsStyle.opendata}>                           
                             <gn-label block>
                             <label htmlFor="owner">
