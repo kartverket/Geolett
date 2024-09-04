@@ -28,9 +28,11 @@ import { canAddRegisterItem, canEditRegisterItemOwner } from "helpers/authorizat
 // Stylesheets
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import formsStyle from "components/partials/forms.module.scss";
+import { useNavigate } from "react-router";
 
 const CreateRegisterItem = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // Redux store
     const organizations = useSelector((state) => state.organizations);
@@ -57,20 +59,23 @@ const CreateRegisterItem = () => {
         setRegisterItem(updatedRegisterItem);
     };
 
+    const gotToItem = (id) => {
+        navigate(`/geolett/${id}/edit`);
+    }
+
     const saveRegisterItem = () => {
         const updatedRegisterItem = registerItem;
         const token = authToken?.access_token || null;
 
         if (!!selectedOwner?.length) {
             updatedRegisterItem.owner.id = selectedOwner[0].id;
-        }
-
+        }       
         dispatch(createRegisterItem(registerItem, token))
-            .then(() => {
-                closeDialog();
+            .then((response) => {                
                 setValidationErrors([]);
                 dispatch(fetchRegisterItems(token));
-                toastr.success("En ny veiledningstekst ble lagt til");
+                toastr.success("En ny veiledningstekst ble lagt til"); 
+                gotToItem(response.data.id);
             })
             .catch(({ response }) => {
                 setValidationErrors(response.data);
@@ -122,8 +127,8 @@ const CreateRegisterItem = () => {
                 <div className={formsStyle.introbox}>
                         <heading-text><h5>{dispatch(translate("introGeolettDescriptionTitle", null, "tittel"))}</h5></heading-text>
                         <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}</div>
-                        <div className={formsStyle.imageprofile}><img src={dama} alt="Dama" /></div>
-                        <img src={dibkscreenshot} />
+                        
+                        
                         </div>
                 <gn-label block>
                     <label htmlFor="title">Navn på veiledningstekst (påkrevd felt)</label>
@@ -163,7 +168,7 @@ const CreateRegisterItem = () => {
                             disabled={!registerItem?.title?.length}
                             onClick={saveRegisterItem}
                         >
-                            Lagre
+                            Opprett og start redigering
                         </button>
                     </gn-button>
                 </div>

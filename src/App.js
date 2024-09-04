@@ -77,9 +77,9 @@ const App = (props) => {
                     <Router history={history}>
                         <NavigationBar userManager={userManager} />
                         <Routes>
-                            <Route exact path="/" element={<RegisterItems />} />
+                            <Route exact path="/" element={<RegisterItems />} />                            
                             <Route exact path="/geolett" element={<RegisterItems />} />
-                            <Route exact path="/geolett/:registerItemId/" element={<RegisterItem />} />
+                            <Route exact path="/geolett/:registerItemId/:edit?" element={<RegisterItem />} />
                             <Route exact path="/signin-oidc" element={<OidcCallback userManager={userManager} />} />
                             <Route
                                 exact
