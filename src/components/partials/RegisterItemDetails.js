@@ -803,7 +803,7 @@ const RegisterItemDetails = () => {
                             </div>
                             {editable && savedRegisterItem.status === 2 ? null :
                         <div className={formsStyle.introbox}>                        
-                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}
+                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettinternal", null, "tittel"))}
                       
                         <div className={formsStyle.biocontainer}>
                             <div>
