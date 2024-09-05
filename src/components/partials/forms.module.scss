@@ -236,8 +236,14 @@
 :local(.flexradio) {
    display: flex;
    align-items: center;
+   input[type="radio"] {
+      -ms-transform: scale(1.5); /* IE 9 */
+      -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+      transform: scale(1.5);
+   }
    label {
-      max-width: 290px;
+      max-width: 390px;
+      margin: 10px;
       font-weight: normal;
       font-size: 1em;
    }
@@ -375,7 +381,7 @@
    display: flex;
    flex-direction: row;
    img {
-      max-width: 450px;
+      max-width: 50%;
       margin-top: 16px;
       margin-left: 16px;
    }

@@ -117,19 +117,20 @@ const CreateRegisterItem = () => {
     return dataFetched && showAddRegisterItemContent() ? (
         <React.Fragment>
             <gn-button color="primary">
-                <button onClick={() => openDialog()}>Opprett veiledningstekst</button>
+                <button onClick={() => openDialog()}>Opprett ny arealplanveileder</button>
             </gn-button>
             <gn-dialog overflow="auto" show={dialogOpen}>
                 <heading-text>
-                    <h2>Ny veiledningstekst</h2>
+                    <h2>Ny arealplanveileder</h2>
                 </heading-text>
                 <ValidationErrors errors={validationErrors} />
                 <div className={formsStyle.introbox}>
-                        <heading-text><h5>{dispatch(translate("introGeolettDescriptionTitle", null, "tittel"))}</h5></heading-text>
+                       
                         <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}</div>
                         
                         
                         </div>
+                        <br />
                 <gn-label block>
                     <label htmlFor="title">Navn på veiledningstekst (påkrevd felt)</label>
                     <ToggleHelpText expanded="true"  resourceKey="titleDescription" />
@@ -159,7 +160,7 @@ const CreateRegisterItem = () => {
                         placeholder="Legg til eier..."
                     />
                 </gn-input>
-                <div>
+                <div className={formsStyle.btnGroup}>
                     <gn-button color="default">
                         <button onClick={() => closeDialog()}>Avbryt</button>
                     </gn-button>
