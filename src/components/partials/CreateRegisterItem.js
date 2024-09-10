@@ -44,7 +44,7 @@ const CreateRegisterItem = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [titleWritten, setTitleWritten] = useState(false);
     const [registerItem, setRegisterItem] = useState(new RegisterItem());
-    const [selectedOwner, setSelectedOwner] = useState([]);
+    const [selectedOwner, setSelectedOwner] = useState({});
     const [validationErrors, setValidationErrors] = useState([]);
 
     const handleOwnerSelect = (data) => {
@@ -104,8 +104,10 @@ const CreateRegisterItem = () => {
         if (!dataFetched) {
             dispatch(fetchOrganizations()).then(() => {
                 const preSelectedOwner = getPreSelectedOwnerFromAuthInfo();
-                setDataFetched(true);
-                setSelectedOwner(preSelectedOwner ? [preSelectedOwner] : []);
+                if(preSelectedOwner) {
+                    setDataFetched(true);
+                    setSelectedOwner(preSelectedOwner ? [preSelectedOwner] : {});
+                }
             });
         }
     }, [dataFetched, dispatch, getPreSelectedOwnerFromAuthInfo]);
