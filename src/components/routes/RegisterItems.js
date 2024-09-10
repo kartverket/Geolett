@@ -221,7 +221,7 @@ const RegisterItems = () => {
             url: config?.registerUrl || ""
         },
         {
-            name: "Geolett",
+            name: "Planguider",
             url: "/geolett"
         }
     ];

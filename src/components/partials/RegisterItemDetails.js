@@ -720,7 +720,7 @@ const RegisterItemDetails = () => {
             url: config?.registerUrl || ""
         },
         {
-            name: "Geolett",
+            name: "Planguider",
             url: "/geolett"
         },
         {
