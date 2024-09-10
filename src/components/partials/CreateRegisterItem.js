@@ -42,6 +42,7 @@ const CreateRegisterItem = () => {
     // State
     const [dataFetched, setDataFetched] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [titleWritten, setTitleWritten] = useState(false);
     const [registerItem, setRegisterItem] = useState(new RegisterItem());
     const [selectedOwner, setSelectedOwner] = useState([]);
     const [validationErrors, setValidationErrors] = useState([]);
@@ -57,6 +58,12 @@ const CreateRegisterItem = () => {
 
         updatedRegisterItem[name] = isNaN(parsed) ? value : parsed;
         setRegisterItem(updatedRegisterItem);
+        if(updatedRegisterItem.title.length > 0) {
+            setTitleWritten(true);
+        }
+        else {
+            setTitleWritten(false);
+        }
     };
 
     const gotToItem = (id) => {
@@ -166,7 +173,7 @@ const CreateRegisterItem = () => {
                     </gn-button>
                     <gn-button color="primary">
                         <button
-                            disabled={!registerItem?.title?.length}
+                            disabled={!titleWritten}
                             onClick={saveRegisterItem}
                         >
                             Opprett og start redigering
