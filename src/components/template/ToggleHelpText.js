@@ -16,8 +16,9 @@ const ToggleHelpText = (props) => {
     const [initialized, setInitialized] = useState(false);
 
     const content = dispatch(translate(props.resourceKey));
+    const visible = props.showHelp;   
 
-    return content ? (
+    return content && visible ? (
         <Fragment>
             <FontAwesomeIcon
                 className={`${style.toggleIcon} ${expanded ? style.expanded : ""}`}

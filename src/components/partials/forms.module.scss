@@ -33,7 +33,7 @@
 
    label {
       display: block;
-      margin: 24px 0 14px;
+      margin: 24px 0 0px;
       font-size: 1.2em;
    }
    :local(.comboInput) {
@@ -386,3 +386,8 @@
       margin-left: 16px;
    }
 }
+:local(.infotext) {
+   font-style: italic;
+   font-size: 1em;
+   margin-bottom: 10px;
+ }
