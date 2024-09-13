@@ -930,7 +930,7 @@ const RegisterItemDetails = () => {
 
                         <gn-label block>
                             <label htmlFor="dialogText">
-                                {dispatch(translate("labelDialogText", null, "Informasjonsarsel"))}
+                                {risklevel === "low" ? dispatch(translate("labelDialogText", null, "Informasjonsvarsel")) : dispatch(translate("labelDialogText", null, "Varsel"))}
                                 <ToggleHelpText resourceKey="dialogTextDescription" showHelp={editable}  />
                             </label>
                         </gn-label>
@@ -978,7 +978,7 @@ const RegisterItemDetails = () => {
                             </div>
                             <gn-label block>
                                 <label htmlFor="guidance">
-                                    {risklevel === 'low' ? dispatch(translate("labelGuidance", null, "Tips til hvordan følge opp tiltak")) : dispatch(translate("labelGuidance", null, "Tilleggsinformasjon om tiltak")) }
+                                    {risklevel === 'low' ? dispatch(translate("labelGuidance", null, "Hvordan bruke denne informasjonen")) : dispatch(translate("labelGuidance", null, "Tips til hvordan følge opp tiltak")) }
                                     <ToggleHelpText resourceKey="guidanceDescription" showHelp={editable} />
                                 </label>
                             </gn-label>
