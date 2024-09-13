@@ -5,6 +5,11 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { toastr } from "react-redux-toastr";
 import ValidationErrors from "components/partials/ValidationErrors";
 
+import ToggleHelpText from "components/template/ToggleHelpText";
+
+import dama from "images/svg/dama.svg";
+import dibkscreenshot from "images/svg/dibk-screenshot.png";
+
 // Geonorge Webcomponents
 // eslint-disable-next-line no-unused-vars
 import { GnButton, GnDialog, GnLabel, HeadingText } from "@kartverket/geonorge-web-components";
@@ -15,15 +20,19 @@ import { RegisterItem } from "models/registerItem";
 // Actions
 import { fetchOrganizations } from "actions/OrganizationsActions";
 import { createRegisterItem, fetchRegisterItems } from "actions/RegisterItemActions";
+import { translate } from "actions/ConfigActions";
 
 // Helpers
 import { canAddRegisterItem, canEditRegisterItemOwner } from "helpers/authorizationHelpers";
 
 // Stylesheets
 import "react-bootstrap-typeahead/css/Typeahead.css";
+import formsStyle from "components/partials/forms.module.scss";
+import { useNavigate } from "react-router";
 
 const CreateRegisterItem = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // Redux store
     const organizations = useSelector((state) => state.organizations);
@@ -33,8 +42,9 @@ const CreateRegisterItem = () => {
     // State
     const [dataFetched, setDataFetched] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [titleWritten, setTitleWritten] = useState(false);
     const [registerItem, setRegisterItem] = useState(new RegisterItem());
-    const [selectedOwner, setSelectedOwner] = useState([]);
+    const [selectedOwner, setSelectedOwner] = useState({});
     const [validationErrors, setValidationErrors] = useState([]);
 
     const handleOwnerSelect = (data) => {
@@ -48,7 +58,17 @@ const CreateRegisterItem = () => {
 
         updatedRegisterItem[name] = isNaN(parsed) ? value : parsed;
         setRegisterItem(updatedRegisterItem);
+        if(updatedRegisterItem.title.length > 0) {
+            setTitleWritten(true);
+        }
+        else {
+            setTitleWritten(false);
+        }
     };
+
+    const gotToItem = (id) => {
+        navigate(`/geolett/${id}/edit`);
+    }
 
     const saveRegisterItem = () => {
         const updatedRegisterItem = registerItem;
@@ -56,18 +76,17 @@ const CreateRegisterItem = () => {
 
         if (!!selectedOwner?.length) {
             updatedRegisterItem.owner.id = selectedOwner[0].id;
-        }
-
+        }       
         dispatch(createRegisterItem(registerItem, token))
-            .then(() => {
-                closeDialog();
+            .then((response) => {                
                 setValidationErrors([]);
                 dispatch(fetchRegisterItems(token));
-                toastr.success("En ny konteksttype ble lagt til");
+                toastr.success("En ny veiledningstekst ble lagt til"); 
+                gotToItem(response.data.id);
             })
             .catch(({ response }) => {
                 setValidationErrors(response.data);
-                toastr.error("Kunne ikke opprette konteksttype");
+                toastr.error("Kunne ikke opprette veiledningstekst");
             });
     };
 
@@ -85,8 +104,10 @@ const CreateRegisterItem = () => {
         if (!dataFetched) {
             dispatch(fetchOrganizations()).then(() => {
                 const preSelectedOwner = getPreSelectedOwnerFromAuthInfo();
-                setDataFetched(true);
-                setSelectedOwner(preSelectedOwner ? [preSelectedOwner] : []);
+                if(preSelectedOwner) {
+                    setDataFetched(true);
+                    setSelectedOwner(preSelectedOwner ? [preSelectedOwner] : {});
+                }
             });
         }
     }, [dataFetched, dispatch, getPreSelectedOwnerFromAuthInfo]);
@@ -105,30 +126,23 @@ const CreateRegisterItem = () => {
     return dataFetched && showAddRegisterItemContent() ? (
         <React.Fragment>
             <gn-button color="primary">
-                <button onClick={() => openDialog()}>Opprett konteksttype</button>
+                <button onClick={() => openDialog()}>Opprett ny arealplanveileder</button>
             </gn-button>
-            <gn-dialog show={dialogOpen}>
+            <gn-dialog overflow="auto" show={dialogOpen}>
                 <heading-text>
-                    <h2>Ny konteksttype</h2>
+                    <h2>Ny arealplanveileder</h2>
                 </heading-text>
                 <ValidationErrors errors={validationErrors} />
+                <div className={formsStyle.introbox}>
+                       
+                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}</div>
+                        
+                        
+                        </div>
+                        <br />
                 <gn-label block>
-                    <label htmlFor="contextType">Konteksttype (påkrevd felt)</label>
-                </gn-label>
-
-                <gn-input block fullWidth>
-                    <input
-                        id="contextType"
-                        name="contextType"
-                        type="text"
-                        defaultValue={registerItem.contextType}
-                        onChange={handleChange}
-                        required
-                    />
-                </gn-input>
-
-                <gn-label block>
-                    <label htmlFor="title">Tittel (påkrevd felt)</label>
+                    <label htmlFor="title">Navn på veiledningstekst (påkrevd felt)</label>
+                    <ToggleHelpText expanded="true"  resourceKey="titleDescription" />
                 </gn-label>
                 <gn-input block fullWidth>
                     <input
@@ -155,16 +169,16 @@ const CreateRegisterItem = () => {
                         placeholder="Legg til eier..."
                     />
                 </gn-input>
-                <div>
+                <div className={formsStyle.btnGroup}>
                     <gn-button color="default">
                         <button onClick={() => closeDialog()}>Avbryt</button>
                     </gn-button>
                     <gn-button color="primary">
                         <button
-                            disabled={!registerItem?.contextType?.length || !registerItem?.title?.length}
+                            disabled={!titleWritten}
                             onClick={saveRegisterItem}
                         >
-                            Lagre
+                            Opprett og start redigering
                         </button>
                     </gn-button>
                 </div>

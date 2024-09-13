@@ -113,3 +113,5 @@ src/config/config.local.json
 
 # macOS files
 .DS_Store
+
+.yarn

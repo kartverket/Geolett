@@ -1,0 +1,31 @@
+{
+    "environment": "dev",
+    "apiBaseURL": "https://register.dev.geonorge.no/geolett/api",
+    "oidc": {
+        "client_id": "JIDpv0xlBRUmnXMnUrcfLWgvR9Ia",
+        "authority": "https://test.geoid.no/oauth2/authorize",
+        "issuer": "https://test.geoid.no:443/oauth2/token",
+        "redirect_uri": "https://localhost:44346/signin-oidc",
+        "post_logout_redirect_uri": "https://localhost:44346/signout-callback-oidc",
+        "metadata": {
+            "issuer": "https://test.geoid.no:443/oauth2/token",
+            "authorization_endpoint": "https://test.geoid.no/oauth2/authorize",
+            "userinfo_endpoint": "https://test.geoid.no/oauth2/userinfo",
+            "end_session_endpoint": "https://test.geoid.no/oidc/logout",
+            "jwks_uri": "https://test.geoid.no/oauth2/jwks"
+        },
+        "signingKeys": [
+            {
+                "kty": "RSA",
+                "e": "AQAB",
+                "use": "sig",
+                "kid": "MGMzOTI2M2VjMjU2ZTZkZmNiODA0ZDJhN2NlNDU5M2Q4MDgzOTZjMA",
+                "alg": "RS256",
+                "n": "zqaJTH9ST1VetunDiKvj6CXhPiTVE_hOpS-dql9EBMYQ2qAErwRjKUfcZJUzh0d2Lchn0z7kB-fByk6RHPzI89f6cWsk5yn3lnHpYM0p7mM3slQ9Sth_04LWLx8gVngGjqTVkqvtiPWtjkM56G-W3xgWbWRuwqSgxmm89deFubTNAkF3ZywvefyAaVa0WMfN0F7SAAHv1OyvqZ6vnwbbzmgvIPg8vDHGtL1c2smyHDdDFcMFhbxwP7ueAEXAj4dOpBA8zfw_PuH-lkGfrlaXhdgPBmZJJpGFw3RQ7ZDkGe9nV-IpO3nD3wrj1ZqLYK3VxifJeqn5zbpNleQINDW8GQ"
+            }
+        ],
+        "response_type": "id_token token",
+        "scope": "openid profile",
+        "loadUserInfo": false
+    }
+}
