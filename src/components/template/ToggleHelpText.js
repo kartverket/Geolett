@@ -11,24 +11,25 @@ import style from "components/template/ToggleHelpText.module.scss";
 
 const ToggleHelpText = (props) => {
     const dispatch = useDispatch();
-
     // State
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(props.expanded == "true" ? true : false);
     const [initialized, setInitialized] = useState(false);
 
     const content = dispatch(translate(props.resourceKey));
+    const visible = props.showHelp;   
 
-    return content ? (
+    return content && visible ? (
         <Fragment>
             <FontAwesomeIcon
                 className={`${style.toggleIcon} ${expanded ? style.expanded : ""}`}
-                icon="info-circle"
-                color="#007bff"
+                icon="fa-regular fa-circle-question"
+                color="#00000"
                 onClick={() => {
                     setExpanded(!expanded);
                     setInitialized(true);
                 }}
             />
+          
             <div
                 className={`${style.content} ${initialized ? style.initialized : ""} ${expanded ? style.expanded : ""}`}
             >

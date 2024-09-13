@@ -4,13 +4,14 @@
         "texts": {
             "contextTypeDescription": "Logisk oppbygget navn på kontekst som teksten skal inngå i (eks: Byggesak-treff-naturfare-stormflo-20-års)",
             "IdDescription": "UUID - autogenereres og skal ikke kunne endres",
-            "titleDescription": "Tittel på overordnet kontekst (eks: Oversvømmelse fra havet)",
+            "titleDescription": "Tittel på veiledningsteksten, som tydeliggjør hva det handler om i enkle ord, f.eks. “Oversvømmelse fra havet”",
             "ownerDescription": "",
-            "descriptionDescription": "En begrunnelse for hvorfor søker gjøres oppmerksom på forholdet. Hensikten er å skape forståelse for at foholdet må tas hensyn til. Skal formuleres på en slik måte at det er forståelig uten fagkompetanse. Eksempel: Eiketrær kan bli flere hundre år gamle, og er bosted for et stort mangfold av arter som lever i og på treet. Så mange som 1500 arter kan leve på og i en hul eik. Det er derfor viktig å ta vare på disse på grunn av artsmangfoldet. Hul eik er definert som en utvalgt naturtype som skal tas hensyn til og vurderes i bygge- og plansaker.",
-            "dialogTextDescription": "Tekst som gjør søkeren oppmerksom på noe som er av betydning for søknaden. Eksempel: Tiltaket er plassert nær stammen på en hul eik, som er en utvalgt naturtype som det skal tas hensyn til.",
-            "possibleMeasuresDescription": "Tiltaket er plassert nær det som er hensikten med varslingen. Du kan flytte tiltaket lengre unna, kontakte kommunen, eller en fagperson geoteknisk kompetanse, arborist etc. for å vurdere løsninger.",
+            "bufferDescription": "Avgrenset område rundt treffet hvor det gjelder aktsomhet/egne reguleringer som må tas hensyn til",
+            "descriptionDescription": "En begrunnelse for hvorfor brukeren varsles om forholdet og hva som er relevant ved dette temadatasettet. Formålet er å skape forståelse om at det er en konflikt, hva den er og hva de må/kan gjøre, selv hvis de ikke kjenner fagområdet godt fra før. Gjennom teksten kan vi motivere brukeren til å følge opp foreslåtte tiltak.",
+            "dialogTextDescription": "En setning som gjør brukeren oppmerksom på at planlagt bygg er i konflikt med andre hensyn i området. Eksempel: Tiltaket er plassert nær stammen på en hul eik, som er en utvalgt naturtype som skal tas hensyn til.",
+            "possibleMeasuresDescription": "Beskrivelser av mulige tiltak brukeren kan vurdere, for å redusere risiko for byggeforbud eller fjerne konfliktpunktet.",
             "bufferPossibleMeasuresDescription": "Tekst skal gi brukeren råd og veiledning om hva som bør gjøres eller ikke gjøres innenfor buffersonen til lokaliteten",
-            "guidanceDescription": "Veiledende tekst om  ett eller flere av de mulige tiltakene, dersom det er behov for det. Skal formuleres på en slik måte at det er forståelig uten fagkompetanse",
+            "guidanceDescription": "Forklaring om ett eller flere av de mulige tiltakene, dersom det er behov for det. Dette kan for eksempel være å forklare fagbegreper, eller gi veiledning om hvordan et mulig tiltak kan gjennomføres på riktig måte. Formålet er å hjelpe brukere å komme i gang med tiltakene.",
             "dataSetBufferTextDescription": "Tekst som sier noe om konsekvenser av tiltak i nærheten av definerte objekter i datasettet",
             "dataSetBufferDistanceDescription": "Avstand i meter som angir når buffertekst skal gjøres gjeldende",
             "linkTextDescription": "Lenketekst om det er ønskelig å lenke til mer utfyllende informasjon",
@@ -36,8 +37,18 @@
             "sign3Description": "Tegnforklaring 3",
             "sign4Description": "Tegnforklaring 4",
             "sign5Description": "Tegnforklaring 5",
-            "sign6Description": "Tegnforklaring 6"
-        }
+            "sign6Description": "Tegnforklaring 6",
+            "introGeolettDescriptionTitle": "Hvorfor lager vi disse tekstene?",
+            "introGeolettinternal": "Før du begynner vil vi gjerne gi deg en introduksjon til hvordan veiledningstekstene skal brukes, hvem de skal bruke av og nyttige tips til utformingen av tekstene.",
+            "introGeolettDescription": "Velkommen til plan- og byggesaksstøtte. I denne editoren kan du opprette og redigere tekster til bruk i plan- og byggesaker.",
+            "introGeolettDescriptionDel1": "Å utforme standardiserte veiledningstekster som er enkle å forstå har flere fordeler. Som fagmyndighet vil dere kunne redusere antall henvendelser og forebygge konflikt. For brukerne av temadatasett blir det enklere å identifisere og justere for risiko tidlig.",
+            "introGeolettDescriptionDel2": "Tekstfeltene i editoren er med på å strukturere tekstene i et standardformat, slik at de enkelt kan brukes på tvers av ulike kartverktøy. Det er derfor viktig at du følger “malen” tekstfeltene definerer.",
+            "introGeolettDescriptionDel3": "Når vi skriver veiledningstekster, er det viktig at vi tar hensyn til hva de skal brukes til og hvem som skal bruke tekstene. Vårt tips er derfor å unngå lite kjente fagbegreper og andre kilder til usikkerhet. Du kan få hjelp til å utforme brukervennlige tekster i verktøyet Temadata Assistent (TeA). Gå til TeA",
+            "introGeolettDescriptionDel4": "Et eksempel på en bruker kan være en arkitekt som skal designe en enebolig på en tomt for en kunde. Arkitekten bruker tegneverktøy og felles kartverktøy for å få oversikt over hensyn hun må ta i utformingen av bygget. Her kan du se et eksempel på hvordan veiledningstekstene kan se ut i en slik kartløsning.",
+            "introDegreeRisk": "Hva slags konsekvenser gir det at planlagt bygg får treff i dette temadatasettet? Vil det bety en høy risiko for forbud mot å bygge i området? Krever det mer utredning? Eller er det nyttig informasjon til bruk i videre planlegging, uten særlig konflikt?",
+            "chatAIhelptext": "Tips! Bruke Temadata Assistent (TeA) til å utforme tekster som er lette å forstå for brukerne! ",
+            "introBioAnita": "Anita bruker tegneverktøy og felles kartverktøy for å få oversikt over hensyn hun må ta i utformingen av bygget.\n\n Under ser vi et eksempel på hvordan veiledningstekstene kan se ut i en slik kartløsning"
+        }            
     },
     {
         "culture": "en-US",

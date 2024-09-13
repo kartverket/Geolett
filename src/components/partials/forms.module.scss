@@ -2,9 +2,9 @@
 
 :local(.form) {
    label {
-      font-weight: 600;
+      font-weight: 600;     
    }
-
+   
    :local(.star) {
       width: 18px;
       height: 18px;
@@ -33,7 +33,7 @@
 
    label {
       display: block;
-      margin: 24px 0 14px;
+      margin: 24px 0 0px;
       font-size: 1.2em;
    }
    :local(.comboInput) {
@@ -82,6 +82,7 @@
       }
 
       textarea {
+        
          padding-right: 38px;
          &:focus {
             box-shadow: none;
@@ -189,6 +190,36 @@
       position: relative;
    }
 }
+:local(.smallheader) {
+   font-style: italic;
+   margin-top: 16px;
+}
+:local(.introbox) {
+   display: flex;
+   flex-direction: column;
+   :local(.imageprofile) {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 100px;
+      > img:first-of-type {
+         width: 300px;
+        
+      }
+   }
+   
+   :local(.textcontent) {
+      white-space: pre-wrap;
+   }
+   :local(.textcontentbio) {
+      white-space: pre-wrap;
+      font-style: italic;
+      text-align: center;
+      margin-top: 40px;
+      
+      max-width: 350px;
+
+   }
+}
 :local(.buttonGroup) {
    button {
       margin-right: 10px;
@@ -202,11 +233,32 @@
 :local(.hiddn) {
    visibility: hidden;
 }
+:local(.flexradio) {
+   display: flex;
+   align-items: center;
+   input[type="radio"] {
+      -ms-transform: scale(1.5); /* IE 9 */
+      -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+      transform: scale(1.5);
+   }
+   label {
+      max-width: 390px;
+      margin: 10px;
+      font-weight: normal;
+      font-size: 1em;
+   }
+}
+:local(.btnGroup) {
+   display: flex;
+   justify-content: space-between;
+   margin-top: 20px; }
+
 :local(.flex) {
    display: flex;
    justify-content: space-between;
    align-items: flex-end;
    column-gap: 32px;
+  
    @media screen and (max-width: 600px) {
       flex-direction: column;
    }
@@ -224,6 +276,118 @@
       flex: none;
    }
 }
+:local(.flexbio) {
+   display: flex;
+   justify-content: space-evenly;
+   align-items: center;
+   column-gap: 32px;
+   margin-top: 20px;
+   @media screen and (max-width: 600px) {
+      flex-direction: column;
+   }
+   :local(.form) {
+      flex: 1;
+      &:not(:last-child) {
+         margin-right: 16px;
+      }
+   }
+   :local(button.form) {
+      margin-bottom: 1rem;
+      flex: none;
+   }
+}
 :local(.block) {
    margin: 20px 0;
 }
+:local(.metadata) {
+   display: flex;
+   flex-wrap: wrap;
+   flex-direction: column;
+   background-color: rgba(223,157,136,0.3);
+   padding: 20px;
+   margin: 20px -20px;
+   max-height: 2000px;
+   transition: all 0.3s ease-in-out;
+   &.open {
+      max-height: 90px;
+      flex-wrap: nowrap;
+      overflow: hidden;
+   }
+
+ }
+ :local(.btnright) {
+   display: flex;
+   justify-content: flex-end;
+ }
+ :local(.metadatafirst) {
+   display: flex;
+   flex-direction: row-reverse;
+   background-color: rgba(223,157,136,0.3);
+   padding: 20px;
+   margin: 20px -20px;
+   button {
+      margin-right: -10px;
+      margin-top: -30px;
+      background-color: #E49371; 
+      padding:  10px 20px;
+      border: none;
+      border-radius: 4px;
+      &:hover {
+         cursor: pointer;
+         background-color: #fe5000;
+      }
+      &:active {
+         background-color: red;
+      }
+   }
+
+ }
+
+:local(.inputs) {
+   border: 1px solid red;
+}
+:local(.buffercontent) {
+   border: 1px dotted red;
+}
+:local(.flexhorizontal) {
+   display: flex;
+   flex-direction: row;
+   button {
+      margin-right: 10px;
+      margin-top: 23px;
+      height: 25px;
+      width: 60px;
+      background-color: #E49371; 
+      border: none;
+      border-radius: 4px;
+   }
+}
+:local(.screenshot) {
+   height: auto;
+   margin-top: 24px;
+   max-width: 100%;
+}
+:local(.caption) {
+   font-style: italic;
+   font-size: .8em;   
+   margin-top: 10px;
+}
+:local(.link) {
+   &:hover {
+      cursor: pointer;
+   }
+}
+:local(.biocontainer) {
+   display: flex;
+   flex-direction: row;
+   img {
+      max-width: 50%;
+      margin-top: 16px;
+      margin-left: 16px;
+   }
+}
+:local(.infotext) {
+   font-style: italic;
+   font-size: 1em;
+   margin-bottom: 10px;
+ }

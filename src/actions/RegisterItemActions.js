@@ -19,6 +19,7 @@ export const createRegisterItem = (registerItem, token) => async (dispatch) => {
    const response = await appApi(token).post(apiUrl, registerItem);
 
    dispatch({ type: CREATE_REGISTER_ITEM, payload: response.data });
+   return response;
 }
 
 export const updateRegisterItem = (registerItem, token) => async (dispatch) => {

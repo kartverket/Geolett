@@ -36,6 +36,16 @@ const NavigationBar = () => {
     const signinurl = getEnvironmentVariable("signinurl");
     const signouturl = getEnvironmentVariable("signouturl");
     const isLoggedIn = !!authToken?.access_token?.length;
+
+    // Redirect to signin page after token expire, todo handle browser reload using localstorage and date
+    if (isLoggedIn){
+        setTimeout(() => 
+            {                
+                console.log("Token expires, redirecting to signin page");
+                location.href = signinurl;
+            }, 1440000);
+    }
+
     return (
         <main-navigation
             signinurl={signinurl}
@@ -51,6 +61,7 @@ const mapStateToProps = (state) => ({
     config: state.config,
     authInfo: state.authInfo,
     authToken: state.authToken,
+    statuses: state.options.statuses,
     selectedLanguage: state.selectedLanguage
 });
 

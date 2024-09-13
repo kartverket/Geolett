@@ -22,7 +22,7 @@ const RegisterItems = () => {
 
     // Redux store
     const savedRegisterItems = useSelector((state) => state.registerItems);
-    const statuses = useSelector((state) => state.statuses);
+    const statuses = useSelector((state) => state.options.statuses);
     const authToken = useSelector((state) => state.authToken);
     const config = useSelector((state) => state.config);
 
@@ -164,10 +164,9 @@ const RegisterItems = () => {
                           <tr key={registerItem.id}>
                               <td>
                                   <Link to={`${process.env.PUBLIC_URL}/${registerItem.id}/`}>
-                                      {registerItem.contextType}
+                                    {registerItem.title}  
                                   </Link>
                               </td>
-                              <td>{registerItem.title}</td>
                               <td>{registerItem.owner?.name || ""}</td>
                               <td>{getStatusLabel(statuses, registerItem)}</td>
                           </tr>
@@ -192,11 +191,8 @@ const RegisterItems = () => {
                 <table className={style.registerItemsTable}>
                     <thead>
                         <tr>
-                            <th style={{ cursor: "pointer" }} onClick={onSort("contextType")}>
-                                Konteksttype<span className={setArrow("contextType")}></span>
-                            </th>
                             <th style={{ cursor: "pointer" }} onClick={onSort("title")}>
-                                Tittel<span className={setArrow("title")}></span>
+                                Navn på veiledningstekst<span className={setArrow("title")}></span>
                             </th>
                             <th style={{ cursor: "pointer" }} onClick={onSort("owner")}>
                                 Eier<span className={setArrow("owner")}></span>
@@ -225,7 +221,7 @@ const RegisterItems = () => {
             url: config?.registerUrl || ""
         },
         {
-            name: "Geolett",
+            name: "Planguider",
             url: "/geolett"
         }
     ];
@@ -233,13 +229,15 @@ const RegisterItems = () => {
     return (
         <content-container>
             <div style={{position: 'relative'}}>
-                <div style={{position: 'absolute',  top: '20px',  right: '16px'}}><a href="geolett/api/swagger">API</a></div>
+                <div style={{position: 'absolute',  top: '20px',  right: '16px'}}><a href="api/swagger">API</a></div>
             </div>
+           
             <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
-            <heading-text><h1 underline="true">Konteksttyper</h1></heading-text>
-            
-            <CreateRegisterItem newRegisterItem />
-            {renderRegisterItems(registerItems)}
+            <heading-text><h1 underline="true">Planguider</h1></heading-text>
+             <div className={style.listcontainer}>
+                <CreateRegisterItem newRegisterItem />            
+                {renderRegisterItems(registerItems)}
+            </div>
         </content-container>
     );
 };

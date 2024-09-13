@@ -36,11 +36,13 @@
 
 :local(.toggleIcon) {
   cursor: pointer;
-  margin: 0 4px;
+  margin: 0 4px 6px 6px;
   position: relative;
+  background-color: white;
+  border-radius: 8px;
   z-index: 1;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   vertical-align: middle;
   &:local(.expanded) {
     color: $primary-brand;
