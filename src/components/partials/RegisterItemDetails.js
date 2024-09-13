@@ -605,7 +605,7 @@ const RegisterItemDetails = () => {
                               <div className={formsStyle.flex1}>
                                   <gn-label block>
                                       <label htmlFor={`linkText-${linkIndex}`}>
-                                          {dispatch(translate("labelLinkText", null, "Text"))}
+                                          {dispatch(translate("labelLinkText", null, "Tekst"))}
                                           <ToggleHelpText resourceKey="linkTextDescription" showHelp={editable} />
                                       </label>
                                   </gn-label>
@@ -729,6 +729,7 @@ const RegisterItemDetails = () => {
         }
     ];
     const risklevel = newRegisterItem.risk;
+
    
     return (
         <Fragment>
@@ -929,7 +930,7 @@ const RegisterItemDetails = () => {
 
                         <gn-label block>
                             <label htmlFor="dialogText">
-                                {dispatch(translate("labelDialogText", null, "Varsel"))}
+                                {dispatch(translate("labelDialogText", null, "Informasjonsarsel"))}
                                 <ToggleHelpText resourceKey="dialogTextDescription" showHelp={editable}  />
                             </label>
                         </gn-label>
