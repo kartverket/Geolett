@@ -92,11 +92,13 @@ const RegisterItemDetails = () => {
     const [possibleMeasuresMarkdown, setPossbileMeasuresMarkdown] = useState(savedRegisterItem?.possibleMeasures || "");
     const [registerItemTitle, setRegisterItemTitle] = useState(savedRegisterItem?.contextType || "");
     const [registerItemStatus, setRegisterItemStatus] = useState(savedRegisterItem?.status || "");
+    const [risk, setRisk] = useState(savedRegisterItem?.risk || "");
     
     useEffect(() => {
         setEditable(!!params.edit);
     }, [params.edit]);
 
+  
     // Refs
     const selectedObjectTypeAttributeNameRef = useRef(null);
     const selectedObjectTypeAttributeCodeValueValueRef = useRef(null);
@@ -605,7 +607,7 @@ const RegisterItemDetails = () => {
                               <div className={formsStyle.flex1}>
                                   <gn-label block>
                                       <label htmlFor={`linkText-${linkIndex}`}>
-                                          {dispatch(translate("labelLinkText", null, "Text"))}
+                                          {dispatch(translate("labelLinkText", null, "Tekst"))}
                                           <ToggleHelpText resourceKey="linkTextDescription" showHelp={editable} />
                                       </label>
                                   </gn-label>
@@ -727,8 +729,8 @@ const RegisterItemDetails = () => {
             name: newRegisterItem.title,
             url: params?.registerItemId && `/geolett/${params?.registerItemId}/`
         }
-    ];
-    const risklevel = newRegisterItem.risk;
+    ];    
+
    
     return (
         <Fragment>
@@ -810,17 +812,20 @@ const RegisterItemDetails = () => {
 
                             {editable ? (
                             <div>
-                            <div className={formsStyle.flexradio}>
-                            <input id="highrisk" name="risk" type="radio" value="high" onChange={handleChange} defaultChecked={risklevel === "high"} /><label htmlFor="highrisk">Høy grad av konflikt, risiko for byggeforbud</label>
-                            </div>
-                            <div className={formsStyle.flexradio}>
-                            <input id="lowrisk" name="risk" type="radio" value="low" onChange={handleChange} defaultChecked={risklevel === "low"} /><label htmlFor="lowrisk">Lav grad av konflikt, informasjon om området</label>
-                            </div>                            
+                                <div className={formsStyle.flexradio}>
+                                    <input id="highrisk" name="risk" type="radio" value="high" onChange={event => {setRisk("high"); handleChange(event)}} defaultChecked={newRegisterItem.risk === "high"} />
+                                    <label htmlFor="highrisk">Høy grad av konflikt, risiko for byggeforbud</label>
+                                </div>
+                                
+                                <div className={formsStyle.flexradio}>
+                                    <input id="lowrisk" name="risk" type="radio" value="low" onChange={event => {setRisk("low"); handleChange(event)}} defaultChecked={newRegisterItem.risk === "low"} />
+                                    <label htmlFor="lowrisk">Lav grad av konflikt, informasjon om området</label>
+                                </div>                            
                             </div>
                             ) : (
                                 <heading-text>
                                 <h5>
-                                    {risklevel === "high" ? "Høy grad av konflikt, risiko for byggeforbud" : risklevel === "medium" ? "Noe konflikt, aktsomhets-vurdering kan behøves" : risklevel === "low" ? "Lav grad av konflikt, informasjon om området" : "Ikke satt"}
+                                    {risk === "high" ? "Høy grad av konflikt, risiko for byggeforbud" : risk === "low" ? "Lav grad av konflikt, informasjon om området" : "Ikke satt"}
                                 </h5>
                                 </heading-text>
                                     
@@ -929,7 +934,7 @@ const RegisterItemDetails = () => {
 
                         <gn-label block>
                             <label htmlFor="dialogText">
-                                {dispatch(translate("labelDialogText", null, "Varsel"))}
+                                {risk === "low" ? dispatch(translate("labelDialogText", null, "Informasjonsvarsel")) : dispatch(translate("labelDialogText", null, "Varsel"))}
                                 <ToggleHelpText resourceKey="dialogTextDescription" showHelp={editable}  />
                             </label>
                         </gn-label>
@@ -947,7 +952,7 @@ const RegisterItemDetails = () => {
                                 <div id="dialogText">{newRegisterItem.dialogText}</div>
                             )}
 
-                            { risklevel === 'low'? '' : <gn-label block>
+                            { risk === 'low'? '' : <gn-label block>
                                 <label htmlFor="possibleMeasures">
                                     {dispatch(translate("labelPossibleMeasures", null, "Hvilke tiltak kan gjøres?"))}
                                     <ToggleHelpText resourceKey="possibleMeasuresDescription" showHelp={editable}  />
@@ -955,7 +960,7 @@ const RegisterItemDetails = () => {
                             </gn-label> }
                             
                             <div data-color-mode="light">
-                            {risklevel === 'low' ? '' :                              
+                            {risk === 'low' ? '' :                              
                             editable ? (
                                 
                                 <MDEditor
@@ -977,7 +982,7 @@ const RegisterItemDetails = () => {
                             </div>
                             <gn-label block>
                                 <label htmlFor="guidance">
-                                    {risklevel === 'low' ? dispatch(translate("labelGuidance", null, "Tips til hvordan følge opp tiltak")) : dispatch(translate("labelGuidance", null, "Tilleggsinformasjon om tiltak")) }
+                                    {risk === 'low' ? dispatch(translate("labelGuidance", null, "Hvordan bruke denne informasjonen")) : dispatch(translate("labelGuidance", null, "Tips til hvordan følge opp tiltak")) }
                                     <ToggleHelpText resourceKey="guidanceDescription" showHelp={editable} />
                                 </label>
                             </gn-label>
@@ -1005,7 +1010,7 @@ const RegisterItemDetails = () => {
                         </gn-label>
                         {renderLinks(newRegisterItem.links)} 
                         
-                        { risklevel === "low" ? '' : <ToggleBuffer onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
+                        { risk === "low" ? '' : <ToggleBuffer onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
 
                         </div>
 
