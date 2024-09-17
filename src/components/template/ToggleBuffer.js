@@ -18,6 +18,7 @@ import style from "components/template/ToggleBuffer.module.scss";
 
 
 const ToggleBuffer = ({onChange, item, editable}) => {
+    
 const [bufferText, setBufferText] = useState(false)
 
     const toggleBuffertext = () => { 
@@ -50,12 +51,13 @@ const [bufferText, setBufferText] = useState(false)
                                     <input
                                         id="datasetBufferText"
                                         name="bufferText"
-                                        defaultValue={item?.dataset?.bufferText}
+                                        defaultValue={item?.dataSet?.bufferText}
                                         onChange={onChange}
                                 />
                             </gn-input>
+                            
                         ) : (
-                            <div id="datasetBufferText">{item?.dataset?.bufferText}</div>
+                            <div id="datasetBufferText">{item?.dataSet?.bufferText}</div>
                         )}
 
                         <gn-label block>
