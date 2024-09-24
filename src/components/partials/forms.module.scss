@@ -251,8 +251,13 @@
 :local(.btnGroup) {
    display: flex;
    justify-content: space-between;
-   margin-top: 20px; }
-
+   margin-top: 20px; 
+   align-items: flex-end;
+      :local(.inlinetext) {
+     width: 300px;
+     margin-bottom: 20px;      
+   }
+}
 :local(.flex) {
    display: flex;
    justify-content: space-between;
@@ -321,8 +326,7 @@
  }
  :local(.metadatafirst) {
    display: flex;
-   flex-direction: row-reverse;
-   background-color: rgba(223,157,136,0.3);
+   flex-direction: row-reverse;   
    padding: 20px;
    margin: 20px -20px;
    button {
