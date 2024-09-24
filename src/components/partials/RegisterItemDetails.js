@@ -199,7 +199,6 @@ const RegisterItemDetails = () => {
     const handleOwnerSelect = (data) => {
         setSelectedOwner(data);
     };
-
     const handleDelete = () => {
         const registerItem = savedRegisterItem;
         const token = authToken?.access_token || null;
@@ -292,8 +291,9 @@ const RegisterItemDetails = () => {
             .then(() => {
                 setValidationErrors([]);
                 toggleEditable(false);                  
-                registerItem.status = 1;              
-                toastr.success("Veiledningsteksten ble lagret");
+                registerItem.status = 1;   
+                                             
+                registerItemStatus === 1 ? toastr.success("Veiledningsteksten ble lagret") : toastr.success("Veiledningsteksten ble publisert");
             })
             .catch(({ response }) => {
                 toastr.error("Kunne ikke oppdatere veiledningsteksten");
@@ -304,11 +304,11 @@ const RegisterItemDetails = () => {
 
     const publishRegisterItem = () => {
         if(registerItemStatus !== 2) { 
-            handleChange({name: "status", value: 2});
+            handleChange({name: "status", value: 2})       
+            setRegisterItemStatus(2);     
         }        
-        saveRegisterItem();
-
-        //set to empty since removed from UI     
+        saveRegisterItem();                    
+    
     }
 
     const cloneRegister = () => {
@@ -736,38 +736,33 @@ const RegisterItemDetails = () => {
         <Fragment>
             <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
             {newRegisterItem ? (
-                <Fragment>
-                    
+                <Fragment>                
                     <div className={formsStyle.form}>
                         <heading-text>
                             <h1 underline="true">{newRegisterItem?.contextType.length ? newRegisterItem?.contextType  :  savedRegisterItem.title}</h1>
                         </heading-text>
-
-                        <ValidationErrors errors={validationErrors} />                        <div className={formsStyle.metadatafirst}>  
+                        <ValidationErrors errors={validationErrors} />                        
+                        <div className={formsStyle.metadatafirst}>  
                             <div>
                            
                         {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
                                        editable ? (<>
-                                           {savedRegisterItem.status === 1 ?  <button
+                                           {registerItemStatus === 1 ?  <button
                                     disabled={
                                         !newRegisterItem?.title?.length
                                     }
-                                    onClick={saveRegisterItem}
-                                   
+                                    onClick={saveRegisterItem}                                   
                                 >
-                                    Lagre
-                                    
+                                    Lagre                                    
                                 </button> :
                                 <button
                                 disabled={
                                     !newRegisterItem?.title?.length
-                                }
-                                onClick={publishRegisterItem}
-                               
-                            >
-                                Publisere
-                                
-                            </button> }
+                                        }
+                                        onClick={publishRegisterItem}                               
+                                    >
+                                        Publisere                                
+                                    </button> }
                                        </> 
                                     ) : <button
                                     onClick={() => {
@@ -777,11 +772,9 @@ const RegisterItemDetails = () => {
                                 Redigere
                                 </button>) : null} 
                                     </div>
-                                    <div>
-                      
-                            
+                                    <div>                                                  
                             <heading-text>
-                                <h5>Navn i Geonorge</h5>
+                                <h5>Navn til intern bruk i Geonorge</h5>
                             </heading-text>
                           
                             
@@ -840,9 +833,9 @@ const RegisterItemDetails = () => {
                           
                             <div className={formsStyle.biocontainer}>
                                 <div>
-                                <div className={formsStyle.smallheader}>Hvorfor lage disse veiledningstekstene?</div>
+                                <div className={formsStyle.smallheader}>Hvorfor skrive areaplanveiledere?</div>
                                 {dispatch(translate("introGeolettDescriptionDel1", null, "tittel"))}
-                            <div className={formsStyle.smallheader}>Tips til bruk av editor</div>
+                            <div className={formsStyle.smallheader}>Tips til bruk av planguide-editoren</div>
                             {dispatch(translate("introGeolettDescriptionDel2", null, "tittel"))}
                             
                             {dispatch(translate("introGeolettDescriptionDel3", null, "tittel"))}
@@ -1018,64 +1011,10 @@ const RegisterItemDetails = () => {
                             <div>
                             <div className={formsStyle.flexhorizontal}>
                             <button onClick={toggleMetadata} >{isActive ? 'Vis': 'Skjul'}</button>
-                            <header-text><h2>Metadata </h2></header-text>
+                            <header-text><h2>Datasett og metadata </h2></header-text>
                             </div>
-                            <em>Data om dataene, til bruk i Geonorge</em>
-
-                            <gn-label block>
-                                <label htmlFor="id">
-                                    {dispatch(translate("labelId", null, "ID"))}
-                                    <ToggleHelpText resourceKey="IdDescription" showHelp={editable} />
-                                </label>
-                            </gn-label>
-                            <div id="id">{newRegisterItem.id}</div>
-
-                                                   
-
-
+                            <em>Koble tekster til aktuelt datasett og data om dataene, til bruk i Geonorge</em>
                             <gn-label>
-                            <label>Kommentarer</label>
-                            </gn-label>
-
-                        <gn-label block>
-                            <label htmlFor="technicalComment">
-                                {dispatch(translate("labelTechnicalComment", null, "Teknisk kommentar"))}
-                                <ToggleHelpText resourceKey="technicalCommentDescription" showHelp={editable} />
-                            </label>
-                        </gn-label>
-                        {editable ? (
-                            <gn-input block fullWidth>
-                                <input
-                                    id="technicalComment"
-                                    name="technicalComment"
-                                    defaultValue={newRegisterItem.technicalComment}
-                                    onChange={handleChange}
-                                />
-                            </gn-input>
-                        ) : (
-                            <div id="technicalComment">{newRegisterItem.technicalComment}</div>
-                        )}
-
-                        <gn-label block>
-                            <label htmlFor="otherComment">
-                                {dispatch(translate("labelOtherComment", null, "Andre kommentarer"))}
-                                <ToggleHelpText resourceKey="otherCommentDescription" showHelp={editable} />
-                            </label>
-                        </gn-label>
-                        {editable ? (
-                            <gn-input block fullWidth>
-                                <input
-                                    id="otherComment"
-                                    name="otherComment"
-                                    defaultValue={newRegisterItem.otherComment}
-                                    onChange={handleChange}
-                                />
-                            </gn-input>
-                        ) : (
-                            <div id="otherComment">{newRegisterItem.otherComment}</div>
-                        )}
-
-                        <gn-label>
                             <label>  Datasett
                                 <ToggleHelpText resourceKey="dataSetTitleDescription" showHelp={editable}  /></label>
                             </gn-label>
@@ -1103,6 +1042,16 @@ const RegisterItemDetails = () => {
                                 <h3>{newRegisterItem?.dataSet?.title || ""}</h3>
                             </a>
                         )}
+
+                            <gn-label block>
+                                <label htmlFor="id">
+                                    {dispatch(translate("labelId", null, "ID"))}
+                                    <ToggleHelpText resourceKey="IdDescription" showHelp={editable} />
+                                </label>
+                            </gn-label>
+                            <div id="id">{newRegisterItem.id}</div>
+
+                                                                                                    
 
                         <gn-label block>
                             <label htmlFor="datasetUrlMetadata">
@@ -1280,12 +1229,54 @@ const RegisterItemDetails = () => {
                         ) : (
                             <div id="datasetUrlGmlSchema">{newRegisterItem?.dataSet?.urlGmlSchema || ""}</div>
                         )}
+
+                            <gn-label>
+                            <label>Kommentarer</label>
+                            </gn-label>
+
+                        <gn-label block>
+                            <label htmlFor="technicalComment">
+                                {dispatch(translate("labelTechnicalComment", null, "Teknisk kommentar"))}
+                                <ToggleHelpText resourceKey="technicalCommentDescription" showHelp={editable} />
+                            </label>
+                        </gn-label>
+                        {editable ? (
+                            <gn-input block fullWidth>
+                                <input
+                                    id="technicalComment"
+                                    name="technicalComment"
+                                    defaultValue={newRegisterItem.technicalComment}
+                                    onChange={handleChange}
+                                />
+                            </gn-input>
+                        ) : (
+                            <div id="technicalComment">{newRegisterItem.technicalComment}</div>
+                        )}
+
+                        <gn-label block>
+                            <label htmlFor="otherComment">
+                                {dispatch(translate("labelOtherComment", null, "Andre kommentarer"))}
+                                <ToggleHelpText resourceKey="otherCommentDescription" showHelp={editable} />
+                            </label>
+                        </gn-label>
+                        {editable ? (
+                            <gn-input block fullWidth>
+                                <input
+                                    id="otherComment"
+                                    name="otherComment"
+                                    defaultValue={newRegisterItem.otherComment}
+                                    onChange={handleChange}
+                                />
+                            </gn-input>
+                        ) : (
+                            <div id="otherComment">{newRegisterItem.otherComment}</div>
+                        )}   
                         </div>
                         
                         </div>
 
                        
-                        {editable ? (<>
+                        {editable && registerItemStatus !== 2 ? (<>
                              <gn-label block>
                              <label htmlFor="status">Status</label>
                             </gn-label>
@@ -1294,7 +1285,7 @@ const RegisterItemDetails = () => {
                                     id="status"
                                     name="status"
                                     defaultValue={newRegisterItem.status || 1}
-                                    onChange={handleChange}
+                                      onChange={handleChange}
                                 >
                                     {statuses.map((status) => {
                                         return (
@@ -1307,27 +1298,29 @@ const RegisterItemDetails = () => {
                             </gn-select></>
                         ) : null}
                        
+                       <div className={formsStyle.block}>
+                        {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
+                                       editable ? (<>
+                                           {registerItemStatus === 1 ?  
+                                           <gn-button color="primary"><button
+                                    disabled={
+                                        !newRegisterItem?.title?.length
+                                    }
+                                    onClick={saveRegisterItem}                                   
+                                >
+                                    Lagre                                    
+                                </button></gn-button> :
+                                null }
+                                       </> 
+                                    ) : <gn-button color="primary"><button 
+                                    onClick={() => {
+                                        toggleEditable(true);
+                                    }}
+                                >
+                                Redigere
+                                </button></gn-button>) : null} 
                        {editable ? (<div>
-                                <div className={formsStyle.btnGroup}>
-                                    
-                                    {canEditRegisterItem(authInfo, savedRegisterItem?.owner) ? (
-                                        <Fragment>
-                                          
-                                            <gn-button color="primary">
-                                            {newRegisterItem?.status === 2 ? (
-                                               null ) : (<button
-                                                    disabled={
-                                                        !newRegisterItem?.title?.length
-                                                    }
-                                                    onClick={saveRegisterItem}
-                                                >
-                                                    Lagre
-                                                </button>  ) }
-                                            </gn-button>
-                                         
-                                            
-                                        </Fragment>                                        
-                                    ) :   null}
+                                <div className={formsStyle.btnGroup}>                                                                   
                                 </div>
                                 </div>) : (<>                                
                                 <div className={formsStyle.btnGroup}>
@@ -1339,23 +1332,24 @@ const RegisterItemDetails = () => {
                                     ) : null}
                                 </div>
                             </>)}
-                            
+                            </div>
                             
                             <div className={formsStyle.btnGroup}>
-                            {canDeleteRegisterItem(authInfo) ? (
+                            {canDeleteRegisterItem(authInfo) && editable ? (
                                         <gn-button color="danger">
                                             <button onClick={openDialog}>Slett veiledningstekst</button>
                                         </gn-button>
                                     ) : null}
                                 {editable ? (
                                     <gn-button color="success">
+                                        {registerItemStatus === 1 ? <div className={formsStyle.inlinetext}>Er teksten ferdig og klar for å publiseres? Vær obs på at den da vil være tilgjengelig og synlig for alle som bruker Geonorge. Vil du fjerne en publisert tekst må teksten slettes.</div> : null}
                                     <button
                                         disabled={
                                             !newRegisterItem?.title?.length
                                         }
                                         onClick={publishRegisterItem}                                                    
                                     >
-                                        Ja publiser teksten
+                                      {registerItemStatus === 1 ? 'Ja publisere teksten' : 'Publisere'} 
                                     </button>
                                 </gn-button>
                                 ) : null}

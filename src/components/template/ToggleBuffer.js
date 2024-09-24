@@ -18,6 +18,7 @@ import style from "components/template/ToggleBuffer.module.scss";
 
 
 const ToggleBuffer = ({onChange, item, editable}) => {
+    
 const [bufferText, setBufferText] = useState(false)
 
     const toggleBuffertext = () => { 
@@ -42,7 +43,7 @@ const [bufferText, setBufferText] = useState(false)
                             <gn-label block>
                             <label htmlFor="datasetBufferText">
                                 {dispatch(translate("labelDataSetBufferText", null, "Buffertekst"))}
-                                <ToggleHelpText resourceKey="dataSetBufferTextDescription" />
+                                <ToggleHelpText resourceKey="dataSetBufferTextDescription"showHelp={editable}/>
                                 </label>
                             </gn-label>
                             {editable ? (
@@ -50,18 +51,20 @@ const [bufferText, setBufferText] = useState(false)
                                     <input
                                         id="datasetBufferText"
                                         name="bufferText"
-                                        defaultValue={item?.dataset?.bufferText}
+                                        placeholder={dispatch(translate("dataSetBufferTextDescription", null, "titleDescription"))}
+                                        defaultValue={item?.dataSet?.bufferText}
                                         onChange={onChange}
                                 />
                             </gn-input>
+                            
                         ) : (
-                            <div id="datasetBufferText">{item?.dataset?.bufferText}</div>
+                            <div id="datasetBufferText">{item?.dataSet?.bufferText}</div>
                         )}
 
                         <gn-label block>
                             <label htmlFor="datasetBufferPossibleMeasures">
                                 {dispatch(translate("labelBufferPossibleMeasures", null, "Mulige tiltak buffer"))}
-                                <ToggleHelpText resourceKey="bufferPossibleMeasuresDescription" />
+                                <ToggleHelpText resourceKey="bufferPossibleMeasuresDescription" showHelp={editable} />
                             </label>
                         </gn-label>
                         {editable ? (
@@ -71,6 +74,7 @@ const [bufferText, setBufferText] = useState(false)
                                     name="bufferPossibleMeasures"
                                     defaultValue={item?.dataSet?.bufferPossibleMeasures || ""}
                                     rows="4"
+                                    placeholder={dispatch(translate("bufferPossibleMeasuresDescription", null, "titleDescription"))}
                                     onChange={onChange}
                                 />
                             </gn-textarea>
@@ -83,7 +87,8 @@ const [bufferText, setBufferText] = useState(false)
                         <gn-label block>
                             <label htmlFor="datasetBufferDistance">
                                 {dispatch(translate("labelDataSetBufferDistance", null, "Buffer"))}
-                                <ToggleHelpText resourceKey="dataSetBufferDistanceDescription" />
+                                <ToggleHelpText resourceKey="dataSetBufferDistanceDescription" showHelp={editable} />
+                                
                             </label>
                         </gn-label>
                         {editable ? (
@@ -91,6 +96,7 @@ const [bufferText, setBufferText] = useState(false)
                                 <input
                                     id="datasetBufferDistance"
                                     name="bufferDistance"
+                                    placeholder={dispatch(translate("dataSetBufferDistanceDescription", null, "titleDescription"))}
                                     defaultValue={item?.dataSet?.bufferDistance || ""}
                                     onChange={onChange}
                                 />
