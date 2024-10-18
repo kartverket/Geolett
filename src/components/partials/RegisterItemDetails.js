@@ -991,7 +991,7 @@ const RegisterItemDetails = () => {
                                     />
                                 </gn-textarea>
                             ) : (
-                                <div id="guidance">{newRegisterItem.dialogText}</div>
+                                <div id="guidance">{newRegisterItem.guidance}</div>
                             )}
 
                          
