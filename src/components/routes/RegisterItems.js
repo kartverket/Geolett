@@ -211,8 +211,8 @@ const RegisterItems = () => {
                                   </Link>
                               </td>
                               <td>{registerItem.owner?.name || ""}</td>
-                              <td>{getStatusLabel(statuses, registerItem)}</td>
                               <td>{registerItem.theme}</td>
+                              <td>{getStatusLabel(statuses, registerItem)}</td>                              
                           </tr>
                       );
                   })
@@ -241,12 +241,13 @@ const RegisterItems = () => {
                             <th style={{ cursor: "pointer" }} onClick={onSort("owner")}>
                                 Eier<span className={setArrow("owner")}></span>
                             </th>
-                            <th style={{ cursor: "pointer" }} onClick={onSort("status")}>
-                                Status<span className={setArrow("status")}></span>
-                            </th>
                             <th style={{ cursor: "pointer" }} onClick={onSort("theme")}>
                                 Tema<span className={setArrow("theme")}></span>
                             </th>
+                            <th style={{ cursor: "pointer" }} onClick={onSort("status")}>
+                                Status<span className={setArrow("status")}></span>
+                            </th>
+                           
                         </tr>
                     </thead>
                     <tbody>{registerItemRows}</tbody>
