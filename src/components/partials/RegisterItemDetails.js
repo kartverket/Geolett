@@ -722,7 +722,7 @@ const RegisterItemDetails = () => {
             url: config?.registerUrl || ""
         },
         {
-            name: "Veiledningstekster for plan og bygg",
+            name: "Veiledningstekster plan og bygg",
             url: "/geolett"
         },
         {
