@@ -136,6 +136,13 @@ const RegisterItems = () => {
                     if (nameA < nameB) return -1;
                     if (nameA < nameB) return 1;
                     else return 0;
+                } else if (column === "theme") {
+                    const nameA = a.theme;
+                    const nameB = b.theme;
+
+                    if (nameA < nameB) return -1;
+                    if (nameA < nameB) return 1;
+                    else return 0;
                 } else {
                     return a.first - b.first;
                 }
@@ -169,6 +176,7 @@ const RegisterItems = () => {
                               </td>
                               <td>{registerItem.owner?.name || ""}</td>
                               <td>{getStatusLabel(statuses, registerItem)}</td>
+                              <td>{registerItem.theme}</td>
                           </tr>
                       );
                   })
@@ -199,6 +207,9 @@ const RegisterItems = () => {
                             </th>
                             <th style={{ cursor: "pointer" }} onClick={onSort("status")}>
                                 Status<span className={setArrow("status")}></span>
+                            </th>
+                            <th style={{ cursor: "pointer" }} onClick={onSort("theme")}>
+                                Tema<span className={setArrow("theme")}></span>
                             </th>
                         </tr>
                     </thead>
