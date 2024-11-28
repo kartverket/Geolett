@@ -34,6 +34,7 @@ const RegisterItems = () => {
         column: null,
         direction: "desc"
     });
+    const [selectedTheme, setSelectedTheme] = useState();
 
     // Refs
     const tokenRef = useRef(null);
@@ -80,7 +81,37 @@ const RegisterItems = () => {
 
         return owners;
     };
-
+    const getThemes = () => {
+        const themes = savedRegisterItems.map((item) => item.theme);
+        return ["All", ...new Set(themes)];
+    };
+    const handleThemeChange = (event) => {
+        setSelectedTheme(event.target.value);
+        const filteredItems = event.target.value === "All" 
+            ? savedRegisterItems 
+            : savedRegisterItems.filter((item) => item.theme === event.target.value);
+        setNewRegisterItems(filteredItems);
+    };
+    const renderThemeFilters = () => {
+        const themes = getThemes();
+        return (
+            <div className={style.theme}>
+                <div>Tema</div>
+                {themes.map((theme, index) => (
+                    <label key={index} className={style.themeLabel}>
+                        <input
+                            type="radio"
+                            name="theme"
+                            value={theme}
+                            checked={selectedTheme === theme}
+                            onChange={handleThemeChange}
+                        />
+                        {theme}
+                    </label>
+                ))}
+            </div>
+        );
+    };
     const handleChange = (data) => {
         let ownerRegisterItems = savedRegisterItems;
         const owner = data?.target?.value && parseInt(data?.target?.value);
@@ -195,7 +226,7 @@ const RegisterItems = () => {
                         })}
                     </select>
                 </gn-select>
-
+                {renderThemeFilters()}  
                 <table className={style.registerItemsTable}>
                     <thead>
                         <tr>
@@ -246,7 +277,8 @@ const RegisterItems = () => {
             <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
             <heading-text><h1 underline="true">Veiledningstekster plan og bygg</h1></heading-text>
              <div className={style.listcontainer}>
-                <CreateRegisterItem newRegisterItem />            
+                <CreateRegisterItem newRegisterItem />   
+                      
                 {renderRegisterItems(registerItems)}
             </div>
         </content-container>
