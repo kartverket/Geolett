@@ -233,7 +233,7 @@ const RegisterItems = () => {
             </div>
            
             <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
-            <heading-text><h1 underline="true">Planguider</h1></heading-text>
+            <heading-text><h1 underline="true">Veiledningstekster for plan og bygg</h1></heading-text>
              <div className={style.listcontainer}>
                 <CreateRegisterItem newRegisterItem />            
                 {renderRegisterItems(registerItems)}
