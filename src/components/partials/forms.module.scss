@@ -395,3 +395,7 @@
    font-size: 1em;
    margin-bottom: 10px;
  }
+ :local(.radioRow) {
+   display: flex;
+   flex-direction: row;
+ }

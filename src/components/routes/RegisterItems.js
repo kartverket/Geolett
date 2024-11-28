@@ -42,6 +42,11 @@ const RegisterItems = () => {
     useEffect(() => {
         tokenRef.current = authToken?.access_token?.length ? authToken.access_token : null;
     }, [authToken?.access_token]);
+    useEffect(() => {
+        if (!selectedTheme) {
+            setSelectedTheme("Alle");
+        }
+    }, [selectedTheme]);
 
     useEffect(() => {
         dispatch(fetchRegisterItems(tokenRef.current)).then(() => {
@@ -83,11 +88,11 @@ const RegisterItems = () => {
     };
     const getThemes = () => {
         const themes = savedRegisterItems.map((item) => item.theme);
-        return ["All", ...new Set(themes)];
+        return ["Alle", ...new Set(themes)];
     };
     const handleThemeChange = (event) => {
         setSelectedTheme(event.target.value);
-        const filteredItems = event.target.value === "All" 
+        const filteredItems = event.target.value === "Alle" 
             ? savedRegisterItems 
             : savedRegisterItems.filter((item) => item.theme === event.target.value);
         setNewRegisterItems(filteredItems);

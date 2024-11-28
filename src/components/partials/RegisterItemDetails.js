@@ -93,6 +93,7 @@ const RegisterItemDetails = () => {
     const [registerItemTitle, setRegisterItemTitle] = useState(savedRegisterItem?.contextType || "");
     const [registerItemStatus, setRegisterItemStatus] = useState(savedRegisterItem?.status || "");
     const [risk, setRisk] = useState(savedRegisterItem?.risk || "");
+    const [theme, setTheme] = useState(savedRegisterItem?.theme || "");
     
     useEffect(() => {
         setEditable(!!params.edit);
@@ -821,6 +822,29 @@ const RegisterItemDetails = () => {
                                     {risk === "high" ? "Høy grad av konflikt, risiko for byggeforbud" : risk === "low" ? "Lav grad av konflikt, informasjon om området" : "Ikke satt"}
                                 </h5>
                                 </heading-text>
+                                    
+                            )}
+                            <Heading-text>
+                                <h5>Tema for veiledningsteksten</h5>
+                            </Heading-text>
+                            <div className={formsStyle.infotext}>{dispatch(translate("introTheme", null, "tittel"))}</div>
+                            {editable ? (
+                            <div className={formsStyle.radioRow}>
+                                <div className={formsStyle.flexradio}>
+                                    <input id="plan" name="theme" type="radio" value="Plan" onChange={event => {setTheme("Plan"); handleChange(event)}} defaultChecked={newRegisterItem.theme === "Plan"} />
+                                    <label htmlFor="plan">Plan</label>
+                                </div>
+                                
+                                <div className={formsStyle.flexradio}>
+                                    <input id="bygg" name="theme" type="radio" value="Bygg" onChange={event => {setTheme("Bygg"); handleChange(event)}} defaultChecked={newRegisterItem.theme === "Bygg"} />
+                                    <label htmlFor="bygg">Bygg</label>
+                                </div>                            
+                            </div>
+                            ) : (
+                                <div>
+                                    {theme === "Plan" ? "Plan" : theme === "Bygg" ? "Bygg" : "Ikke satt"}
+                                </div>
+                                
                                     
                             )}
 
