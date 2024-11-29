@@ -46,7 +46,7 @@
             "introGeolettDescriptionDel3": "Når vi skriver veiledningstekster, er det viktig at vi tar hensyn til hva de skal brukes til og hvem som skal bruke tekstene. Vårt tips er derfor å unngå lite kjente fagbegreper og andre kilder til usikkerhet. Du kan få hjelp til å utforme brukervennlige tekster i verktøyet Temadata Assistent (TeA). Gå til TeA",
             "introGeolettDescriptionDel4": "Et eksempel på en bruker kan være en arkitekt som skal designe en enebolig på en tomt for en kunde. Arkitekten bruker tegneverktøy og felles kartverktøy for å få oversikt over hensyn hun må ta i utformingen av bygget. Her kan du se et eksempel på hvordan veiledningstekstene kan se ut i en slik kartløsning.",            
             "introDegreeRisk": "Hva slags konsekvenser gir det at planlagt bygg får treff i dette temadatasettet? Vil det bety en høy risiko for forbud mot å bygge i området? Krever det mer utredning? Eller er det nyttig informasjon til bruk i videre planlegging, uten særlig konflikt?",
-            "introTheme": "Hvilket tema er det som er relevant for denne veiledningsteksten? Velg enten planarbeid eller byggesak.",
+            "introTheme": "Hvilket bruksområdet er det som er relevant for denne veiledningsteksten? Velg enten planarbeid eller byggesak.",
             "chatAIhelptext": "Tips! Bruke Temadata Assistent (TeA) til å utforme tekster som er lette å forstå for brukerne! ",
             "introBioAnita": "Anita bruker tegneverktøy og felles kartverktøy for å få oversikt over hensyn hun må ta i utformingen av bygget.\n\n Under ser vi et eksempel på hvordan veiledningstekstene kan se ut i en slik kartløsning"
         }            

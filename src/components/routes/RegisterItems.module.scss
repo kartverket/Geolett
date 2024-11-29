@@ -47,9 +47,13 @@
    
 }
 :local(.theme) {
-   margin-top: 20px;
-   margin-bottom: -10px;
-   label {
+   margin: 30px 0 0 0;  
+   display: flex;    
+   input[type="checkbox"] {
+      margin-top: 4px;
+   }   
+   .themeLabel {
       margin-right: 10px;
+      padding-top: 2px;
    }
 }
