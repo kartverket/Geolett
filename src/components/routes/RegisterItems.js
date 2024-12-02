@@ -27,8 +27,7 @@ const RegisterItems = () => {
     // State
     const [registerItemsFetched, setRegisterItemsFetched] = useState(false);
     const [newRegisterItems, setNewRegisterItems] = useState(null);
-    const [ownerSelected, setOwnerSelected] = useState();
-    const [sort, setSort] = useState({ column: null, direction: "desc" });
+    const [ownerSelected, setOwnerSelected] = useState(0);
     const [selectedTheme, setSelectedTheme] = useState([]);
 
     // Refs
@@ -74,19 +73,30 @@ const RegisterItems = () => {
         const isChecked = event.target.checked;
 
         setSelectedTheme((prevThemes) => {
-            const updatedThemes = isChecked
+            return isChecked
                 ? [...prevThemes, value]
                 : prevThemes.filter((theme) => theme !== value);
-
-            const filteredItems =
-                updatedThemes.length === 0
-                    ? savedRegisterItems
-                    : savedRegisterItems.filter((item) => updatedThemes.includes(item.theme));
-
-            setNewRegisterItems(filteredItems);
-            return updatedThemes;
         });
     };
+
+    const handleOwnerChange = (event) => {
+        const owner = parseInt(event.target.value) || 0;
+        setOwnerSelected(owner);
+    };
+
+    useEffect(() => {
+        let filteredItems = savedRegisterItems;
+
+        if (ownerSelected !== 0) {
+            filteredItems = filteredItems.filter((item) => item.owner.id === ownerSelected);
+        }
+
+        if (selectedTheme.length > 0) {
+            filteredItems = filteredItems.filter((item) => selectedTheme.includes(item.theme));
+        }
+
+        setNewRegisterItems(filteredItems);
+    }, [ownerSelected, selectedTheme, savedRegisterItems]);
 
     const renderThemeFilters = () => {
         const themes = getThemes();
@@ -95,31 +105,19 @@ const RegisterItems = () => {
             <div className={style.theme}>
                 <div className={style.themeLabel}>Vis </div>
                 {themes.map((theme, index) => (
-                    <>
-                   <gn-input>
+                    <div key={index}>
                         <input
                             type="checkbox"
                             name="theme"
                             value={theme}
                             checked={selectedTheme.includes(theme)}
                             onChange={handleThemeChange}
-                        /></gn-input>
-                        <gn-label>
-                         <label key={index}>{theme}
-                    </label>
-                    </gn-label>
-                    </>
+                        />
+                        <label>{theme}</label>
+                    </div>
                 ))}
             </div>
         );
-    };
-
-    const handleChange = (data) => {
-        const owner = parseInt(data?.target?.value) || 0;
-        const ownerRegisterItems = owner === 0 ? savedRegisterItems : savedRegisterItems.filter((el) => el.owner.id === owner);
-
-        setOwnerSelected(owner);
-        setNewRegisterItems(ownerRegisterItems);
     };
 
     const renderRegisterItems = (registerItems) => {
@@ -127,16 +125,15 @@ const RegisterItems = () => {
             <>
                 <div>Eier</div>
                 <gn-select>
-                    <select name="owner" defaultValue={ownerSelected || "0"} onChange={handleChange}>
-                        {getOwners().map((owner) => (
-                            <option key={owner.value} value={owner.value}>
-                                {owner.label}
-                            </option>
-                        ))}
-                    </select>
+                <select name="owner" value={ownerSelected} onChange={handleOwnerChange}>
+                    {getOwners().map((owner) => (
+                        <option key={owner.value} value={owner.value}>
+                            {owner.label}
+                        </option>
+                    ))}
+                </select>
                 </gn-select>
                 {renderThemeFilters()}
-                
                 <table className={style.registerItemsTable}>
                     <thead>
                         <tr>
@@ -160,8 +157,18 @@ const RegisterItems = () => {
                     </tbody>
                 </table>
             </>
-        ) : (
-            <div>No items found</div>
+        ) : (<>
+            <div>Eier</div>
+                <gn-select>
+                <select name="owner" value={ownerSelected} onChange={handleOwnerChange}>
+                    {getOwners().map((owner) => (
+                        <option key={owner.value} value={owner.value}>
+                            {owner.label}
+                        </option>
+                    ))}
+                </select>
+                </gn-select>
+                {renderThemeFilters()}</>
         );
     };
 
