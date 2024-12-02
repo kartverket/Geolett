@@ -825,7 +825,7 @@ const RegisterItemDetails = () => {
                                     
                             )}
                             <Heading-text>
-                                <h5>Tema for veiledningsteksten</h5>
+                                <h5>Bruksområdet for veiledningsteksten</h5>
                             </Heading-text>
                             <div className={formsStyle.infotext}>{dispatch(translate("introTheme", null, "tittel"))}</div>
                             {editable ? (
