@@ -797,11 +797,11 @@ const RegisterItemDetails = () => {
                             ) : (
                                 <div id="contextType">{newRegisterItem.contextType}</div>
                             )} 
-                                
+                                <div className={formsStyle.row}>
                                <heading-text>
                                 <h5>Grad av konflikt - type treff</h5>
                                </heading-text>
-                           
+                               </div>
                             <div className={formsStyle.infotext}>{dispatch(translate("introDegreeRisk", null, "tittel"))}</div>
 
                             {editable ? (
@@ -816,18 +816,20 @@ const RegisterItemDetails = () => {
                                     <label htmlFor="lowrisk">Lav grad av konflikt, informasjon om området</label>
                                 </div>                            
                             </div>
-                            ) : (
+                            ) : (<div className={formsStyle.row}>
                                 <heading-text>
                                 <h5>
                                     {risk === "high" ? "Høy grad av konflikt, risiko for byggeforbud" : risk === "low" ? "Lav grad av konflikt, informasjon om området" : "Ikke satt"}
                                 </h5>
                                 </heading-text>
+                                </div>
                                     
-                            )}
+                            )}<div className={formsStyle.row}>
                             <Heading-text>
                                 <h5>Bruksområdet for veiledningsteksten</h5>
                             </Heading-text>
                             <div className={formsStyle.infotext}>{dispatch(translate("introTheme", null, "tittel"))}</div>
+                            </div>
                             {editable ? (
                             <div className={formsStyle.radioRow}>
                                 <div className={formsStyle.flexradio}>
@@ -841,7 +843,7 @@ const RegisterItemDetails = () => {
                                 </div>                            
                             </div>
                             ) : (
-                                <div>
+                                <div className={formsStyle.row}>
                                     {theme === "Plan" ? "Plan" : theme === "Bygg" ? "Bygg" : "Ikke satt"}
                                 </div>
                                 

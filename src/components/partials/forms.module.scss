@@ -327,8 +327,8 @@
  :local(.metadatafirst) {
    display: flex;
    flex-direction: row-reverse;   
-   padding: 20px;
-   margin: 20px -20px;
+   padding: 20px 20px 0 20px;
+   margin: 0 -20px;
    button {
       margin-right: -10px;
       margin-top: -30px;
@@ -398,4 +398,7 @@
  :local(.radioRow) {
    display: flex;
    flex-direction: row;
+ }
+ :local(.row) {
+   margin-top: 20px;
  }
