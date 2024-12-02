@@ -168,7 +168,8 @@ const RegisterItems = () => {
                     ))}
                 </select>
                 </gn-select>
-                {renderThemeFilters()}</>
+                {renderThemeFilters()}
+                <div className={style.row}>Ingen treff med valgte eier/bruksområdet</div></>
         );
     };
 
