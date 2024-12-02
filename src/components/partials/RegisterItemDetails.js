@@ -827,8 +827,7 @@ const RegisterItemDetails = () => {
                             )}<div className={formsStyle.row}>
                             <Heading-text>
                                 <h5>Bruksområdet for veiledningsteksten</h5>
-                            </Heading-text>
-                            <div className={formsStyle.infotext}>{dispatch(translate("introTheme", null, "tittel"))}</div>
+                            </Heading-text>                            
                             </div>
                             {editable ? (
                             <div className={formsStyle.radioRow}>
@@ -840,7 +839,8 @@ const RegisterItemDetails = () => {
                                 <div className={formsStyle.flexradio}>
                                     <input id="bygg" name="theme" type="radio" value="Bygg" onChange={event => {setTheme("Bygg"); handleChange(event)}} defaultChecked={newRegisterItem.theme === "Bygg"} />
                                     <label htmlFor="bygg">Bygg</label>
-                                </div>                            
+                                </div>  
+                                <div className={formsStyle.infotext}>{dispatch(translate("introTheme", null, "tittel"))}</div>                          
                             </div>
                             ) : (
                                 <div className={formsStyle.row}>
