@@ -197,6 +197,7 @@
 :local(.introbox) {
    display: flex;
    flex-direction: column;
+   margin-top: 20px;
    :local(.imageprofile) {
       display: flex;
       justify-content: flex-end;
