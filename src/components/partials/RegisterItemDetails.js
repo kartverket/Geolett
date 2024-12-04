@@ -863,7 +863,7 @@ const RegisterItemDetails = () => {
                                 <div>
                                 <div className={formsStyle.smallheader}>Hvorfor skrive areaplanveiledere?</div>
                                 {dispatch(translate("introGeolettDescriptionDel1", null, "tittel"))}
-                            <div className={formsStyle.smallheader}>Tips til bruk av planguide-editoren</div>
+                            <div className={formsStyle.smallheader}>Tips til bruk av veiledningstekst-editoren</div>
                             {dispatch(translate("introGeolettDescriptionDel2", null, "tittel"))}
                             
                             {dispatch(translate("introGeolettDescriptionDel3", null, "tittel"))}
