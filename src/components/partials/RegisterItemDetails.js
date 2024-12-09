@@ -1042,11 +1042,12 @@ const RegisterItemDetails = () => {
                             <header-text><h2>Datasett og metadata </h2></header-text>
                             </div>
                             <em>Koble tekster til aktuelt datasett og data om dataene, til bruk i Geonorge</em>
+                            <div>
                             <gn-label>
                             <label>  Datasett
                                 <ToggleHelpText resourceKey="dataSetTitleDescription" showHelp={editable}  /></label>
                             </gn-label>
-                           
+                            </div>
 
                         <gn-label block>
                             <label htmlFor="datasetTitle">
