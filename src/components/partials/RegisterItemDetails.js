@@ -93,6 +93,7 @@ const RegisterItemDetails = () => {
     const [registerItemTitle, setRegisterItemTitle] = useState(savedRegisterItem?.contextType || "");
     const [registerItemStatus, setRegisterItemStatus] = useState(savedRegisterItem?.status || "");
     const [risk, setRisk] = useState(savedRegisterItem?.risk || "");
+    const [theme, setTheme] = useState(savedRegisterItem?.theme || "");
     
     useEffect(() => {
         setEditable(!!params.edit);
@@ -722,7 +723,7 @@ const RegisterItemDetails = () => {
             url: config?.registerUrl || ""
         },
         {
-            name: "Planguider",
+            name: "Veiledningstekster plan og bygg",
             url: "/geolett"
         },
         {
@@ -796,11 +797,11 @@ const RegisterItemDetails = () => {
                             ) : (
                                 <div id="contextType">{newRegisterItem.contextType}</div>
                             )} 
-                                
+                                <div className={formsStyle.row}>
                                <heading-text>
                                 <h5>Grad av konflikt - type treff</h5>
                                </heading-text>
-                           
+                               </div>
                             <div className={formsStyle.infotext}>{dispatch(translate("introDegreeRisk", null, "tittel"))}</div>
 
                             {editable ? (
@@ -815,12 +816,39 @@ const RegisterItemDetails = () => {
                                     <label htmlFor="lowrisk">Lav grad av konflikt, informasjon om området</label>
                                 </div>                            
                             </div>
-                            ) : (
+                            ) : (<div className={formsStyle.row}>
                                 <heading-text>
                                 <h5>
                                     {risk === "high" ? "Høy grad av konflikt, risiko for byggeforbud" : risk === "low" ? "Lav grad av konflikt, informasjon om området" : "Ikke satt"}
                                 </h5>
                                 </heading-text>
+                                </div>
+                                    
+                            )}<div className={formsStyle.row}>
+                            <Heading-text>
+                                <h5>Bruksområdet for veiledningsteksten</h5>
+                            </Heading-text>                            
+                            </div>
+                            {editable ? (<>
+                                <div className={formsStyle.infotext}>{dispatch(translate("introTheme", null, "tittel"))}</div>
+                            <div className={formsStyle.radioRow}>
+                                <div className={formsStyle.flexradio}>
+                                    <input id="plan" name="theme" type="radio" value="Plan" onChange={event => {setTheme("Plan"); handleChange(event)}} defaultChecked={newRegisterItem.theme === "Plan"} />
+                                    <label htmlFor="plan">Plan</label>
+                                </div>
+                                
+                                <div className={formsStyle.flexradio}>
+                                    <input id="bygg" name="theme" type="radio" value="Bygg" onChange={event => {setTheme("Bygg"); handleChange(event)}} defaultChecked={newRegisterItem.theme === "Bygg"} />
+                                    <label htmlFor="bygg">Bygg</label>
+                                </div>  
+                                                          
+                            </div>
+                            </>
+                            ) : (
+                                <div className={formsStyle.row}>
+                                    {theme === "Plan" ? "Plan" : theme === "Bygg" ? "Bygg" : "Ikke satt"}
+                                </div>
+                                
                                     
                             )}
 
@@ -835,7 +863,7 @@ const RegisterItemDetails = () => {
                                 <div>
                                 <div className={formsStyle.smallheader}>Hvorfor skrive areaplanveiledere?</div>
                                 {dispatch(translate("introGeolettDescriptionDel1", null, "tittel"))}
-                            <div className={formsStyle.smallheader}>Tips til bruk av planguide-editoren</div>
+                            <div className={formsStyle.smallheader}>Tips til bruk av veiledningstekst-editoren</div>
                             {dispatch(translate("introGeolettDescriptionDel2", null, "tittel"))}
                             
                             {dispatch(translate("introGeolettDescriptionDel3", null, "tittel"))}
@@ -1014,11 +1042,12 @@ const RegisterItemDetails = () => {
                             <header-text><h2>Datasett og metadata </h2></header-text>
                             </div>
                             <em>Koble tekster til aktuelt datasett og data om dataene, til bruk i Geonorge</em>
+                            <div>
                             <gn-label>
                             <label>  Datasett
                                 <ToggleHelpText resourceKey="dataSetTitleDescription" showHelp={editable}  /></label>
                             </gn-label>
-                           
+                            </div>
 
                         <gn-label block>
                             <label htmlFor="datasetTitle">
