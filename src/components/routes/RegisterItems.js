@@ -1,10 +1,8 @@
-// Dependencies
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 // Geonorge WebComponents
-// eslint-disable-next-line no-unused-vars
 import { BreadcrumbList, ContentContainer, HeadingText } from "@kartverket/geonorge-web-components";
 
 // Components
@@ -29,11 +27,8 @@ const RegisterItems = () => {
     // State
     const [registerItemsFetched, setRegisterItemsFetched] = useState(false);
     const [newRegisterItems, setNewRegisterItems] = useState(null);
-    const [ownerSelected, setOwnerSelected] = useState();
-    const [sort, setSort] = useState({
-        column: null,
-        direction: "desc"
-    });
+    const [ownerSelected, setOwnerSelected] = useState(0);
+    const [selectedTheme, setSelectedTheme] = useState([]);
 
     // Refs
     const tokenRef = useRef(null);
@@ -45,7 +40,7 @@ const RegisterItems = () => {
     useEffect(() => {
         dispatch(fetchRegisterItems(tokenRef.current)).then(() => {
             setRegisterItemsFetched(true);
-            dispatch(fetchOptions()).then(() => {});
+            dispatch(fetchOptions());
         });
     }, [dispatch, authToken]);
 
@@ -57,185 +52,150 @@ const RegisterItems = () => {
 
     const getOwners = () => {
         const uniqueOwners = [];
-        const owners = [];
-
-        let allOwners = { value: 0, label: "Alle" };
-        owners.unshift(allOwners);
+        const owners = [{ value: 0, label: "Alle" }];
 
         savedRegisterItems.forEach((item) => {
-            if (uniqueOwners.indexOf(item.owner.id) === -1) {
+            if (!uniqueOwners.includes(item.owner.id)) {
                 uniqueOwners.push(item.owner.id);
-                let obj = { value: item.owner.id, label: item.owner.name };
-                owners.push(obj);
+                owners.push({ value: item.owner.id, label: item.owner.name });
             }
         });
 
-        owners.sort((a, b) => {
-            const nameA = a.label;
-            const nameB = b.label;
-            if (nameA < nameB) return -1;
-            if (nameA < nameB) return 1;
-            else return 0;
-        });
-
-        return owners;
+        return owners.sort((a, b) => a.label.localeCompare(b.label));
     };
 
-    const handleChange = (data) => {
-        let ownerRegisterItems = savedRegisterItems;
-        const owner = data?.target?.value && parseInt(data?.target?.value);
+    const getThemes = () => {
+        return [...new Set(savedRegisterItems.map((item) => item.theme))];
+    };
 
-        if (owner !== 0) {
-            ownerRegisterItems = ownerRegisterItems.filter(function (el) {
-                return el.owner.id === owner;
-            });
-        }
+    const handleThemeChange = (event) => {
+        const value = event.target.value;
+        const isChecked = event.target.checked;
 
+        setSelectedTheme((prevThemes) => {
+            return isChecked
+                ? [...prevThemes, value]
+                : prevThemes.filter((theme) => theme !== value);
+        });
+    };
+
+    const handleOwnerChange = (event) => {
+        const owner = parseInt(event.target.value) || 0;
         setOwnerSelected(owner);
-        setNewRegisterItems(ownerRegisterItems);
     };
 
-    const setArrow = (column) => {
-        let className = "sort-direction";
-        if (sort?.column === column) {
-            className += sort?.direction === "asc" ? ` ${style.asc}` : ` ${style.desc}`;
+    useEffect(() => {
+        let filteredItems = savedRegisterItems;
+
+        if (ownerSelected !== 0) {
+            filteredItems = filteredItems.filter((item) => item.owner.id === ownerSelected);
         }
-        return className;
-    };
 
-    const onSort = (column) => {
-        return (e) => {
-            const direction = sort?.column ? (sort?.direction === "asc" ? "desc" : "asc") : "asc";
-            const registerItems = newRegisterItems || savedRegisterItems;
-            const sortedRegisterItems = registerItems.sort((a, b) => {
-                if (column === "contextType") {
-                    const nameA = a.contextType;
-                    const nameB = b.contextType;
+        if (selectedTheme.length > 0) {
+            filteredItems = filteredItems.filter((item) => selectedTheme.includes(item.theme));
+        }
 
-                    if (nameA < nameB) return -1;
-                    if (nameA < nameB) return 1;
-                    else return 0;
-                } else if (column === "title") {
-                    const nameA = a.title;
-                    const nameB = b.title;
+        setNewRegisterItems(filteredItems);
+    }, [ownerSelected, selectedTheme, savedRegisterItems]);
 
-                    if (nameA < nameB) return -1;
-                    if (nameA < nameB) return 1;
-                    else return 0;
-                } else if (column === "owner") {
-                    const nameA = a.owner.name;
-                    const nameB = b.owner.name;
+    const renderThemeFilters = () => {
+        const themes = getThemes();
 
-                    if (nameA < nameB) return -1;
-                    if (nameA < nameB) return 1;
-                    else return 0;
-                } else if (column === "status") {
-                    const nameA = getStatusLabel(statuses, a);
-                    const nameB = getStatusLabel(statuses, b);
-
-                    if (nameA < nameB) return -1;
-                    if (nameA < nameB) return 1;
-                    else return 0;
-                } else {
-                    return a.first - b.first;
-                }
-            });
-
-            if (direction === "desc") {
-                sortedRegisterItems.reverse();
-            }
-
-            setNewRegisterItems(sortedRegisterItems);
-            setSort({
-                column,
-                direction
-            });
-        };
-    };
-
-    const renderRegisterItems = (registerItems) => {
-        const registerItemRows = registerItems?.length
-            ? registerItems
-                  .filter((registerItem) => {
-                      return registerItem;
-                  })
-                  .map((registerItem) => {
-                      return (
-                          <tr key={registerItem.id}>
-                              <td>
-                                  <Link to={`${process.env.PUBLIC_URL}/${registerItem.id}/`}>
-                                    {registerItem.title}  
-                                  </Link>
-                              </td>
-                              <td>{registerItem.owner?.name || ""}</td>
-                              <td>{getStatusLabel(statuses, registerItem)}</td>
-                          </tr>
-                      );
-                  })
-            : null;
-        return registerItemRows ? (
-            <React.Fragment>
-                <div>Eier </div>
-                <gn-select>
-                    <select name="owner" defaultValue={ownerSelected || "0"} onChange={handleChange}>
-                        {getOwners().map((owner) => {
-                            return (
-                                <option key={owner.value} value={owner.value}>
-                                    {owner.label}
-                                </option>
-                            );
-                        })}
-                    </select>
-                </gn-select>
-
-                <table className={style.registerItemsTable}>
-                    <thead>
-                        <tr>
-                            <th style={{ cursor: "pointer" }} onClick={onSort("title")}>
-                                Navn på veiledningstekst<span className={setArrow("title")}></span>
-                            </th>
-                            <th style={{ cursor: "pointer" }} onClick={onSort("owner")}>
-                                Eier<span className={setArrow("owner")}></span>
-                            </th>
-                            <th style={{ cursor: "pointer" }} onClick={onSort("status")}>
-                                Status<span className={setArrow("status")}></span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>{registerItemRows}</tbody>
-                </table>
-            </React.Fragment>
-        ) : (
-            ""
+        return (
+            <div className={style.theme}>
+                <div className={style.themeLabel}>Vis </div>
+                {themes.map((theme, index) => (
+                    <div key={index}>
+                        <input
+                            type="checkbox"
+                            name="theme"
+                            value={theme}
+                            checked={selectedTheme.includes(theme)}
+                            onChange={handleThemeChange}
+                        />
+                        <label>{theme}</label>
+                    </div>
+                ))}
+            </div>
         );
     };
 
-    if (!registerItemsFetched) {
-        return "";
-    }
+    const renderRegisterItems = (registerItems) => {
+        return registerItems?.length ? (
+            <>
+                <div>Eier</div>
+                <gn-select>
+                <select name="owner" value={ownerSelected} onChange={handleOwnerChange}>
+                    {getOwners().map((owner) => (
+                        <option key={owner.value} value={owner.value}>
+                            {owner.label}
+                        </option>
+                    ))}
+                </select>
+                </gn-select>
+                {renderThemeFilters()}
+                <table className={style.registerItemsTable}>
+                    <thead>
+                        <tr>
+                            <th>Navn på veiledningstekst</th>
+                            <th>Eier</th>
+                            <th>Bruksområdet</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {registerItems.map((registerItem) => (
+                            <tr key={registerItem.id}>
+                                <td>
+                                    <Link to={`${process.env.PUBLIC_URL}/${registerItem.id}/`}>{registerItem.title}</Link>
+                                </td>
+                                <td>{registerItem.owner?.name || ""}</td>
+                                <td>{registerItem.theme}</td>
+                                <td>{getStatusLabel(statuses, registerItem)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </>
+        ) : (<>
+            <div>Eier</div>
+                <gn-select>
+                <select name="owner" value={ownerSelected} onChange={handleOwnerChange}>
+                    {getOwners().map((owner) => (
+                        <option key={owner.value} value={owner.value}>
+                            {owner.label}
+                        </option>
+                    ))}
+                </select>
+                </gn-select>
+                {renderThemeFilters()}
+                <div className={style.row}>Ingen treff med valgte eier/bruksområdet</div></>
+        );
+    };
+
+    if (!registerItemsFetched) return null;
+
     const registerItems = newRegisterItems || savedRegisterItems;
 
     const breadcrumbs = [
-        {
-            name: "Registrene",
-            url: config?.registerUrl || ""
-        },
-        {
-            name: "Planguider",
-            url: "/geolett"
-        }
+        { name: "Registrene", url: config?.registerUrl || "" },
+        { name: "Veiledningstekster plan og bygg", url: "/geolett" }
     ];
 
     return (
         <content-container>
-            <div style={{position: 'relative'}}>
-                <div style={{position: 'absolute',  top: '20px',  right: '16px'}}><a href="api/swagger">API</a></div>
+            <div style={{ position: "relative" }}>
+                <div style={{ position: "absolute", top: "20px", right: "16px" }}>
+                    <a href="api/swagger">API</a>
+                </div>
             </div>
-           
+
             <breadcrumb-list id="breadcrumb-list" breadcrumbs={JSON.stringify(breadcrumbs)}></breadcrumb-list>
-            <heading-text><h1 underline="true">Planguider</h1></heading-text>
-             <div className={style.listcontainer}>
-                <CreateRegisterItem newRegisterItem />            
+            <heading-text>
+                <h1 underline="true">Veiledningstekster plan og bygg</h1>
+            </heading-text>
+            <div className={style.listcontainer}>
+                <CreateRegisterItem />
                 {renderRegisterItems(registerItems)}
             </div>
         </content-container>

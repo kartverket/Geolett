@@ -126,11 +126,11 @@ const CreateRegisterItem = () => {
     return dataFetched && showAddRegisterItemContent() ? (
         <React.Fragment>
             <gn-button color="primary">
-                <button onClick={() => openDialog()}>Opprett ny arealplanveileder</button>
+                <button onClick={() => openDialog()}>Opprett ny veiledningstekst</button>
             </gn-button>
             <gn-dialog overflow="auto" show={dialogOpen}>
                 <heading-text>
-                    <h2>Ny arealplanveileder</h2>
+                    <h2>Ny veiledningstekst</h2>
                 </heading-text>
                 <ValidationErrors errors={validationErrors} />
                 <div className={formsStyle.introbox}>
