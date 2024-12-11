@@ -102,6 +102,7 @@ const RegisterItems = () => {
         const themes = getThemes();
 
         return (
+            themes.length > 1 ? (
             <div className={style.theme}>
                 <div className={style.themeLabel}>Vis </div>
                 {themes.map((theme, index) => (
@@ -116,7 +117,7 @@ const RegisterItems = () => {
                         <label>{theme}</label>
                     </div>
                 ))}
-            </div>
+            </div>) : null
         );
     };
 
@@ -139,7 +140,7 @@ const RegisterItems = () => {
                         <tr>
                             <th>Navn på veiledningstekst</th>
                             <th>Eier</th>
-                            <th>Bruksområdet</th>
+                            {renderThemeFilters() ? <th>Bruksområdet</th> : null}
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -150,7 +151,7 @@ const RegisterItems = () => {
                                     <Link to={`${process.env.PUBLIC_URL}/${registerItem.id}/`}>{registerItem.title}</Link>
                                 </td>
                                 <td>{registerItem.owner?.name || ""}</td>
-                                <td>{registerItem.theme}</td>
+                                {renderThemeFilters() ? <td>{registerItem.theme}</td> : null}
                                 <td>{getStatusLabel(statuses, registerItem)}</td>
                             </tr>
                         ))}
