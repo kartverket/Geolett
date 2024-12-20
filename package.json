@@ -27,7 +27,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.1.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@kartverket/geonorge-web-components": "^2.20.5",
+    "@kartverket/geonorge-web-components": "^2.20.6",
     "@uiw/react-md-editor": "^3.20.2",
     "axios": "^1.7.4",
     "connected-react-router": "^6.9.1",
