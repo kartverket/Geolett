@@ -740,7 +740,7 @@ const RegisterItemDetails = () => {
                 <Fragment>                
                     <div className={formsStyle.form}>
                         <heading-text>
-                            <h1 underline="true">{newRegisterItem?.contextType.length ? newRegisterItem?.contextType  :  savedRegisterItem.title}</h1>
+                            <h1 underline="true">{savedRegisterItem.title}</h1>
                         </heading-text>
                         <ValidationErrors errors={validationErrors} />                        
                         <div className={formsStyle.metadatafirst}>  
@@ -773,30 +773,77 @@ const RegisterItemDetails = () => {
                                 Redigere
                                 </button>) : null} 
                                     </div>
-                                    <div>                                                  
-                            <heading-text>
-                                <h5>Navn til intern bruk i Geonorge</h5>
-                            </heading-text>
-                          
-                            
-                            {editable ? (<>
-                                 <div className={formsStyle.infotext}>{dispatch(translate("contextTypeDescription", null, "tittel"))}</div>
-                                <gn-input block fullWidth>
-                                    <input
-                                    id="contextType"
-                                    name="contextType"
-                                    placeholder={dispatch(translate("contextTypeDescription", null, "titleDescription"))}
-                                    defaultValue={newRegisterItem.contextType}
-                                    onChange={(event) => {
-                                        handleChange({ name: "contextType", value: event.target.value });
-                                        setRegisterItemTitle(event.target.value);
-                                    }}
+                                    <div>  
+                                    <gn-label block>
+                            <label htmlFor="title">
+                                {dispatch(translate("labelTitle", null, "Navn på veiledningstekst"))}
+                                <ToggleHelpText resourceKey="titleDescription" showHelp={editable} />
+                            </label>
+                        </gn-label>
+                        {editable ? (
+                            <gn-input block fullWidth>
+                                <input
+                                    id="title"                                    
+                                    name="title"
+                                    placeholder={dispatch(translate("titleDescription", null, "titleDescription   "))}
+                                    defaultValue={newRegisterItem.title}
+                                    onChange={handleChange}
                                 />
-                            </gn-input></>
-                            
+                            </gn-input>
+                        ) : (
+                            <div id="title">{newRegisterItem.title}</div>
+                        )}
+                                    <gn-label block>
+                            <label htmlFor="datasetTitle">
+                                {dispatch(translate("labelDataSetTitle", null, "Velg datasett teksten skal knyttes til"))}
+                                <ToggleHelpText resourceKey="dataSetTitleDescription" showHelp={editable}  />
+                            </label>
+                        </gn-label>
+                        {editable ? (
+                            <AsyncTypeahead
+                                id="dataset-search"
+                                isLoading={datasetSearchIsLoading}
+                                labelKey={(option) => `${option.title}`}
+                                onSearch={(query) => handleOnDatasetSearch(query)}
+                                onChange={handleDatasetSelect}
+                                options={datasetOptions}
+                                defaultValue={getSelectedDatasetOption()}
+                                placeholder="Søk etter datasett"
+                            />
+                        ) : (
+                            <a id="datasetTitle" href={newRegisterItem?.dataSet?.urlMetadata || ""}>
+                                <h3>{newRegisterItem?.dataSet?.title || ""}</h3>
+                            </a>
+                        )}
+
+
+                                    <div className={formsStyle.row}>
+                            <Heading-text>
+                                <h5>Bruksområdet for veiledningsteksten</h5>
+                            </Heading-text>                            
+                            </div>
+                            {editable ? (<>
+                                <div className={formsStyle.infotext}>{dispatch(translate("introTheme", null, "tittel"))}</div>
+                            <div className={formsStyle.radioRow}>
+                                <div className={formsStyle.flexradio}>
+                                    <input id="plan" name="theme" type="radio" value="Plan" onChange={event => {setTheme("Plan"); handleChange(event)}} defaultChecked={newRegisterItem.theme === "Plan"} />
+                                    <label htmlFor="plan">Plan</label>
+                                </div>
+                                
+                                <div className={formsStyle.flexradio}>
+                                    <input id="bygg" name="theme" type="radio" value="Bygg" onChange={event => {setTheme("Bygg"); handleChange(event)}} defaultChecked={newRegisterItem.theme === "Bygg"} />
+                                    <label htmlFor="bygg">Bygg</label>
+                                </div>  
+                                                          
+                            </div>
+                            </>
                             ) : (
-                                <div id="contextType">{newRegisterItem.contextType}</div>
-                            )} 
+                                <div className={formsStyle.row}>
+                                    {theme === "Plan" ? "Plan" : theme === "Bygg" ? "Bygg" : "Ikke satt"}
+                                </div>
+                                
+                                    
+                            )}
                                 <div className={formsStyle.row}>
                                <heading-text>
                                 <h5>Grad av konflikt - type treff</h5>
@@ -823,32 +870,6 @@ const RegisterItemDetails = () => {
                                 </h5>
                                 </heading-text>
                                 </div>
-                                    
-                            )}<div className={formsStyle.row}>
-                            <Heading-text>
-                                <h5>Bruksområdet for veiledningsteksten</h5>
-                            </Heading-text>                            
-                            </div>
-                            {editable ? (<>
-                                <div className={formsStyle.infotext}>{dispatch(translate("introTheme", null, "tittel"))}</div>
-                            <div className={formsStyle.radioRow}>
-                                <div className={formsStyle.flexradio}>
-                                    <input id="plan" name="theme" type="radio" value="Plan" onChange={event => {setTheme("Plan"); handleChange(event)}} defaultChecked={newRegisterItem.theme === "Plan"} />
-                                    <label htmlFor="plan">Plan</label>
-                                </div>
-                                
-                                <div className={formsStyle.flexradio}>
-                                    <input id="bygg" name="theme" type="radio" value="Bygg" onChange={event => {setTheme("Bygg"); handleChange(event)}} defaultChecked={newRegisterItem.theme === "Bygg"} />
-                                    <label htmlFor="bygg">Bygg</label>
-                                </div>  
-                                                          
-                            </div>
-                            </>
-                            ) : (
-                                <div className={formsStyle.row}>
-                                    {theme === "Plan" ? "Plan" : theme === "Bygg" ? "Bygg" : "Ikke satt"}
-                                </div>
-                                
                                     
                             )}
 
@@ -908,25 +929,7 @@ const RegisterItemDetails = () => {
                                 </div>
                             )}
 
-                            <gn-label block>
-                            <label htmlFor="title">
-                                {dispatch(translate("labelTitle", null, "Navn på veiledningstekst"))}
-                                <ToggleHelpText resourceKey="titleDescription" showHelp={editable} />
-                            </label>
-                        </gn-label>
-                        {editable ? (
-                            <gn-input block fullWidth>
-                                <input
-                                    id="title"                                    
-                                    name="title"
-                                    placeholder={dispatch(translate("titleDescription", null, "titleDescription   "))}
-                                    defaultValue={newRegisterItem.title}
-                                    onChange={handleChange}
-                                />
-                            </gn-input>
-                        ) : (
-                            <div id="title">{newRegisterItem.title}</div>
-                        )}
+                            
 
                         <gb-label block>
                             <label htmlFor="description">
@@ -1035,233 +1038,26 @@ const RegisterItemDetails = () => {
 
                         </div>
 
-                        <div className={isActive ? `${formsStyle.metadata} ${formsStyle.open}` : formsStyle.metadata}>
+                        <div>
                             <div>
-                            <div className={formsStyle.flexhorizontal}>
-                            <button onClick={toggleMetadata} >{isActive ? 'Vis': 'Skjul'}</button>
-                            <header-text><h2>Datasett og metadata </h2></header-text>
-                            </div>
-                            <em>Koble tekster til aktuelt datasett og data om dataene, til bruk i Geonorge</em>
-                            <div>
-                            <gn-label>
-                            <label>  Datasett
-                                <ToggleHelpText resourceKey="dataSetTitleDescription" showHelp={editable}  /></label>
-                            </gn-label>
-                            </div>
+                           
+                          
 
-                        <gn-label block>
-                            <label htmlFor="datasetTitle">
-                                {dispatch(translate("labelDataSetTitle", null, "Datasett-tittel"))}
-                                <ToggleHelpText resourceKey="dataSetTitleDescription" showHelp={editable}  />
-                            </label>
-                        </gn-label>
-                        {editable ? (
-                            <AsyncTypeahead
-                                id="dataset-search"
-                                isLoading={datasetSearchIsLoading}
-                                labelKey={(option) => `${option.title}`}
-                                onSearch={(query) => handleOnDatasetSearch(query)}
-                                onChange={handleDatasetSelect}
-                                options={datasetOptions}
-                                defaultValue={getSelectedDatasetOption()}
-                                placeholder="Søk etter datasett"
-                            />
-                        ) : (
-                            <a id="datasetTitle" href={newRegisterItem?.dataSet?.urlMetadata || ""}>
-                                <h3>{newRegisterItem?.dataSet?.title || ""}</h3>
-                            </a>
-                        )}
+                        
 
-                            <gn-label block>
-                                <label htmlFor="id">
-                                    {dispatch(translate("labelId", null, "ID"))}
-                                    <ToggleHelpText resourceKey="IdDescription" showHelp={editable} />
-                                </label>
-                            </gn-label>
-                            <div id="id">{newRegisterItem.id}</div>
+                           
 
                                                                                                     
 
-                        <gn-label block>
-                            <label htmlFor="datasetUrlMetadata">
-                                {dispatch(translate("labelDataSetUrlMetadata", null, "Datasett-meta-url"))}
-                                <ToggleHelpText resourceKey="dataSetUrlMetadataDescription" showHelp={editable}  />
-                            </label>
-                        </gn-label>
-                        {editable ? (
-                            <gn-input block fullWidth>
-                                <input
-                                    id="datasetUrlMetadata"
-                                    name="urlMetadata"
-                                    defaultValue={newRegisterItem?.dataSet?.urlMetadata || ""}
-                                    onChange={handleDatasetChange}
-                                />
-                            </gn-input>
-                        ) : null}
+                       
 
-                        <gn-label block>
-                            <label htmlFor="datasetTypeReferenceType">
-                                {dispatch(translate("labelDataSetTypeReferenceType", null, "Objekttype"))}
-                                <ToggleHelpText resourceKey="dataSetTypeReferenceTypeDescription" showHelp={editable} />
-                            </label>
-                        </gn-label>
-                        {editable ? (
-                            <Fragment>
-                                <gn-select block fullWidth>
-                                    <select
-                                        id="datasetTypeReferenceType"
-                                        name="type"
-                                        defaultValue={newRegisterItem?.dataSet?.typeReference?.type || ""}
-                                        onChange={handleDatasetTypeReferenceChange}
-                                    >
-                                        {objectTypeOptions.map((objectTypeOption) => {
-                                            return (
-                                                <option key={objectTypeOption.id} value={objectTypeOption.label}>
-                                                    {objectTypeOption.label}
-                                                </option>
-                                            );
-                                        })}
-                                    </select>
-                                </gn-select>
-                                {newRegisterItem?.dataSet?.typeReference?.type ? (
-                                    <a
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        href={`https://objektkatalog.geonorge.no/Objekttype/Index/${selectedObjectTypeId}`}
-                                    >
-                                        Gå til objektkatalogen for detaljer om attributt og kodeverdi til{" "}
-                                        {newRegisterItem.dataSet?.typeReference?.type}
-                                    </a>
-                                ) : null}
-                            </Fragment>
-                        ) : (
-                            <div>
-                                <a
-                                    id="datasetTypeReferenceType"
-                                    href={`https://objektkatalog.geonorge.no/Objekttype/Index/${selectedObjectTypeId}`}
-                                >
-                                    {newRegisterItem.dataSet?.typeReference?.type}
-                                </a>
-                            </div>
-                        )}
 
-                        <gn-label block>
-                            <label htmlFor="datasetTypeReferenceAttribute">
-                                {dispatch(translate("labelDataSetTypeReferenceAttribute", null, "Attributt"))}
-                                <ToggleHelpText resourceKey="dataSetTypeReferenceAttributeDescription" showHelp={editable} />
-                            </label>
-                        </gn-label>
-                        {editable ? (
-                            <gn-input block fullWidth>
-                                <input
-                                    name="attribute"
-                                    defaultValue={selectedObjectTypeAttributeName || ""}
-                                    placeholder={dispatch(translate("dataSetTypeReferenceAttributeDescription", null, "Beskrives av attributt   "))}
-                                    onChange={handleDatasetTypeReferenceChange}
-                                    list="attribute-list"
-                                    autoComplete="off"
-                                    ref={selectedObjectTypeAttributeNameRef}
-                                />
-                                <datalist id="attribute-list">
-                                    {selectedObjectTypeAttributes?.Attributes.length
-                                        ? selectedObjectTypeAttributes.Attributes.map((attribute) => {
-                                              return (
-                                                  <option key={attribute.Nalue} value={attribute.Name}>
-                                                      {attribute.Name}
-                                                  </option>
-                                              );
-                                          })
-                                        : null}
-                                </datalist>
-                            </gn-input>
-                        ) : (
-                            <div id="datasetTypeReferenceAttribute">
-                                {newRegisterItem?.dataSet?.typeReference?.attribute || ""}
-                            </div>
-                        )}
+                        
 
-                        <gn-label block>
-                            <label htmlFor="datasetTypeReferenceCodeValue">
-                                {dispatch(translate("labelDataSetTypeReferenceCodeValue", null, "Kodeverdi"))}
-                                <ToggleHelpText resourceKey="dataSetTypeReferenceCodeValueDescription" showHelp={editable} />
-                            </label>
-                        </gn-label>
-                        {editable ? (
-                            <gn-input block fullWidth>
-                                <input
-                                    id="datasetTypeReferenceCodeValue"
-                                    name="codeValue"
-                                    defaultValue={selectedObjectTypeAttributeCodeValueValue || ""}
-                                    onChange={handleDatasetTypeReferenceChange}
-                                    list="codeValue-list"
-                                    autoComplete="off"
-                                    ref={selectedObjectTypeAttributeCodeValueValueRef}
-                                />
-                                <datalist id="codeValue-list">
-                                    {selectedObjectTypeAttributeCodeValues?.length
-                                        ? selectedObjectTypeAttributeCodeValues.map((codeValue) => {
-                                              return (
-                                                  <option key={codeValue.Value} value={codeValue.Value}>
-                                                      {codeValue.Name}
-                                                  </option>
-                                              );
-                                          })
-                                        : null}
-                                </datalist>
-                            </gn-input>
-                        ) : (
-                            <div id="datasetTypeReferenceCodeValue">
-                                {newRegisterItem?.dataSet?.typeReference?.codeValue || ""}
-                            </div>
-                        )}
+                       
+                        
 
-                        <gn-label block>
-                            <label htmlFor="datasetNamespace">
-                                {dispatch(translate("labelDataSetNamespace", null, "Navnerom (skjemaplassering)"))}
-                                <ToggleHelpText resourceKey="dataSetNamespaceDescription" showHelp={editable} />
-                            </label>
-                        </gn-label>
-                        {editable ? (
-                            <gn-input block fullWidth>
-                                <input
-                                    id="datasetNamespace"
-                                    name="namespace"
-                                    defaultValue={newRegisterItem?.dataSet?.namespace || ""}
-                                    onChange={handleDatasetChange}
-                                />
-                            </gn-input>
-                        ) : (
-                            <div id="datasetNamespace">{newRegisterItem?.dataSet?.namespace || ""}</div>
-                        )}
 
-                        <gn-label block>
-                            <label htmlFor="datasetUrlGmlSchema">
-                                {dispatch(translate("labelDataSetUrlGmlSchema", null, "Lenke til GML-skjemaet"))}
-                                <ToggleHelpText resourceKey="dataSetUrlGmlSchemaDescription" showHelp={editable} />
-                            </label>
-                        </gn-label>
-                        {editable ? (
-                            <gn-input block fullWidth>
-                                <input
-                                    id="datasetUrlGmlSchema"
-                                    name="urlGmlSchema"
-                                    defaultValue={newRegisterItem?.dataSet?.urlGmlSchema || ""}
-                                    onChange={handleDatasetChange}
-                                />
-                            </gn-input>
-                        ) : newRegisterItem?.dataSet?.urlGmlSchema?.length ? (
-                            <div>
-                                <a id="datasetUrlGmlSchema" href={newRegisterItem.dataSet.urlGmlSchema}>
-                                    Lenke til GML-skjema
-                                </a>
-                            </div>
-                        ) : (
-                            <div id="datasetUrlGmlSchema">{newRegisterItem?.dataSet?.urlGmlSchema || ""}</div>
-                        )}
-
-                            <gn-label>
-                            <label>Kommentarer</label>
-                            </gn-label>
 
                         <gn-label block>
                             <label htmlFor="technicalComment">
@@ -1282,24 +1078,7 @@ const RegisterItemDetails = () => {
                             <div id="technicalComment">{newRegisterItem.technicalComment}</div>
                         )}
 
-                        <gn-label block>
-                            <label htmlFor="otherComment">
-                                {dispatch(translate("labelOtherComment", null, "Andre kommentarer"))}
-                                <ToggleHelpText resourceKey="otherCommentDescription" showHelp={editable} />
-                            </label>
-                        </gn-label>
-                        {editable ? (
-                            <gn-input block fullWidth>
-                                <input
-                                    id="otherComment"
-                                    name="otherComment"
-                                    defaultValue={newRegisterItem.otherComment}
-                                    onChange={handleChange}
-                                />
-                            </gn-input>
-                        ) : (
-                            <div id="otherComment">{newRegisterItem.otherComment}</div>
-                        )}   
+                       
                         </div>
                         
                         </div>
