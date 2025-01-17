@@ -104,8 +104,8 @@ const RegisterItems = () => {
         return (
             themes.length > 1 ? (
             <div className={style.theme}>
-                <div className={style.themeLabel}>Vis </div>
-                {themes.map((theme, index) => (
+                <div className={style.themeLabel}>Vis </div>                
+                {themes.slice(1).map((theme, index) => (                    
                     <div key={index}>
                         <input
                             type="checkbox"

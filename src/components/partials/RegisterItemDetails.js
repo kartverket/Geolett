@@ -5,6 +5,8 @@ import { toastr } from "react-redux-toastr";
 import { Typeahead, withAsync } from "react-bootstrap-typeahead";
 import { useNavigate, useParams } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
+import '@mdxeditor/editor/style.css'
+import { MDXEditor, headingsPlugin, listsPlugin,quotePlugin, thematicBreakPlugin, toolbarPlugin, BlockTypeSelect, UndoRedo,BoldItalicUnderlineToggles, CreateLink, ListsToggle, linkDialogPlugin, linkPlugin } from '@mdxeditor/editor'
 import dibkscreenshot from "images/svg/screenshot-clean.png";
 
 // Geonorge WebComponents
@@ -938,20 +940,38 @@ const RegisterItemDetails = () => {
                             </label>
                             </gb-label>
                             <div data-color-mode="light">
-                                {editable ? (
-                                    <MDEditor
-                                        textareaProps={{ placeholder:  dispatch(translate("descriptionDescription", null, "Hva handler treffet om?")) }}
-                                        id="description"
-                                        preview="edit"                                   
-                                        height={200}
-                                        name="description"
-                                        value={descriptionMarkdown || ""}
-                                        onChange={(value) => {
-                                            setDescriptionMarkdown(value);
-                                            handleChange({ name: "description", value: value });
-                                        }}
-                                    />
-                                ) : (
+                                {editable ? (<>
+                                   
+                                 <MDXEditor 
+                                    markdown={descriptionMarkdown || ""}
+                                    contentEditableClassName={formsStyle.mdxeditor}
+                                    onChange={(value) => {
+                                        setDescriptionMarkdown(value);
+                                        handleChange({ name: "description", value: value });
+                                    }}
+                                    plugins={[
+                                        toolbarPlugin({
+                                            toolbarClassName: formsStyle.editortoolbar,
+                                            toolbarContents: () => (
+                                              <>
+                                                {' '}
+                                                <BoldItalicUnderlineToggles />
+                                                <BlockTypeSelect />
+                                                <UndoRedo />  
+                                                <CreateLink />  
+                                                <ListsToggle />                                                                                                  
+                                              </>
+                                            )
+                                          }),
+                                        headingsPlugin(),   
+                                        linkDialogPlugin(),
+                                        linkPlugin(),                                      
+                                        listsPlugin(), 
+                                        quotePlugin(), 
+                                        thematicBreakPlugin()
+                                    ]} />
+
+                                        </>) : (
                                     <MDEditor.Markdown id="description" source={descriptionMarkdown} />
                                 )}
                             </div>
