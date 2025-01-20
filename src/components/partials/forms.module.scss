@@ -408,8 +408,8 @@
  }
  :local(.editortoolbar) {
    border: 1px solid #ccc;
-   background-color: white;
-   border-radius: 4px 4px 0 0;
+   background-color: white !important;
+   border-radius: 4px 4px 0 0 !important;   
  }
  :local(.mdxeditor) {
    border: 1px solid #ccc;
