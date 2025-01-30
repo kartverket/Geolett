@@ -7,7 +7,7 @@
             "titleDescription": "Tittel på veiledningsteksten, som tydeliggjør hva det handler om i enkle ord, f.eks. “Oversvømmelse fra havet”",
             "ownerDescription": "",
             "bufferDescription": "Tekst som sier noe om konsekvenser av tiltak i nærheten av definerte objekter i datasettet",
-            "descriptionDescription": "En begrunnelse for hvorfor brukeren varsles om forholdet og hva som er relevant ved dette temadatasettet. Formålet er å skape forståelse om at det er en konflikt, hva den er og hva de må/kan gjøre, selv hvis de ikke kjenner fagområdet godt fra før. Gjennom teksten kan vi motivere brukeren til å følge opp foreslåtte tiltak.",
+            "descriptionDescription": "En begrunnelse for hvorfor brukeren varsles om forholdet og hva som er relevant ved dette temadatasettet. \nFormålet er å skape forståelse om at det er en konflikt, hva den er og hva de må/kan gjøre, selv hvis de ikke kjenner fagområdet godt fra før. \nGjennom teksten kan vi motivere brukeren til å følge opp foreslåtte tiltak.",
             "dialogTextDescription": "En setning som gjør brukeren oppmerksom på at planlagt bygg er i konflikt med andre hensyn i området. Eksempel: Tiltaket er plassert nær stammen på en hul eik, som er en utvalgt naturtype som skal tas hensyn til.",
             "possibleMeasuresDescription": "Tekst som sier noe om konsekvenser av tiltak i nærheten av definerte objekter i datasettet",
             "bufferPossibleMeasuresDescription": "Tekst skal gi brukeren råd og veiledning om hva som bør gjøres eller ikke gjøres innenfor buffersonen til lokaliteten",
