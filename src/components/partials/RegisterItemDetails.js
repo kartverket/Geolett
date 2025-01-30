@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { toastr } from "react-redux-toastr";
 import { Typeahead, withAsync } from "react-bootstrap-typeahead";
 import { useNavigate, useParams } from "react-router-dom";
-import MDEditor from "@uiw/react-md-editor";
 import '@mdxeditor/editor/style.css'
 import { MDXEditor, headingsPlugin, listsPlugin,quotePlugin, thematicBreakPlugin, toolbarPlugin, BlockTypeSelect, UndoRedo,BoldItalicUnderlineToggles, CreateLink, ListsToggle, linkDialogPlugin, linkPlugin } from '@mdxeditor/editor'
 import dibkscreenshot from "images/svg/screenshot-clean.png";
@@ -944,6 +943,7 @@ const RegisterItemDetails = () => {
                                    
                                  <MDXEditor 
                                     markdown={descriptionMarkdown || ""}
+                                    placeholder={dispatch(translate("descriptionDescription", null, "Hva handler treffet om?"))}
                                     contentEditableClassName={formsStyle.mdxeditor}
                                     onChange={(value) => {
                                         setDescriptionMarkdown(value);
@@ -972,7 +972,17 @@ const RegisterItemDetails = () => {
                                     ]} />
 
                                         </>) : (
-                                    <MDEditor.Markdown id="description" source={descriptionMarkdown} />
+                                    <MDXEditor 
+                                    markdown={descriptionMarkdown || ""}
+                                    contentEditableClassName={formsStyle.mdxnoeditor}                                    
+                                    plugins={[                                        
+                                        headingsPlugin(),   
+                                        linkDialogPlugin(),
+                                        linkPlugin(),                                      
+                                        listsPlugin(), 
+                                        quotePlugin(), 
+                                        thematicBreakPlugin()
+                                    ]} />
                                 )}
                             </div>
 
@@ -1005,21 +1015,50 @@ const RegisterItemDetails = () => {
                             
                             <div data-color-mode="light">
                             {risk === 'low' ? '' :                              
-                            editable ? (
-                                
-                                <MDEditor
-                                    textareaProps={{placeholder: dispatch(translate("possibleMeasuresDescription", null, "Hvilke tiltak kan gjøres?"))}}
-                                    id="possibleMeasures"
-                                    preview="edit"
-                                    name="possibleMeasures"
-                                    value={newRegisterItem.possibleMeasures || ""}
+                            editable ? (<>
+                                <MDXEditor 
+                                    markdown={newRegisterItem.possibleMeasures || ""}
+                                    placehoder={dispatch(translate("possibleMeasuresDescription", null, "Hvilke tiltak kan gjøres?"))}
+                                    contentEditableClassName={formsStyle.mdxeditor}
                                     onChange={(value) => {
-                                        setPossbileMeasuresMarkdown(value);
+                                        setDescriptionMarkdown(value);
                                         handleChange({ name: "possibleMeasures", value: value });
-                                    }} />
+                                    }}
+                                    plugins={[
+                                        toolbarPlugin({
+                                            toolbarClassName: formsStyle.editortoolbar,
+                                            toolbarContents: () => (
+                                              <>
+                                                {' '}
+                                                <BoldItalicUnderlineToggles />
+                                                <BlockTypeSelect />
+                                                <UndoRedo />  
+                                                <CreateLink />  
+                                                <ListsToggle />                                                                                                  
+                                              </>
+                                            )
+                                          }),
+                                        headingsPlugin(),   
+                                        linkDialogPlugin(),
+                                        linkPlugin(),                                      
+                                        listsPlugin(), 
+                                        quotePlugin(), 
+                                        thematicBreakPlugin()
+                                    ]} />
+                                </>
                             ) : (
                                 
-                                <MDEditor.Markdown id="possibleMeasures" source={possibleMeasuresMarkdown} />
+                                <MDXEditor 
+                                markdown={newRegisterItem.possibleMeasures || ""}
+                                contentEditableClassName={formsStyle.mdxnoeditor}                                    
+                                plugins={[                                        
+                                    headingsPlugin(),   
+                                    linkDialogPlugin(),
+                                    linkPlugin(),                                      
+                                    listsPlugin(), 
+                                    quotePlugin(), 
+                                    thematicBreakPlugin()
+                                ]} />
                                
                             ) 
                             }
@@ -1116,6 +1155,7 @@ const RegisterItemDetails = () => {
                                       onChange={handleChange}
                                 >
                                     {statuses.map((status) => {
+                                       
                                         return (
                                             <option key={status.value} value={status.value}>
                                                 {status.label}

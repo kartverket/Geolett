@@ -411,9 +411,15 @@
    background-color: white !important;
    border-radius: 4px 4px 0 0 !important;   
  }
+ :local(.editornotoolbar) {
+   display: none !important;
+ } 
  :local(.mdxeditor) {
    border: 1px solid #ccc;
-   border-top: none;
+   border-top: none;  
    padding: 10px;
    border-radius: 0 0 4px 4px;
+ }
+ :local(.mdxnoeditor) {
+   padding: 0 !important;
  }
