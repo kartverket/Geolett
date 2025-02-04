@@ -896,7 +896,7 @@ const RegisterItemDetails = () => {
                             {dispatch(translate("introGeolettDescriptionDel2Bygg", null, "tittel"))}
                             
                             {dispatch(translate("introGeolettDescriptionDel3Bygg", null, "tittel"))}
-                            <a href="https://chatgpt.com/g/g-XcoxhsvyS-temadata-assistent" target="_blank" rel="noreferrer">Gå til TeA</a>
+                            <a href="https://chatgpt.com/g/g-XcoxhsvyS-temadata-assistent" target="_blank" rel="noreferrer"> Gå til TeA</a>
                                 <div className={formsStyle.smallheader}>Brukereksempel</div>
                                 {dispatch(translate("introGeolettDescriptionDel4Bygg", null, "tittel"))}
                                 
@@ -916,7 +916,7 @@ const RegisterItemDetails = () => {
                                 {dispatch(translate("introGeolettDescriptionDel2Plan", null, "tittel"))}
                                 
                                 {dispatch(translate("introGeolettDescriptionDel3Plan", null, "tittel"))}
-                                <a href="https://chatgpt.com/g/g-XcoxhsvyS-temadata-assistent" target="_blank" rel="noreferrer">Gå til TeA</a>
+                                <a href="https://chatgpt.com/g/g-XcoxhsvyS-temadata-assistent" target="_blank" rel="noreferrer"> Gå til TeA</a>
                                     <div className={formsStyle.smallheader}>Brukereksempel</div>
                                     {dispatch(translate("introGeolettDescriptionDel4Plan", null, "tittel"))}
                                     {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
