@@ -6,7 +6,8 @@ import { Typeahead, withAsync } from "react-bootstrap-typeahead";
 import { useNavigate, useParams } from "react-router-dom";
 import '@mdxeditor/editor/style.css'
 import { MDXEditor, headingsPlugin, listsPlugin,quotePlugin, thematicBreakPlugin, toolbarPlugin, BlockTypeSelect, UndoRedo,BoldItalicUnderlineToggles, CreateLink, ListsToggle, linkDialogPlugin, linkPlugin } from '@mdxeditor/editor'
-import dibkscreenshot from "images/svg/screenshot-clean.png";
+import dibkplanscreenshot from "images/svg/plan-screenshot-clean.png";
+import dibkbyggscreenshot from "images/svg/bygg-screenshot-clean.png";
 
 // Geonorge WebComponents
 /* eslint-disable */
@@ -778,7 +779,7 @@ const RegisterItemDetails = () => {
                                     <gn-label block>
                             <label htmlFor="title">
                                 {dispatch(translate("labelTitle", null, "Navn på veiledningstekst"))}
-                                <ToggleHelpText resourceKey="titleDescription" showHelp={editable} />
+                                {theme === "Plan" ? <ToggleHelpText resourceKey="titleDescriptionPlan" showHelp={editable} /> : <ToggleHelpText resourceKey="titleDescriptionBygg" showHelp={editable} />}
                             </label>
                         </gn-label>
                         {editable ? (
@@ -850,13 +851,13 @@ const RegisterItemDetails = () => {
                                 <h5>Grad av konflikt - type treff</h5>
                                </heading-text>
                                </div>
-                            <div className={formsStyle.infotext}>{dispatch(translate("introDegreeRisk", null, "tittel"))}</div>
+                            <div className={formsStyle.infotext}>{theme === "Bygg" ? dispatch(translate("introDegreeRiskBygg", null, "tittel")) : dispatch(translate("introDegreeRiskPlan", null, "tittel"))}</div>
 
                             {editable ? (
                             <div>
                                 <div className={formsStyle.flexradio}>
                                     <input id="highrisk" name="risk" type="radio" value="high" onChange={event => {setRisk("high"); handleChange(event)}} defaultChecked={newRegisterItem.risk === "high"} />
-                                    <label htmlFor="highrisk">Høy grad av konflikt, risiko for byggeforbud</label>
+                                    {theme === "Bygg" ? <label htmlFor="highrisk">Høy grad av konflikt, risiko for byggeforbud</label> : <label htmlFor="highrisk">Høy grad av konflikt, risiko for konsekvenser for planen</label>}
                                 </div>
                                 
                                 <div className={formsStyle.flexradio}>
@@ -865,11 +866,16 @@ const RegisterItemDetails = () => {
                                 </div>                            
                             </div>
                             ) : (<div className={formsStyle.row}>
-                                <heading-text>
+                                {theme === "Bygg" ? <heading-text>
                                 <h5>
                                     {risk === "high" ? "Høy grad av konflikt, risiko for byggeforbud" : risk === "low" ? "Lav grad av konflikt, informasjon om området" : "Ikke satt"}
                                 </h5>
-                                </heading-text>
+                                </heading-text>: 
+                                <heading-text>
+                                <h5>
+                                    {risk === "high" ? "Høy grad av konflikt, risiko for konsekvenser for planen" : risk === "low" ? "Lav grad av konflikt, informasjon om området" : "Ikke satt"}
+                                </h5>
+                                </heading-text>}
                                 </div>
                                     
                             )}
@@ -878,28 +884,48 @@ const RegisterItemDetails = () => {
                             </div>  
                              
                             {editable && savedRegisterItem.status === 1 ? 
-                            <div className={formsStyle.introbox}>                        
-                            <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettinternal", null, "tittel"))}
-                          
+                            <div className={formsStyle.introbox}> 
+                                                  
+                            <div className={formsStyle.textcontent}>{theme === "Bygg" ? dispatch(translate("introGeolettinternalBygg", null, "tittel")) : dispatch(translate("introGeolettinternalPlan", null, "tittel"))}
+                             {theme === "Bygg" ? 
                             <div className={formsStyle.biocontainer}>
                                 <div>
-                                <div className={formsStyle.smallheader}>Hvorfor skrive areaplanveiledere?</div>
-                                {dispatch(translate("introGeolettDescriptionDel1", null, "tittel"))}
+                                <div className={formsStyle.smallheader}>Hvorfor skrive veiledningstekster?</div>
+                                {dispatch(translate("introGeolettDescriptionDel1Bygg", null, "tittel"))}
                             <div className={formsStyle.smallheader}>Tips til bruk av veiledningstekst-editoren</div>
-                            {dispatch(translate("introGeolettDescriptionDel2", null, "tittel"))}
+                            {dispatch(translate("introGeolettDescriptionDel2Bygg", null, "tittel"))}
                             
-                            {dispatch(translate("introGeolettDescriptionDel3", null, "tittel"))}
-                            
+                            {dispatch(translate("introGeolettDescriptionDel3Bygg", null, "tittel"))}
+                            <a href="https://chatgpt.com/g/g-XcoxhsvyS-temadata-assistent" target="_blank" rel="noreferrer">Gå til TeA</a>
                                 <div className={formsStyle.smallheader}>Brukereksempel</div>
-                                {dispatch(translate("introGeolettDescriptionDel4", null, "tittel"))}
+                                {dispatch(translate("introGeolettDescriptionDel4Bygg", null, "tittel"))}
+                                
                                 {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
                                 </div>
                                
                                  
-                                <img className={formsStyle.screenshot} src={dibkscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                            
+                                <img className={formsStyle.screenshot} src={dibkplanscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                            
                                 
                              </div>
+                       : 
+                       <div className={formsStyle.biocontainer}>
+                            <div>
+                            <div className={formsStyle.smallheader}>Hvorfor skrive areaplanveiledere?</div>
+                            {dispatch(translate("introGeolettDescriptionDel1Plan", null, "tittel"))}
+                                <div className={formsStyle.smallheader}>Tips til bruk av veiledningstekst-editoren</div>
+                                {dispatch(translate("introGeolettDescriptionDel2Plan", null, "tittel"))}
+                                
+                                {dispatch(translate("introGeolettDescriptionDel3Plan", null, "tittel"))}
+                                <a href="https://chatgpt.com/g/g-XcoxhsvyS-temadata-assistent" target="_blank" rel="noreferrer">Gå til TeA</a>
+                                    <div className={formsStyle.smallheader}>Brukereksempel</div>
+                                    {dispatch(translate("introGeolettDescriptionDel4Plan", null, "tittel"))}
+                                    {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
+                                    </div>
+                            
+                                
+                                    <img className={formsStyle.screenshot} src={dibkbyggscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                                                      
                        
+                    </div>}
                             </div>                        
                             </div>
                             : null}                    
@@ -935,7 +961,7 @@ const RegisterItemDetails = () => {
                         <gb-label block>
                             <label htmlFor="description">
                                 {dispatch(translate("labelDescription", null, "Hva handler treffet om?"))}
-                                <ToggleHelpText resourceKey="descriptionDescription" showHelp={editable} />
+                                {theme === "Bygg" ? <ToggleHelpText resourceKey="descriptionDescriptionBygg" showHelp={editable} /> : <ToggleHelpText resourceKey="descriptionDescriptionPlan" showHelp={editable} />}
                             </label>
                             </gb-label>
                             <div data-color-mode="light">
@@ -1009,7 +1035,7 @@ const RegisterItemDetails = () => {
                             { risk === 'low'? '' : <gn-label block>
                                 <label htmlFor="possibleMeasures">
                                     {dispatch(translate("labelPossibleMeasures", null, "Hvilke tiltak kan gjøres?"))}
-                                    <ToggleHelpText resourceKey="possibleMeasuresDescription" showHelp={editable}  />
+                                    {theme === "Bygg" ? <ToggleHelpText resourceKey="possibleMeasuresDescriptionBygg" showHelp={editable}  /> : <ToggleHelpText resourceKey="possibleMeasuresDescriptionPlan" showHelp={editable}  /> }
                                 </label>
                             </gn-label> }
                             
@@ -1065,8 +1091,8 @@ const RegisterItemDetails = () => {
                             </div>
                             <gn-label block>
                                 <label htmlFor="guidance">
-                                    {risk === 'low' ? dispatch(translate("labelGuidance", null, "Hvordan bruke denne informasjonen")) : dispatch(translate("labelGuidance", null, "Tips til hvordan følge opp tiltak")) }
-                                    <ToggleHelpText resourceKey="guidanceDescription" showHelp={editable} />
+                                    {risk === 'low' ? dispatch(translate("labelGuidance", null, "Hva bør brukeren gjøre?")) : dispatch(translate("labelGuidance", null, "Hva bør brukeren gjøre?")) }
+                                    {theme === "Bygg" ? <ToggleHelpText resourceKey="guidanceDescriptionBygg" showHelp={editable} /> : <ToggleHelpText resourceKey="guidanceDescriptionPlan" showHelp={editable} />}
                                 </label>
                             </gn-label>
                             {editable ? (
