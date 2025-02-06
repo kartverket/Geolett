@@ -85,10 +85,10 @@ const [bufferText, setBufferText] = useState(false)
                                       <>
                                         {' '}
                                         <BoldItalicUnderlineToggles />
-                                        <BlockTypeSelect />
+                                       
                                         <UndoRedo />  
                                         <CreateLink />  
-                                        <ListsToggle />                                                                                                  
+                                                                                                                                        
                                       </>
                                     )
                                   }),

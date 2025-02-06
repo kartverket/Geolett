@@ -981,11 +981,9 @@ const RegisterItemDetails = () => {
                                             toolbarContents: () => (
                                               <>
                                                 {' '}
-                                                <BoldItalicUnderlineToggles />
-                                                <BlockTypeSelect />
+                                                <BoldItalicUnderlineToggles />                                                
                                                 <UndoRedo />  
-                                                <CreateLink />  
-                                                <ListsToggle />                                                                                                  
+                                                <CreateLink />                                                                                                                                                   
                                               </>
                                             )
                                           }),
@@ -1057,10 +1055,10 @@ const RegisterItemDetails = () => {
                                               <>
                                                 {' '}
                                                 <BoldItalicUnderlineToggles />
-                                                <BlockTypeSelect />
+                                                
                                                 <UndoRedo />  
                                                 <CreateLink />  
-                                                <ListsToggle />                                                                                                  
+                                                                                                                                                 
                                               </>
                                             )
                                           }),
@@ -1111,10 +1109,10 @@ const RegisterItemDetails = () => {
                                            <>
                                              {' '}
                                              <BoldItalicUnderlineToggles />
-                                             <BlockTypeSelect />
+                                             
                                              <UndoRedo />  
                                              <CreateLink />  
-                                             <ListsToggle />                                                                                                  
+                                                                                                                                            
                                            </>
                                          )
                                        }),
