@@ -42,8 +42,8 @@ const [bufferText, setBufferText] = useState(false)
                         {showBufferValues() ? <div className={style.buffercontent}>
                             <gn-label block>
                             <label htmlFor="datasetBufferText">
-                                {dispatch(translate("labelDataSetBufferText", null, "Buffertekst"))}
-                                <ToggleHelpText resourceKey="dataSetBufferTextDescription"showHelp={editable}/>
+                                {dispatch(translate("labelDataSetBufferText", null, "Varseltekst ved treff på buffersone"))}
+                                <ToggleHelpText resourceKey="dataSetBufferTextDescription" showHelp={editable}/>
                                 </label>
                             </gn-label>
                             {editable ? (
@@ -63,7 +63,7 @@ const [bufferText, setBufferText] = useState(false)
 
                         <gn-label block>
                             <label htmlFor="datasetBufferPossibleMeasures">
-                                {dispatch(translate("labelBufferPossibleMeasures", null, "Mulige tiltak buffer"))}
+                                {dispatch(translate("labelBufferPossibleMeasures", null, "Hva kan brukeren gjøre ved treff på buffersone"))}
                                 <ToggleHelpText resourceKey="bufferPossibleMeasuresDescription" showHelp={editable} />
                             </label>
                         </gn-label>
@@ -86,7 +86,7 @@ const [bufferText, setBufferText] = useState(false)
 
                         <gn-label block>
                             <label htmlFor="datasetBufferDistance">
-                                {dispatch(translate("labelDataSetBufferDistance", null, "Buffer"))}
+                                {dispatch(translate("labelDataSetBufferDistance", null, "Avstand i meter for når varselteksten for buffersone skal vises"))}
                                 <ToggleHelpText resourceKey="dataSetBufferDistanceDescription" showHelp={editable} />
                                 
                             </label>

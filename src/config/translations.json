@@ -15,11 +15,12 @@
             "dialogTextDescriptionBygg": "En setning som gjør brukeren oppmerksom på at det finnes forhold i området som man bør være oppmerksom på for det planlagte tiltaket, selv om tiltaket ikke nødvendigvis er i direkte konflikt med forholdet.",
             "possibleMeasuresDescriptionPlan": "En kortfattet og enkel beskrivelse av hvilke alternativer brukeren har for å planområdet. Eksempel fra farledsareal: «Planforslaget må ikke overlappe med farleden. Om dette ikke lar seg gjøre, må du få vurdert hvilke virkninger planforslaget ditt har for sikker og effektiv ferdsel.",
             "possibleMeasuresDescriptionBygg": "En kortfattet og enkel beskrivelse av hvilke alternativer brukeren har for å komme videre med byggesøknaden. Eksempel på muligheter ved konflikt med hul eik: «Bygget kan oppføres 15m eller lenger fra stammen. Dersom bygget må oppføres nærmere enn 15m fra stammen skal kommunen vurdere tiltaket i henhold til bestemmelser i naturmangfoldloven. Rotsystemet på treet må ikke skades. En arborist kan vurdere det for deg. Gi en begrunnelse for behovet og legg ved en eventuell uttalelse fra arborist.",
-            "bufferPossibleMeasuresDescription": "Tekst skal gi brukeren råd og veiledning om hva som bør gjøres eller ikke gjøres innenfor buffersonen til lokaliteten",
+            "bufferPossibleMeasuresDescription": "En kortfattet beskrivelse av hva brukeren må være oppmerksom på ved utarbeidelse eller i vurderingen av planen.",
             "guidanceDescriptionPlan": "Nyttige tips og tilleggsinformasjon. Eksempel fra farledsareal: Vurderingen må gjøres av en person med nautisk kompetanse. Deretter kan du ta kontakt med Kystverket, som kan vurdere om de synes dette ser greit ut eller ikke.",
             "guidanceDescriptionBygg": "Nyttige tips og tilleggsinformasjon. Eksempel fra hul eik: «En arborist er en utdannet yrkesutøver innenfor trekonservering, tre-vedlikehold og planting. Arborister er kompetente når det kommer til trær og deres behov, og de er utdannet og utrustet for å gjennomføre de behandlingene som trengs. Du kan finne arborister via Gule sider eller andre katalogtjenester. ",
             
             "dataSetBufferDistanceDescription": "Avstand i meter som angir når bufferteksten skal gjøres gjeldende",
+            "dataSetBufferTextDescription": "En varsling om et forhold som er i nærheten av planområdet og kan ha betydning for planen.",
             "linkTextDescription": "Lenketekst om det er ønskelig å lenke til mer utfyllende informasjon",
             "linkUrlDescription": "Adressen til nettstedet med mer utfyllende informasjon",
             "technicalCommentDescription": "",
