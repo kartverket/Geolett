@@ -88,7 +88,7 @@ const [bufferText, setBufferText] = useState(false)
                         <gn-label block>
                             <label htmlFor="datasetBufferDistance">
                                 {dispatch(translate("labelDataSetBufferDistance", null, "Avstand i meter for når varselteksten for buffersone skal vises"))}
-                                <ToggleHelpText resourceKey="dataSetBufferDistanceDescription" showHelp={editable} />
+                                
                                 
                             </label>
                         </gn-label>
