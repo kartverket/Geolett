@@ -664,7 +664,7 @@ const RegisterItemDetails = () => {
             : null;
         return (
             <div>
-                {linkListElements?.length ? linkListElements : "Ingen lenker er lagt til"}
+                {linkListElements?.length ? linkListElements : null}
                 {editable ? (
                     <Fragment>
                         
@@ -1139,11 +1139,11 @@ const RegisterItemDetails = () => {
 
                          
                               
-                           <gn-label block>
+                        {newRegisterItem.links.length > 0 || editable ? <gn-label block>
                             <label>
                             Lenker<ToggleHelpText resourceKey="guidanceDescriptionLenker" showHelp={editable} />
                             </label>
-                        </gn-label>
+                        </gn-label> : null}
                         
                         {renderLinks(newRegisterItem.links)} 
                         

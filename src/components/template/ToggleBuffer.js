@@ -84,11 +84,9 @@ const [bufferText, setBufferText] = useState(false)
                                     toolbarContents: () => (
                                       <>
                                         {' '}
-                                        <BoldItalicUnderlineToggles />
-                                       
+                                        <BoldItalicUnderlineToggles />                                       
                                         <UndoRedo />  
-                                        <CreateLink />  
-                                                                                                                                        
+                                        <CreateLink />                                                                    
                                       </>
                                     )
                                   }),
