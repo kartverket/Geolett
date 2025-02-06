@@ -70,7 +70,38 @@ const [bufferText, setBufferText] = useState(false)
                             </label>
                         </gn-label>
                         {editable ? (
-                             <MDXEditor 
+                            
+                            <MDXEditor 
+                            markdown={item?.dataSet?.bufferPossibleMeasures || ""}                           
+                            contentEditableClassName={style.mdxeditor}
+                            onChange={(value) => {
+                                setDescriptionMarkdown(value);
+                                handleChange({ name: "bufferPossibleMeasures", value: value });
+                            }}
+                            plugins={[
+                                toolbarPlugin({
+                                    toolbarClassName: style.editortoolbar,
+                                    toolbarContents: () => (
+                                      <>
+                                        {' '}
+                                        <BoldItalicUnderlineToggles />
+                                        <BlockTypeSelect />
+                                        <UndoRedo />  
+                                        <CreateLink />  
+                                        <ListsToggle />                                                                                                  
+                                      </>
+                                    )
+                                  }),
+                                headingsPlugin(),   
+                                linkDialogPlugin(),
+                                linkPlugin(),                                      
+                                listsPlugin(), 
+                                quotePlugin(), 
+                                thematicBreakPlugin()
+                            ]} />
+                        ) : (
+                            
+                              <MDXEditor 
                              markdown={item?.dataSet?.bufferPossibleMeasures || ""}
                              contentEditableClassName={style.mdxnoeditor}                                    
                              plugins={[                                                                            
@@ -80,10 +111,6 @@ const [bufferText, setBufferText] = useState(false)
                                  thematicBreakPlugin()
                              ]} />
                            
-                        ) : (
-                            <div id="datasetBufferPossibleMeasures">
-                                {item?.dataSet?.bufferPossibleMeasures || ""}
-                            </div>
                         )}
 
                         <gn-label block>
