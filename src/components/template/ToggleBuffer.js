@@ -2,6 +2,7 @@
 import React, { Fragment, useState } from "react";
 
 import { useDispatch } from "react-redux";
+import { MDXEditor, headingsPlugin, listsPlugin,quotePlugin, thematicBreakPlugin, toolbarPlugin, BlockTypeSelect, UndoRedo,BoldItalicUnderlineToggles, CreateLink, ListsToggle, linkDialogPlugin, linkPlugin } from '@mdxeditor/editor'
 
 // Actions
 import { translate } from "actions/ConfigActions";
@@ -69,16 +70,16 @@ const [bufferText, setBufferText] = useState(false)
                             </label>
                         </gn-label>
                         {editable ? (
-                            <gn-textarea block fullWidth>
-                                <textarea
-                                    id="datasetBufferPossibleMeasures"
-                                    name="bufferPossibleMeasures"
-                                    defaultValue={item?.dataSet?.bufferPossibleMeasures || ""}
-                                    rows="4"
-                                    placeholder={dispatch(translate("bufferPossibleMeasuresDescription", null, "titleDescription"))}
-                                    onChange={onChange}
-                                />
-                            </gn-textarea>
+                             <MDXEditor 
+                             markdown={item?.dataSet?.bufferPossibleMeasures || ""}
+                             contentEditableClassName={style.mdxnoeditor}                                    
+                             plugins={[                                                                            
+                                 linkDialogPlugin(),
+                                 linkPlugin(),                                      
+                                 listsPlugin(),                                   
+                                 thematicBreakPlugin()
+                             ]} />
+                           
                         ) : (
                             <div id="datasetBufferPossibleMeasures">
                                 {item?.dataSet?.bufferPossibleMeasures || ""}

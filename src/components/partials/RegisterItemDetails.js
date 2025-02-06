@@ -1098,8 +1098,26 @@ const RegisterItemDetails = () => {
                             {editable ? (
                                  <MDXEditor 
                                  markdown={newRegisterItem.guidance || ""}
-                                 contentEditableClassName={formsStyle.mdxnoeditor}                                    
-                                 plugins={[                                        
+                                 placehoder={dispatch(translate("guidanceDescription", null, "Tips til hvordan følge opp tiltak?"))}
+                                 contentEditableClassName={formsStyle.mdxeditor}
+                                 onChange={(value) => {
+                                     setDescriptionMarkdown(value);
+                                     handleChange({ name: "guidance", value: value });
+                                 }}
+                                 plugins={[
+                                     toolbarPlugin({
+                                         toolbarClassName: formsStyle.editortoolbar,
+                                         toolbarContents: () => (
+                                           <>
+                                             {' '}
+                                             <BoldItalicUnderlineToggles />
+                                             <BlockTypeSelect />
+                                             <UndoRedo />  
+                                             <CreateLink />  
+                                             <ListsToggle />                                                                                                  
+                                           </>
+                                         )
+                                       }),
                                      headingsPlugin(),   
                                      linkDialogPlugin(),
                                      linkPlugin(),                                      
@@ -1109,7 +1127,16 @@ const RegisterItemDetails = () => {
                                  ]} />
                                
                             ) : (
-                                <div id="guidance">{newRegisterItem.guidance}</div>
+                                <MDXEditor 
+                                 markdown={newRegisterItem.guidance || ""}
+                                 contentEditableClassName={formsStyle.mdxnoeditor}                                    
+                                 plugins={[                                        
+                                     headingsPlugin(),   
+                                     linkDialogPlugin(),
+                                     linkPlugin(),                                      
+                                     listsPlugin(), 
+                                     quotePlugin(), 
+                                     thematicBreakPlugin()]} />
                             )}
 
                          
@@ -1154,6 +1181,7 @@ const RegisterItemDetails = () => {
                             </label>
                         </gn-label>
                         {editable ? (
+
                             <gn-input block fullWidth>
                                 <input
                                     id="technicalComment"
@@ -1163,7 +1191,7 @@ const RegisterItemDetails = () => {
                                 />
                             </gn-input>
                         ) : (
-                            <div id="technicalComment">{newRegisterItem.technicalComment}</div>
+                           <div id="technicalComment">{newRegisterItem.technicalComment}</div>
                         )}
 
                        
