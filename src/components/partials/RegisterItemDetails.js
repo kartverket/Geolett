@@ -1096,16 +1096,18 @@ const RegisterItemDetails = () => {
                                 </label>
                             </gn-label>
                             {editable ? (
-                                <gn-textarea block fullWidth>
-                                    <textarea
-                                        id="guidance"
-                                        name="guidance"
-                                        rows="6"
-                                        placeholder={dispatch(translate("guidanceDescription", null, "Tips til hvordan følge opp tiltak"))}
-                                        defaultValue={newRegisterItem.guidance}
-                                        onChange={handleChange}
-                                    />
-                                </gn-textarea>
+                                 <MDXEditor 
+                                 markdown={newRegisterItem.guidance || ""}
+                                 contentEditableClassName={formsStyle.mdxnoeditor}                                    
+                                 plugins={[                                        
+                                     headingsPlugin(),   
+                                     linkDialogPlugin(),
+                                     linkPlugin(),                                      
+                                     listsPlugin(), 
+                                     quotePlugin(), 
+                                     thematicBreakPlugin()
+                                 ]} />
+                               
                             ) : (
                                 <div id="guidance">{newRegisterItem.guidance}</div>
                             )}
@@ -1120,7 +1122,7 @@ const RegisterItemDetails = () => {
                         
                         {renderLinks(newRegisterItem.links)} 
                         
-                        { risk === "low" ? '' : <ToggleBuffer onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
+                        { risk === "low" ? '' : <ToggleBuffer tema={theme} onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
 
                         </div>
 
@@ -1147,8 +1149,8 @@ const RegisterItemDetails = () => {
 
                         <gn-label block>
                             <label htmlFor="technicalComment">
-                                {dispatch(translate("labelTechnicalComment", null, "Teknisk kommentar"))}
-                                <ToggleHelpText resourceKey="technicalCommentDescription" showHelp={editable} />
+                                {dispatch(translate("labelTechnicalComment", null, "I hvilke tilfeller er tekstene relevante?"))}
+                                {theme === "Bygg" ? <ToggleHelpText resourceKey="technicalCommentDescriptionBygg" showHelp={editable} />:<ToggleHelpText resourceKey="technicalCommentDescriptionPlan" showHelp={editable} /> }
                             </label>
                         </gn-label>
                         {editable ? (

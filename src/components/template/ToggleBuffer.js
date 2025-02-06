@@ -13,11 +13,12 @@ import {
 /* eslint-enable */
 import ToggleHelpText from "./ToggleHelpText";
 
+
+
 // Stylesheets
 import style from "components/template/ToggleBuffer.module.scss";
 
-
-const ToggleBuffer = ({onChange, item, editable}) => {
+const ToggleBuffer = ({onChange, item, tema, editable}) => {
     
 const [bufferText, setBufferText] = useState(false)
 
@@ -43,7 +44,7 @@ const [bufferText, setBufferText] = useState(false)
                             <gn-label block>
                             <label htmlFor="datasetBufferText">
                                 {dispatch(translate("labelDataSetBufferText", null, "Varseltekst ved treff på buffersone"))}
-                                <ToggleHelpText resourceKey="dataSetBufferTextDescription" showHelp={editable}/>
+                                {tema === "Bygg" ? <ToggleHelpText resourceKey="dataSetBufferTextDescriptionBygg" showHelp={editable}/>: <ToggleHelpText resourceKey="dataSetBufferTextDescriptioPlan" showHelp={editable}/>}
                                 </label>
                             </gn-label>
                             {editable ? (
@@ -64,7 +65,7 @@ const [bufferText, setBufferText] = useState(false)
                         <gn-label block>
                             <label htmlFor="datasetBufferPossibleMeasures">
                                 {dispatch(translate("labelBufferPossibleMeasures", null, "Hva kan brukeren gjøre ved treff på buffersone"))}
-                                <ToggleHelpText resourceKey="bufferPossibleMeasuresDescription" showHelp={editable} />
+                                {tema === "Bygg" ? <ToggleHelpText resourceKey="bufferPossibleMeasuresDescriptionBygg" showHelp={editable} />:<ToggleHelpText resourceKey="bufferPossibleMeasuresDescriptionPlan" showHelp={editable} />}
                             </label>
                         </gn-label>
                         {editable ? (
