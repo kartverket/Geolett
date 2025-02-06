@@ -904,7 +904,7 @@ const RegisterItemDetails = () => {
                                 </div>
                                
                                  
-                                <img className={formsStyle.screenshot} src={dibkplanscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                            
+                                <img className={formsStyle.screenshot} src={dibkbyggscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                            
                                 
                              </div>
                        : 
@@ -923,7 +923,7 @@ const RegisterItemDetails = () => {
                                     </div>
                             
                                 
-                                    <img className={formsStyle.screenshot} src={dibkbyggscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                                                      
+                                    <img className={formsStyle.screenshot} src={dibkplanscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                                                      
                        
                     </div>}
                             </div>                        
@@ -1015,7 +1015,7 @@ const RegisterItemDetails = () => {
                         <gn-label block>
                             <label htmlFor="dialogText">
                                 {risk === "low" ? dispatch(translate("labelDialogText", null, "Informasjonsvarsel")) : dispatch(translate("labelDialogText", null, "Varsel"))}
-                                <ToggleHelpText resourceKey="dialogTextDescription" showHelp={editable}  />
+                                {theme === "Bygg" ? <ToggleHelpText resourceKey="dialogTextDescriptionBygg" showHelp={editable} /> : <ToggleHelpText resourceKey="dialogTextDescriptionPlan" showHelp={editable} /> }
                             </label>
                         </gn-label>
                         
@@ -1034,7 +1034,7 @@ const RegisterItemDetails = () => {
 
                             { risk === 'low'? '' : <gn-label block>
                                 <label htmlFor="possibleMeasures">
-                                    {dispatch(translate("labelPossibleMeasures", null, "Hvilke tiltak kan gjøres?"))}
+                                    {dispatch(translate("labelPossibleMeasures", null, "Hva kan brukeren gjøre?"))}
                                     {theme === "Bygg" ? <ToggleHelpText resourceKey="possibleMeasuresDescriptionBygg" showHelp={editable}  /> : <ToggleHelpText resourceKey="possibleMeasuresDescriptionPlan" showHelp={editable}  /> }
                                 </label>
                             </gn-label> }
@@ -1044,7 +1044,7 @@ const RegisterItemDetails = () => {
                             editable ? (<>
                                 <MDXEditor 
                                     markdown={newRegisterItem.possibleMeasures || ""}
-                                    placehoder={dispatch(translate("possibleMeasuresDescription", null, "Hvilke tiltak kan gjøres?"))}
+                                    placehoder={dispatch(translate("possibleMeasuresDescription", null, "Tips til hvordan følge opp tiltak?"))}
                                     contentEditableClassName={formsStyle.mdxeditor}
                                     onChange={(value) => {
                                         setDescriptionMarkdown(value);
@@ -1091,7 +1091,7 @@ const RegisterItemDetails = () => {
                             </div>
                             <gn-label block>
                                 <label htmlFor="guidance">
-                                    {risk === 'low' ? dispatch(translate("labelGuidance", null, "Hva bør brukeren gjøre?")) : dispatch(translate("labelGuidance", null, "Hva bør brukeren gjøre?")) }
+                                    { dispatch(translate("labelGuidance", null, "Tips til gjennomføring?")) }
                                     {theme === "Bygg" ? <ToggleHelpText resourceKey="guidanceDescriptionBygg" showHelp={editable} /> : <ToggleHelpText resourceKey="guidanceDescriptionPlan" showHelp={editable} />}
                                 </label>
                             </gn-label>
@@ -1114,9 +1114,10 @@ const RegisterItemDetails = () => {
                               
                            <gn-label block>
                             <label>
-                            Lenker
+                            Lenker<ToggleHelpText resourceKey="guidanceDescriptionLenker" showHelp={editable} />
                             </label>
                         </gn-label>
+                        
                         {renderLinks(newRegisterItem.links)} 
                         
                         { risk === "low" ? '' : <ToggleBuffer onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
