@@ -957,13 +957,13 @@ const RegisterItemDetails = () => {
                             )}
 
                             
-
-                        <gb-label block>
-                            <label htmlFor="description">
-                                {dispatch(translate("labelDescription", null, "Hva handler treffet om?"))}
-                                {theme === "Bygg" ? <ToggleHelpText resourceKey="descriptionDescriptionBygg" showHelp={editable} /> : <ToggleHelpText resourceKey="descriptionDescriptionPlan" showHelp={editable} />}
-                            </label>
-                            </gb-label>
+                            {editable || savedRegisterItem?.description.length > 0 ? 
+                            <gb-label block>
+                                <label htmlFor="description">
+                                    {dispatch(translate("labelDescription", null, "Hva handler treffet om?"))}
+                                    {theme === "Bygg" ? <ToggleHelpText resourceKey="descriptionDescriptionBygg" showHelp={editable} /> : <ToggleHelpText resourceKey="descriptionDescriptionPlan" showHelp={editable} />}
+                                </label>
+                            </gb-label> : null}
                             <div data-color-mode="light">
                                 {editable ? (<>
                                    
@@ -999,23 +999,16 @@ const RegisterItemDetails = () => {
                                     <MDXEditor 
                                     markdown={descriptionMarkdown || ""}
                                     contentEditableClassName={formsStyle.mdxnoeditor}                                    
-                                    plugins={[                                        
-                                        headingsPlugin(),   
-                                        linkDialogPlugin(),
-                                        linkPlugin(),                                      
-                                        listsPlugin(), 
-                                        quotePlugin(), 
-                                        thematicBreakPlugin()
-                                    ]} />
+                                    plugins={[]} readOnly />
                                 )}
                             </div>
-
+                        {editable || savedRegisterItem?.dialogText?.length > 0 ?
                         <gn-label block>
                             <label htmlFor="dialogText">
                                 {risk === "low" ? dispatch(translate("labelDialogText", null, "Informasjonsvarsel")) : dispatch(translate("labelDialogText", null, "Varsel"))}
                                 {theme === "Bygg" ? <ToggleHelpText resourceKey="dialogTextDescriptionBygg" showHelp={editable} /> : <ToggleHelpText resourceKey="dialogTextDescriptionPlan" showHelp={editable} /> }
                             </label>
-                        </gn-label>
+                        </gn-label> : null}
                         
                         {editable ? (
                             <gn-input block fullWidth>
@@ -1030,8 +1023,10 @@ const RegisterItemDetails = () => {
                                 <div id="dialogText">{newRegisterItem.dialogText}</div>
                             )}
 
-                            { risk === 'low'? '' : <gn-label block>
+                            { risk === 'low' || newRegisterItem?.possibleMeasures.length === 0 ? '' : 
+                            <gn-label block>
                                 <label htmlFor="possibleMeasures">
+                                    {newRegisterItem?.possibleMeasures.length}
                                     {dispatch(translate("labelPossibleMeasures", null, "Hva kan brukeren gjøre?"))}
                                     {theme === "Bygg" ? <ToggleHelpText resourceKey="possibleMeasuresDescriptionBygg" showHelp={editable}  /> : <ToggleHelpText resourceKey="possibleMeasuresDescriptionPlan" showHelp={editable}  /> }
                                 </label>
@@ -1075,14 +1070,7 @@ const RegisterItemDetails = () => {
                                 <MDXEditor 
                                 markdown={newRegisterItem.possibleMeasures || ""}
                                 contentEditableClassName={formsStyle.mdxnoeditor}                                    
-                                plugins={[                                        
-                                    headingsPlugin(),   
-                                    linkDialogPlugin(),
-                                    linkPlugin(),                                      
-                                    listsPlugin(), 
-                                    quotePlugin(), 
-                                    thematicBreakPlugin()
-                                ]} />
+                                plugins={[]} readOnly />
                                
                             ) 
                             }
@@ -1128,13 +1116,7 @@ const RegisterItemDetails = () => {
                                 <MDXEditor 
                                  markdown={newRegisterItem.guidance || ""}
                                  contentEditableClassName={formsStyle.mdxnoeditor}                                    
-                                 plugins={[                                        
-                                     headingsPlugin(),   
-                                     linkDialogPlugin(),
-                                     linkPlugin(),                                      
-                                     listsPlugin(), 
-                                     quotePlugin(), 
-                                     thematicBreakPlugin()]} />
+                                 plugins={[]} readOnly/>
                             )}
 
                          
@@ -1153,31 +1135,15 @@ const RegisterItemDetails = () => {
 
                         <div>
                             <div>
-                           
-                          
+ 
 
-                        
-
-                           
-
-                                                                                                    
-
-                       
-
-
-                        
-
-                       
-                        
-
-
-
+                        {editable || newRegisterItem.technicalComment ?  
                         <gn-label block>
                             <label htmlFor="technicalComment">
                                 {dispatch(translate("labelTechnicalComment", null, "I hvilke tilfeller er tekstene relevante?"))}
                                 {theme === "Bygg" ? <ToggleHelpText resourceKey="technicalCommentDescriptionBygg" showHelp={editable} />:<ToggleHelpText resourceKey="technicalCommentDescriptionPlan" showHelp={editable} /> }
                             </label>
-                        </gn-label>
+                        </gn-label> : null }
                         {editable ? (
 
                             <gn-input block fullWidth>

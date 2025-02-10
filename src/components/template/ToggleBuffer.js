@@ -38,7 +38,7 @@ const [bufferText, setBufferText] = useState(false)
                
                          
                             {editable ? (<gn-input><input id="bufferja" name="buffersone" type="checkbox" onClick={toggleBuffertext} /></gn-input>) : ('')  }
-                            <gn-label><label htmlFor="bufferja">Har treffet en buffersone? Vis innholdet for buffer <ToggleHelpText resourceKey="bufferDescription" /></label></gn-label>                           
+                            {item?.dataSet?.bufferPossibleMeasures.lenght > 0 || editable ? <gn-label><label htmlFor="bufferja">Har treffet en buffersone? Vis innholdet for buffer <ToggleHelpText resourceKey="bufferDescription" /></label></gn-label>  : null }                         
 
 
                         {showBufferValues() ? <div className={style.buffercontent}>
@@ -102,12 +102,7 @@ const [bufferText, setBufferText] = useState(false)
                               <MDXEditor 
                              markdown={item?.dataSet?.bufferPossibleMeasures || ""}
                              contentEditableClassName={style.mdxnoeditor}                                    
-                             plugins={[                                                                            
-                                 linkDialogPlugin(),
-                                 linkPlugin(),                                      
-                                 listsPlugin(),                                   
-                                 thematicBreakPlugin()
-                             ]} />
+                             plugins={[]} readOnly />
                            
                         )}
 
