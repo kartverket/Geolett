@@ -6,7 +6,7 @@ import { Typeahead, withAsync } from "react-bootstrap-typeahead";
 import { useNavigate, useParams } from "react-router-dom";
 import '@mdxeditor/editor/style.css'
 import { MDXEditor, headingsPlugin, listsPlugin,quotePlugin, thematicBreakPlugin, toolbarPlugin, BlockTypeSelect, UndoRedo,BoldItalicUnderlineToggles, CreateLink, ListsToggle, linkDialogPlugin, linkPlugin } from '@mdxeditor/editor'
-import dibkplanscreenshot from "images/svg/plan-screenshot-clean.png";
+import dibkplanscreenshot from "images/svg/image.png";
 import dibkbyggscreenshot from "images/svg/bygg-screenshot-clean.png";
 
 // Geonorge WebComponents
@@ -892,8 +892,9 @@ const RegisterItemDetails = () => {
                                 <div>
                                 <div className={formsStyle.smallheader}>Hvorfor skrive veiledningstekster?</div>
                                 {dispatch(translate("introGeolettDescriptionDel1Bygg", null, "tittel"))}
-                            <div className={formsStyle.smallheader}>Tips til bruk av veiledningstekst-editoren</div>
+                            <br /><br />
                             {dispatch(translate("introGeolettDescriptionDel2Bygg", null, "tittel"))}
+                            <div className={formsStyle.smallheader}>Tips til utforming av tekstene</div>
                             
                             {dispatch(translate("introGeolettDescriptionDel3Bygg", null, "tittel"))}
                           
@@ -912,12 +913,12 @@ const RegisterItemDetails = () => {
                             <div>
                             <div className={formsStyle.smallheader}>Hvorfor skrive areaplanveiledere?</div>
                             {dispatch(translate("introGeolettDescriptionDel1Plan", null, "tittel"))}
-                                <div className={formsStyle.smallheader}>Tips til bruk av veiledningstekst-editoren</div>
+                            <br /><br />
                                 {dispatch(translate("introGeolettDescriptionDel2Plan", null, "tittel"))}
                                 
-                                {dispatch(translate("introGeolettDescriptionDel3Plan", null, "tittel"))}
-                              
-                                    <div className={formsStyle.smallheader}>Brukereksempel</div>
+                                <div className={formsStyle.smallheader}>Tips til utforming av tekstene</div>
+                                {dispatch(translate("introGeolettDescriptionDel3Plan", null, "tittel"))}                              
+                                    <div className={formsStyle.smallheader}>Eksempel på bruk av tekstene</div>
                                     {dispatch(translate("introGeolettDescriptionDel4Plan", null, "tittel"))}
                                     {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
                                     </div>
@@ -1025,8 +1026,7 @@ const RegisterItemDetails = () => {
 
                             { risk === 'low' || newRegisterItem?.possibleMeasures.length === 0 ? '' : 
                             <gn-label block>
-                                <label htmlFor="possibleMeasures">
-                                    {newRegisterItem?.possibleMeasures.length}
+                                <label htmlFor="possibleMeasures">                                    
                                     {dispatch(translate("labelPossibleMeasures", null, "Hva kan brukeren gjøre?"))}
                                     {theme === "Bygg" ? <ToggleHelpText resourceKey="possibleMeasuresDescriptionBygg" showHelp={editable}  /> : <ToggleHelpText resourceKey="possibleMeasuresDescriptionPlan" showHelp={editable}  /> }
                                 </label>

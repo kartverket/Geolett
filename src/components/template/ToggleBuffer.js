@@ -38,7 +38,7 @@ const [bufferText, setBufferText] = useState(false)
                
                          
                             {editable ? (<gn-input><input id="bufferja" name="buffersone" type="checkbox" onClick={toggleBuffertext} /></gn-input>) : ('')  }
-                            {item?.dataSet?.bufferPossibleMeasures.lenght > 0 || editable ? <gn-label><label htmlFor="bufferja">Har treffet en buffersone? Vis innholdet for buffer <ToggleHelpText resourceKey="bufferDescription" /></label></gn-label>  : null }                         
+                            {editable ? <gn-label><label htmlFor="bufferja">Har treffet en buffersone? Vis innholdet for buffer <ToggleHelpText resourceKey="bufferDescription" /></label></gn-label>  : null }                         
 
 
                         {showBufferValues() ? <div className={style.buffercontent}>
@@ -108,7 +108,8 @@ const [bufferText, setBufferText] = useState(false)
 
                         <gn-label block>
                             <label htmlFor="datasetBufferDistance">
-                                {dispatch(translate("labelDataSetBufferDistance", null, "Avstand i meter for når varselteksten for buffersone skal vises"))}
+                                {dispatch(translate("labelDataSetBufferDistance", null, "Buffersone"))}
+                                <ToggleHelpText resourceKey="datasetBufferDistance" showHelp={editable} />
                                 
                                 
                             </label>
