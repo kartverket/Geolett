@@ -135,12 +135,7 @@ const CreateRegisterItem = () => {
                     <h2>Ny veiledningstekst</h2>
                 </heading-text>
                 <ValidationErrors errors={validationErrors} />
-                <div className={formsStyle.introbox}>
-                       
-                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}</div>
-                        
-                        
-                        </div>
+                
                       <div className={formsStyle.modalRow}>
                 <gn-label block>
                     <label htmlFor="title">Navn på veiledningstekst (påkrevd felt)</label>

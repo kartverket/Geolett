@@ -371,6 +371,7 @@
    height: auto;
    margin-top: 24px;
    max-width: 100%;
+
 }
 :local(.caption) {
    font-style: italic;
@@ -385,11 +386,9 @@
 :local(.biocontainer) {
    display: flex;
    flex-direction: row;
-   img {
-      max-width: 50%;
-      margin-top: 16px;
-      margin-left: 16px;
-   }
+  .screenshot {
+   max-width: 500px;
+  }
 }
 :local(.infotext) {
    font-style: italic;
@@ -420,4 +419,8 @@
  }
  :local(.mdxnoeditor) {
    padding: 0 !important;
+ }
+ :local(.ownerselect) {
+  > div > div:nth-child(2) {
+   z-index: 5;}
  }

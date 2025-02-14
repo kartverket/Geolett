@@ -6,7 +6,7 @@ import { Typeahead, withAsync } from "react-bootstrap-typeahead";
 import { useNavigate, useParams } from "react-router-dom";
 import '@mdxeditor/editor/style.css'
 import { MDXEditor, headingsPlugin, listsPlugin,quotePlugin, thematicBreakPlugin, toolbarPlugin, BlockTypeSelect, UndoRedo,BoldItalicUnderlineToggles, CreateLink, ListsToggle, linkDialogPlugin, linkPlugin } from '@mdxeditor/editor'
-import dibkplanscreenshot from "images/svg/image.png";
+import dibkplanscreenshot from "images/screenplan.png";
 import dibkbyggscreenshot from "images/svg/bygg-screenshot-clean.png";
 
 // Geonorge WebComponents
@@ -91,6 +91,7 @@ const RegisterItemDetails = () => {
     const [objectTypeOptions, setObjectTypeOptions] = useState([]);
 
     const [descriptionMarkdown, setDescriptionMarkdown] = useState(savedRegisterItem?.description || "");
+    const [dialogText, setDialogText] = useState(savedRegisterItem?.dialogText || "");
     const [possibleMeasuresMarkdown, setPossbileMeasuresMarkdown] = useState(savedRegisterItem?.possibleMeasures || "");
     const [registerItemTitle, setRegisterItemTitle] = useState(savedRegisterItem?.contextType || "");
     const [registerItemStatus, setRegisterItemStatus] = useState(savedRegisterItem?.status || "");
@@ -787,7 +788,7 @@ const RegisterItemDetails = () => {
                                 <input
                                     id="title"                                    
                                     name="title"
-                                    placeholder={dispatch(translate("titleDescription", null, "titleDescription   "))}
+                                    placeholder={dispatch(translate("titleDescription", null, "Navn på veiledningsteksten   "))}
                                     defaultValue={newRegisterItem.title}
                                     onChange={handleChange}
                                 />
@@ -911,7 +912,7 @@ const RegisterItemDetails = () => {
                        : 
                        <div className={formsStyle.biocontainer}>
                             <div>
-                            <div className={formsStyle.smallheader}>Hvorfor skrive areaplanveiledere?</div>
+                            <div className={formsStyle.smallheader}>Hvorfor skrive veiledningstekster?</div>
                             {dispatch(translate("introGeolettDescriptionDel1Plan", null, "tittel"))}
                             <br /><br />
                                 {dispatch(translate("introGeolettDescriptionDel2Plan", null, "tittel"))}
@@ -921,12 +922,11 @@ const RegisterItemDetails = () => {
                                     <div className={formsStyle.smallheader}>Eksempel på bruk av tekstene</div>
                                     {dispatch(translate("introGeolettDescriptionDel4Plan", null, "tittel"))}
                                     {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
+                                    </div>    
+                                    <div className={formsStyle.screenshot}>                                                        
+                                    <img className={formsStyle.screenshot} src={dibkplanscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                                                                             
                                     </div>
-                            
-                                
-                                    <img className={formsStyle.screenshot} src={dibkplanscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                                                      
-                       
-                    </div>}
+                                </div>}
                             </div>                        
                             </div>
                             : null}                    
@@ -941,6 +941,7 @@ const RegisterItemDetails = () => {
                                 <ToggleHelpText resourceKey="ownerDescription" show={editable} />
                             </label>
                             </gn-label>
+                            <div className={formsStyle.ownerselect}>
                             {editable ? (
                                 <Typeahead
                                     id="owner"
@@ -956,7 +957,7 @@ const RegisterItemDetails = () => {
                                     {newRegisterItem.owner.name} ({newRegisterItem.owner.orgNumber})
                                 </div>
                             )}
-
+                            </div>
                             
                             {editable || savedRegisterItem?.description.length > 0 ? 
                             <gb-label block>
@@ -965,7 +966,7 @@ const RegisterItemDetails = () => {
                                     {theme === "Bygg" ? <ToggleHelpText resourceKey="descriptionDescriptionBygg" showHelp={editable} /> : <ToggleHelpText resourceKey="descriptionDescriptionPlan" showHelp={editable} />}
                                 </label>
                             </gb-label> : null}
-                            <div data-color-mode="light">
+                            <div>
                                 {editable ? (<>
                                    
                                  <MDXEditor 
@@ -1003,42 +1004,70 @@ const RegisterItemDetails = () => {
                                     plugins={[]} readOnly />
                                 )}
                             </div>
+                            <div>
+                                
                         {editable || savedRegisterItem?.dialogText?.length > 0 ?
                         <gn-label block>
                             <label htmlFor="dialogText">
                                 {risk === "low" ? dispatch(translate("labelDialogText", null, "Informasjonsvarsel")) : dispatch(translate("labelDialogText", null, "Varsel"))}
-                                {theme === "Bygg" ? <ToggleHelpText resourceKey="dialogTextDescriptionBygg" showHelp={editable} /> : <ToggleHelpText resourceKey="dialogTextDescriptionPlan" showHelp={editable} /> }
+                                {theme === "Bygg" ? risk === "low" ? <ToggleHelpText resourceKey="dialogTextDescriptionBygg" showHelp={editable} />: <ToggleHelpText resourceKey="dialogTextDescriptionByggHighrisk" showHelp={editable} />   : risk === "low" ? <ToggleHelpText resourceKey="dialogTextDescriptionPlanLow" showHelp={editable} /> : <ToggleHelpText resourceKey="dialogTextDescriptionPlan" showHelp={editable} /> }
                             </label>
                         </gn-label> : null}
                         
-                        {editable ? (
-                            <gn-input block fullWidth>
-                                <input
-                                    id="dialogText"
-                                    name="dialogText"
-                                    defaultValue={newRegisterItem.dialogText}
-                                    onChange={handleChange}
-                                />
-                            </gn-input>
-                            ) : (
-                                <div id="dialogText">{newRegisterItem.dialogText}</div>
-                            )}
+                        {editable ? (<>
+                                   
+                                   <MDXEditor 
+                                      markdown={dialogText || ""}
+                                      placeholder={dispatch(translate("descriptionDescription", null, "Legg til beskrivelse"))}
+                                      contentEditableClassName={formsStyle.mdxeditor}
+                                      onChange={(value) => {
+                                          setDialogText(value);
+                                          handleChange({ name: "description", value: value });
+                                      }}
+                                      plugins={[
+                                          toolbarPlugin({
+                                              toolbarClassName: formsStyle.editortoolbar,
+                                              toolbarContents: () => (
+                                                <>
+                                                  {' '}
+                                                  <BoldItalicUnderlineToggles />                                                
+                                                  <UndoRedo />  
+                                                  <CreateLink />                                                                                                                                                   
+                                                </>
+                                              )
+                                            }),
+                                          headingsPlugin(),   
+                                          linkDialogPlugin(),
+                                          linkPlugin(),                                      
+                                          listsPlugin(), 
+                                          quotePlugin(), 
+                                          thematicBreakPlugin()
+                                      ]} />
+  
+                                          </>) : (
+                                      <MDXEditor 
+                                      markdown={dialogText || ""}
+                                      contentEditableClassName={formsStyle.mdxnoeditor}                                    
+                                      plugins={[]} readOnly />
+                                  )}
+                                </div>
+                                <div>
 
-                            { risk === 'low' || newRegisterItem?.possibleMeasures.length === 0 ? '' : 
+                         
                             <gn-label block>
                                 <label htmlFor="possibleMeasures">                                    
-                                    {dispatch(translate("labelPossibleMeasures", null, "Hva kan brukeren gjøre?"))}
-                                    {theme === "Bygg" ? <ToggleHelpText resourceKey="possibleMeasuresDescriptionBygg" showHelp={editable}  /> : <ToggleHelpText resourceKey="possibleMeasuresDescriptionPlan" showHelp={editable}  /> }
+                                    {risk === "low" ? dispatch(translate("labelPossibleMeasures", null, "Hva bør brukeren gjøre?")) : dispatch(translate("labelPossibleMeasures", null, "Hva kan brukeren gjøre?"))}
+                                    {theme === "Bygg" ? risk === "low" ? <ToggleHelpText resourceKey="possibleMeasuresDescriptionByggLow" showHelp={editable}  /> : <ToggleHelpText resourceKey="possibleMeasuresDescriptionBygg" showHelp={editable}  /> : risk === "low" ? <ToggleHelpText resourceKey="possibleMeasuresDescriptionPlan" showHelp={editable}  />: <ToggleHelpText resourceKey="possibleMeasuresDescriptionPlanLow" showHelp={editable}  />}
                                 </label>
-                            </gn-label> }
+                            </gn-label>
                             
                             <div data-color-mode="light">
-                            {risk === 'low' ? '' :                              
-                            editable ? (<>
+                            {editable ? (<>
                                 <MDXEditor 
                                     markdown={newRegisterItem.possibleMeasures || ""}
                                     placehoder={dispatch(translate("possibleMeasuresDescription", null, "Tips til hvordan følge opp tiltak?"))}
                                     contentEditableClassName={formsStyle.mdxeditor}
+                                    placeholder={"Legg til beskrivelse"}
                                     onChange={(value) => {
                                         setDescriptionMarkdown(value);
                                         handleChange({ name: "possibleMeasures", value: value });
@@ -1075,17 +1104,22 @@ const RegisterItemDetails = () => {
                             ) 
                             }
                             </div>
+                            </div>
+
+                            {risk === "low" ? null : <>
                             <gn-label block>
                                 <label htmlFor="guidance">
                                     { dispatch(translate("labelGuidance", null, "Tips til gjennomføring?")) }
                                     {theme === "Bygg" ? <ToggleHelpText resourceKey="guidanceDescriptionBygg" showHelp={editable} /> : <ToggleHelpText resourceKey="guidanceDescriptionPlan" showHelp={editable} />}
                                 </label>
                             </gn-label>
+
                             {editable ? (
                                  <MDXEditor 
                                  markdown={newRegisterItem.guidance || ""}
                                  placehoder={dispatch(translate("guidanceDescription", null, "Tips til hvordan følge opp tiltak?"))}
                                  contentEditableClassName={formsStyle.mdxeditor}
+                                 placeholder={"Legg til beskrivelse"}
                                  onChange={(value) => {
                                      setDescriptionMarkdown(value);
                                      handleChange({ name: "guidance", value: value });
@@ -1118,7 +1152,7 @@ const RegisterItemDetails = () => {
                                  contentEditableClassName={formsStyle.mdxnoeditor}                                    
                                  plugins={[]} readOnly/>
                             )}
-
+                        </>}
                          
                               
                         {newRegisterItem.links.length > 0 || editable ? <gn-label block>

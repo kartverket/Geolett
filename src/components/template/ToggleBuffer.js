@@ -45,7 +45,7 @@ const [bufferText, setBufferText] = useState(false)
                             <gn-label block>
                             <label htmlFor="datasetBufferText">
                                 {dispatch(translate("labelDataSetBufferText", null, "Varseltekst ved treff på buffersone"))}
-                                {tema === "Bygg" ? <ToggleHelpText resourceKey="dataSetBufferTextDescriptionBygg" showHelp={editable}/>: <ToggleHelpText resourceKey="dataSetBufferTextDescriptioPlan" showHelp={editable}/>}
+                                {tema === "Bygg" ? <ToggleHelpText resourceKey="dataSetBufferTextDescriptionBygg" showHelp={editable}/>: <ToggleHelpText resourceKey="dataSetBufferTextDescriptionPlan" showHelp={editable}/>}
                                 </label>
                             </gn-label>
                             {editable ? (
@@ -74,6 +74,7 @@ const [bufferText, setBufferText] = useState(false)
                             <MDXEditor 
                             markdown={item?.dataSet?.bufferPossibleMeasures || ""}                           
                             contentEditableClassName={style.mdxeditor}
+                            placeholder={"Legg til beskrivelse"}
                             onChange={(value) => {
                                 setDescriptionMarkdown(value);
                                 handleChange({ name: "bufferPossibleMeasures", value: value });
