@@ -453,6 +453,8 @@ const RegisterItemDetails = () => {
             setNewRegisterItem(registerItem);
         }
     };
+    
+   
 
     const getObjectTypeOptionsFromObjectTypeinfo = (objectTypeInfo) => {
         return objectTypeInfo?.result?.SearchRecords?.length
@@ -905,9 +907,9 @@ const RegisterItemDetails = () => {
                                 {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
                                 </div>
                                
-                                 
+                                <div className={formsStyle.screenshot}> 
                                 <img className={formsStyle.screenshot} src={dibkbyggscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                            
-                                
+                                </div>
                              </div>
                        : 
                        <div className={formsStyle.biocontainer}>
@@ -972,7 +974,7 @@ const RegisterItemDetails = () => {
                                  <MDXEditor 
                                     markdown={descriptionMarkdown || ""}
                                     placeholder={dispatch(translate("descriptionDescription", null, "Hva handler treffet om?"))}
-                                    contentEditableClassName={formsStyle.mdxeditor}
+                                    contentEditableClassName={formsStyle.mdxeditor}                                    
                                     onChange={(value) => {
                                         setDescriptionMarkdown(value);
                                         handleChange({ name: "description", value: value });

@@ -367,12 +367,7 @@
       border-radius: 4px;
    }
 }
-:local(.screenshot) {
-   height: auto;
-   margin-top: 24px;
-   max-width: 100%;
 
-}
 :local(.caption) {
    font-style: italic;
    font-size: .8em;   
@@ -385,10 +380,20 @@
 }
 :local(.biocontainer) {
    display: flex;
-   flex-direction: row;
-  .screenshot {
-   max-width: 500px;
-  }
+   flex-direction: row;   
+
+   > div:first-of-type {
+    flex: 0 0 40%;
+   }
+   > div:last-of-type {
+    flex: 0 0 60%;
+    overflow: hidden;
+   }
+   img {
+      width: 100%;
+      height: auto;
+      margin-top: 20px;
+   }
 }
 :local(.infotext) {
    font-style: italic;
