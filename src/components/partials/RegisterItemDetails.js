@@ -373,7 +373,7 @@ const RegisterItemDetails = () => {
         const kartkatalogApiUrl = getEnvironmentVariable("kartkatalogApiUrl");
         fetch(`${kartkatalogApiUrl}/search?text=${query}&facets[0]name=type&facets[0]value=dataset&limit=25`, {
             headers: { "Accept-Language": "no" }
-        }) // As long as app is monolingual
+        })
             .then((resp) => resp.json())
             .then((json) => {
                 setDatasetSearchIsLoading(false);
@@ -408,7 +408,7 @@ const RegisterItemDetails = () => {
         registerItem.dataSet.uuidMetadata = dataset.uuidMetadata;
 
         if (dataset.productSpecificationUrl?.length) {
-            getRegisterInfo(dataset.productSpecificationUrl).then((registerInfo) => {
+            getRegisterInfo(dataset.productSpecificationUrl)?.then((registerInfo) => {
                 const gMLApplicationSchema = registerInfo?.GMLApplicationSchema;
                 if (gMLApplicationSchema) {
                     registerItem.dataSet.urlGmlSchema = gMLApplicationSchema;
@@ -541,7 +541,7 @@ const RegisterItemDetails = () => {
                     // TODO Check if applicationSchemaUrl can be saved on object
                     fetchDatasetDetails(datasetUuid).then((dataset) => {
                         if (dataset.ProductSpecificationUrl?.length) {
-                            getRegisterInfo(dataset.ProductSpecificationUrl).then((registerInfo) => {
+                            getRegisterInfo(dataset.ProductSpecificationUrl)?.then((registerInfo) => {
                                 const gMLApplicationSchema = registerInfo?.GMLApplicationSchema;
                                 if (gMLApplicationSchema) {
                                     const applicationSchemaUrl = registerInfo.ApplicationSchema;
