@@ -67,7 +67,7 @@ const RegisterItemDetails = () => {
     // State
     const [newRegisterItem, setNewRegisterItem] = useState(savedRegisterItem);
     const [selectedOwner, setSelectedOwner] = useState(
-        savedRegisterItem?.owner?.length ? [savedRegisterItem.owner] : []
+        savedRegisterItem?.owner?.length ? [savedRegisterItem.owner] : []        
     );
     const [selectedObjectTypeId, setSelectedObjectTypeId] = useState(null);
     const [selectedObjectTypeAttributes, setSelectedObjectTypeAttributes] = useState(null);
@@ -206,6 +206,7 @@ const RegisterItemDetails = () => {
 
     const handleOwnerSelect = (data) => {
         setSelectedOwner(data);
+        
     };
     const handleDelete = () => {
         const registerItem = savedRegisterItem;
@@ -505,6 +506,7 @@ const RegisterItemDetails = () => {
     const getSelectedDatasetOption = () => {
         const registerItem = savedRegisterItem || null;
         const dataset = registerItem?.dataSet || null;
+      
         return dataset
             ? [
                   {
@@ -952,12 +954,13 @@ const RegisterItemDetails = () => {
                             <div className={formsStyle.ownerselect}>
                             {editable ? (
                                 <Typeahead
-                                    id="owner"
+                                    id="owner"                                    
                                     labelKey="name"
                                     onChange={handleOwnerSelect}
                                     options={organizations}
                                     selected={selectedOwner}
-                                    disabled={!canEditRegisterItemOwner(authInfo)}                                    
+                                    disabled={!canEditRegisterItemOwner(authInfo)}
+                                    
                                 />
                             ) : (
                                 <div id="owner">
