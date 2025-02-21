@@ -861,9 +861,7 @@ const RegisterItemDetails = () => {
                         <heading-text>
                         <h2>Veiledningstekst </h2>
                         </heading-text>
-                        {selectedOwner.map(e => {
-                            return e.organizationId
-                        })} 
+                       
                         <div className={formsStyle.opendata}>                           
                             <gn-label block>
                             <label htmlFor="owner">
