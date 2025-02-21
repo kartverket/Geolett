@@ -794,7 +794,7 @@ const RegisterItemDetails = () => {
                                 <input
                                     id="title"                                    
                                     name="title"
-                                    placeholder={dispatch(translate("titleDescription", null, "Navn på veiledningsteksten   "))}
+                                    
                                     defaultValue={newRegisterItem.title}
                                     onChange={handleChange}
                                 />
@@ -817,7 +817,7 @@ const RegisterItemDetails = () => {
                                 onChange={handleDatasetSelect}
                                 options={datasetOptions}
                                 defaultValue={getSelectedDatasetOption()}
-                                placeholder="Søk etter datasett"
+                                
                             />
                         ) : (
                             <a id="datasetTitle" href={newRegisterItem?.dataSet?.urlMetadata || ""}>
@@ -892,12 +892,14 @@ const RegisterItemDetails = () => {
                              
                             {editable && savedRegisterItem.status === 1 ? 
                             <div className={formsStyle.introbox}> 
-                                                  
+                               <heading-text>
+                                    <h5>Hvorfor skrive veiledningstekster?</h5>
+                                </heading-text>                   
                             <div className={formsStyle.textcontent}>{theme === "Bygg" ? dispatch(translate("introGeolettinternalBygg", null, "tittel")) : dispatch(translate("introGeolettinternalPlan", null, "tittel"))}
+
                              {theme === "Bygg" ? 
                             <div className={formsStyle.biocontainer}>
-                                <div>
-                                <div className={formsStyle.smallheader}>Hvorfor skrive veiledningstekster?</div>
+                                <div>                                
                                 {dispatch(translate("introGeolettDescriptionDel1Bygg", null, "tittel"))}
                             <br /><br />
                             {dispatch(translate("introGeolettDescriptionDel2Bygg", null, "tittel"))}
@@ -943,7 +945,7 @@ const RegisterItemDetails = () => {
                         <div className={formsStyle.opendata}>                           
                             <gn-label block>
                             <label htmlFor="owner">
-                                {dispatch(translate("labelOwner", null, "Eier"))}
+                                {dispatch(translate("labelOwner", null, "Legg til eier"))}
                                 <ToggleHelpText resourceKey="ownerDescription" show={editable} />
                             </label>
                             </gn-label>
@@ -955,8 +957,7 @@ const RegisterItemDetails = () => {
                                     onChange={handleOwnerSelect}
                                     options={organizations}
                                     selected={selectedOwner}
-                                    disabled={!canEditRegisterItemOwner(authInfo)}
-                                    placeholder="Legg til eier..."
+                                    disabled={!canEditRegisterItemOwner(authInfo)}                                    
                                 />
                             ) : (
                                 <div id="owner">
@@ -968,6 +969,7 @@ const RegisterItemDetails = () => {
                             {editable || savedRegisterItem?.description.length > 0 ? 
                             <gb-label block>
                                 <label htmlFor="description">
+                                    
                                     {dispatch(translate("labelDescription", null, "Hva handler treffet om?"))}
                                     {theme === "Bygg" ? <ToggleHelpText resourceKey="descriptionDescriptionBygg" showHelp={editable} /> : <ToggleHelpText resourceKey="descriptionDescriptionPlan" showHelp={editable} />}
                                 </label>
@@ -977,8 +979,8 @@ const RegisterItemDetails = () => {
                                    
                                  <MDXEditor 
                                     key={editorKey} 
-                                    markdown={descriptionMarkdown || ""}
-                                    placeholder={dispatch(translate("descriptionDescription", null, "Hva handler treffet om?"))}
+                                    placeholder=""
+                                    markdown={descriptionMarkdown || ""}                                    
                                     contentEditableClassName={formsStyle.mdxeditor}                                    
                                     onChange={(value) => {
                                         setDescriptionMarkdown(value);
@@ -1026,7 +1028,7 @@ const RegisterItemDetails = () => {
                                    <MDXEditor 
                                    key={editorKey} 
                                       markdown={dialogText || ""}
-                                      placeholder={dispatch(translate("descriptionDescription", null, "Legg til beskrivelse"))}
+                                      
                                       contentEditableClassName={formsStyle.mdxeditor}
                                       onChange={(value) => {
                                           setDialogText(value);
@@ -1073,10 +1075,8 @@ const RegisterItemDetails = () => {
                             {editable ? (<>
                                 <MDXEditor 
                                 key={editorKey} 
-                                    markdown={newRegisterItem.possibleMeasures || ""}
-                                    placehoder={dispatch(translate("possibleMeasuresDescription", null, "Tips til hvordan følge opp tiltak?"))}
-                                    contentEditableClassName={formsStyle.mdxeditor}
-                                    placeholder={"Legg til beskrivelse"}
+                                    markdown={newRegisterItem.possibleMeasures || ""}                                    
+                                    contentEditableClassName={formsStyle.mdxeditor}                                    
                                     onChange={(value) => {
                                         setDescriptionMarkdown(value);
                                         handleChange({ name: "possibleMeasures", value: value });
@@ -1127,9 +1127,9 @@ const RegisterItemDetails = () => {
                                  <MDXEditor 
                                  key={editorKey} 
                                  markdown={newRegisterItem.guidance || ""}
-                                 placehoder={dispatch(translate("guidanceDescription", null, "Tips til hvordan følge opp tiltak?"))}
+                                 
                                  contentEditableClassName={formsStyle.mdxeditor}
-                                 placeholder={"Legg til beskrivelse"}
+                                
                                  onChange={(value) => {
                                      setDescriptionMarkdown(value);
                                      handleChange({ name: "guidance", value: value });
