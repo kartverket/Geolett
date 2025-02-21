@@ -59,7 +59,8 @@ const RegisterItemDetails = () => {
         state.organizations.map((organization) => {
             return {
                 organizationId: organization.id,
-                name: organization.name
+                name: organization.name,
+                orgNumber: organization.orgNumber
             };
         })
     );
@@ -67,24 +68,16 @@ const RegisterItemDetails = () => {
     // State
     const [newRegisterItem, setNewRegisterItem] = useState(savedRegisterItem);
     const [selectedOwner, setSelectedOwner] = useState(
-        savedRegisterItem?.owner?.length ? [savedRegisterItem.owner] : []        
+        Object.keys(savedRegisterItem?.owner)?.length ? [savedRegisterItem.owner] : []        
     );
     const [selectedObjectTypeId, setSelectedObjectTypeId] = useState(null);
     const [selectedObjectTypeAttributes, setSelectedObjectTypeAttributes] = useState(null);
-    const [selectedObjectTypeAttributeName, setSelectedObjectTypeAttributeName] = useState(
-        savedRegisterItem?.dataSet?.typeReference?.attribute
-    );
-    const [selectedObjectTypeAttributeCodeValues, setSelectedObjectTypeAttributeCodeValues] = useState(null);
-    const [selectedObjectTypeAttributeCodeValueValue, setSelectedObjectTypeAttributeCodeValueValue] = useState(
-        newRegisterItem?.dataSet?.typeReference?.codeValue
-    );
+    
     const [editable, setEditable] = useState(!!params.edit);
     const [newLinkText, setNewLinkText] = useState("");
     const [newLinkUrl, setNewLinkUrl] = useState("");
     const [dataFetched, setDataFetched] = useState(false);
     const [dialogOpen, setDialogOpen]   = useState(false);
-    const [screenDialogOpen, setScreenDialogOpen]   = useState(false);
-    const [isActive, setIsActive] = useState(true);
     const [validationErrors, setValidationErrors] = useState([]);
     const [datasetSearchIsLoading, setDatasetSearchIsLoading] = useState(false);
     const [datasetOptions, setDatasetOptions] = useState([]);
@@ -92,8 +85,6 @@ const RegisterItemDetails = () => {
 
     const [descriptionMarkdown, setDescriptionMarkdown] = useState(savedRegisterItem?.description || "");
     const [dialogText, setDialogText] = useState(savedRegisterItem?.dialogText || "");
-    const [possibleMeasuresMarkdown, setPossbileMeasuresMarkdown] = useState(savedRegisterItem?.possibleMeasures || "");
-    const [registerItemTitle, setRegisterItemTitle] = useState(savedRegisterItem?.contextType || "");
     const [registerItemStatus, setRegisterItemStatus] = useState(savedRegisterItem?.status || "");
     const [risk, setRisk] = useState(savedRegisterItem?.risk || "");
     const [theme, setTheme] = useState(savedRegisterItem?.theme || "");
@@ -140,13 +131,7 @@ const RegisterItemDetails = () => {
         if (name === "type") {
             registerItem.dataSet.typeReference.attribute = null;
             registerItem.dataSet.typeReference.codeValue = null;
-
-            setSelectedObjectTypeAttributeName(null);
             selectedObjectTypeAttributeNameRef.current.value = "";
-
-            setSelectedObjectTypeAttributeCodeValues(null);
-
-            setSelectedObjectTypeAttributeCodeValueValue(null);
             selectedObjectTypeAttributeCodeValueValueRef.current.value = "";
 
             const selectedObjectTypeOption = getSelectedObjectTypeOptionFromOptionValue(value);
@@ -155,57 +140,15 @@ const RegisterItemDetails = () => {
 
         if (name === "attribute") {
             registerItem.dataSet.typeReference.codeValue = null;
-
-            setSelectedObjectTypeAttributeCodeValueValue(null);
             selectedObjectTypeAttributeCodeValueValueRef.current.value = "";
-
-            const selectedAttribute =
-                selectedObjectTypeAttributes?.Attributes?.length &&
-                selectedObjectTypeAttributes.Attributes.find((attribute) => {
-                    return attribute.Name === value;
-                });
-            setSelectedObjectTypeAttributeName(selectedAttribute?.Name?.length ? selectedAttribute.Name : null);
-            setSelectedObjectTypeAttributeCodeValues(
-                selectedAttribute?.CodeValues ? selectedAttribute.CodeValues : null
-            );
+           
         }
-
-        if (name === "codeValue") {
-            setSelectedObjectTypeAttributeCodeValueValue(value);
-        }
+        
 
         setNewRegisterItem(registerItem);
     };
-
-    const handleChangeReferenceTek17 = (data) => {
-        const registerItem = savedRegisterItem;
-        const { name, value } = data.target || data;
-        registerItem.reference = registerItem.reference || {};
-        registerItem.reference.tek17 = registerItem.reference.tek17 || {};
-        registerItem.reference.tek17[name] = value;
-        setNewRegisterItem(registerItem);
-    };
-
-    const handleChangeReferenceOtherLaw = (data) => {
-        const registerItem = savedRegisterItem;
-        const { name, value } = data.target || data;
-        registerItem.reference = registerItem.reference || {};
-        registerItem.reference.otherLaw = registerItem.reference.otherLaw || {};
-        registerItem.reference.otherLaw[name] = value;
-        setNewRegisterItem(registerItem);
-    };
-
-    const handleChangeReferenceCircularFromMinistry = (data) => {
-        const registerItem = savedRegisterItem;
-        const { name, value } = data.target ? data.target : data;
-        registerItem.reference = registerItem.reference || {};
-        registerItem.reference.circularFromMinistry = registerItem.reference.circularFromMinistry || {};
-        registerItem.reference.circularFromMinistry[name] = value;
-        setNewRegisterItem(registerItem);
-    };
-
     const handleOwnerSelect = (data) => {
-        setSelectedOwner(data);
+        setSelectedOwner(data);        
         
     };
     const handleDelete = () => {
@@ -283,19 +226,19 @@ const RegisterItemDetails = () => {
 
     
     const saveRegisterItem = () => {
-        const registerItem = newRegisterItem;
+        const registerItem = newRegisterItem;        
         const token = authToken?.access_token || null;
 
-        if (selectedOwner?.[0]?.organizationId?.length) {
+        
+        if (!!selectedOwner?.[0]?.organizationId?.toString()?.length) {
             registerItem.owner = {
-                id: selectedOwner[0].organizationId
+                id: selectedOwner[0].organizationId,
+                name: selectedOwner[0].name,
+                orgNumber: selectedOwner[0].orgNumber
             };
         }
-
-       
-        //set to empty since removed from UI
+        
         registerItem.reference = {};
-
         dispatch(updateRegisterItem(registerItem, token))
             .then(() => {
                 setValidationErrors([]);
@@ -357,21 +300,7 @@ const RegisterItemDetails = () => {
     const closeDialog = () => {
         setDialogOpen(false);
     };
-    const openscreenDialog = () => {
-        setScreenDialogOpen(false);
-        setTimeout(() => {
-            setScreenDialogOpen(true);
-        });
-    };
-
-    const closescreenDialog = () => {
-        setScreenDialogOpen(false);
-    };
-
-    const toggleMetadata = () => {
-        setIsActive(!isActive);
-      };
-   
+    
 
     const handleOnDatasetSearch = (query) => {
         setDatasetSearchIsLoading(true);
@@ -506,7 +435,6 @@ const RegisterItemDetails = () => {
     const getSelectedDatasetOption = () => {
         const registerItem = savedRegisterItem || null;
         const dataset = registerItem?.dataSet || null;
-      
         return dataset
             ? [
                   {
@@ -517,13 +445,7 @@ const RegisterItemDetails = () => {
                   }
               ]
             : [];
-    };
-
-    const getStatusLabel = (statuses, registerItem) => {
-        return statuses && registerItem.status && statuses[registerItem.status - 1]?.label
-            ? statuses[registerItem.status - 1].label
-            : "";
-    };
+    };   
 
     const getSelectedObjectTypeOptionFromOptionValue = useCallback(
         (optionValue) => {
@@ -598,11 +520,7 @@ const RegisterItemDetails = () => {
                 selectedObjectTypeAttributes?.Attributes?.length &&
                 selectedObjectTypeAttributes.Attributes.find((attribute) => {
                     return attribute.Name === savedRegisterItem.dataSet.typeReference.attribute;
-                });
-            setSelectedObjectTypeAttributeName(selectedAttribute?.Name?.length ? selectedAttribute.Name : null);
-            setSelectedObjectTypeAttributeCodeValues(
-                selectedAttribute?.CodeValues ? selectedAttribute.CodeValues : null
-            );
+                });            
         }
     }, [savedRegisterItem?.dataSet?.typeReference?.attribute, selectedObjectTypeAttributes?.Attributes]);
 
@@ -817,8 +735,8 @@ const RegisterItemDetails = () => {
                                 labelKey={(option) => `${option.title}`}
                                 onSearch={(query) => handleOnDatasetSearch(query)}
                                 onChange={handleDatasetSelect}
-                                options={datasetOptions}
-                                defaultValue={getSelectedDatasetOption()}
+                                options={datasetOptions}                                
+                                selected={getSelectedDatasetOption()}
                                 
                             />
                         ) : (
@@ -922,7 +840,7 @@ const RegisterItemDetails = () => {
                        : 
                        <div className={formsStyle.biocontainer}>
                             <div>
-                            <div className={formsStyle.smallheader}>Hvorfor skrive veiledningstekster?</div>
+                            
                             {dispatch(translate("introGeolettDescriptionDel1Plan", null, "tittel"))}
                             <br /><br />
                                 {dispatch(translate("introGeolettDescriptionDel2Plan", null, "tittel"))}
@@ -943,7 +861,9 @@ const RegisterItemDetails = () => {
                         <heading-text>
                         <h2>Veiledningstekst </h2>
                         </heading-text>
-    
+                        {selectedOwner.map(e => {
+                            return e.organizationId
+                        })} 
                         <div className={formsStyle.opendata}>                           
                             <gn-label block>
                             <label htmlFor="owner">
@@ -952,13 +872,14 @@ const RegisterItemDetails = () => {
                             </label>
                             </gn-label>
                             <div className={formsStyle.ownerselect}>
+                               
                             {editable ? (
                                 <Typeahead
                                     id="owner"                                    
                                     labelKey="name"
                                     onChange={handleOwnerSelect}
                                     options={organizations}
-                                    selected={selectedOwner}
+                                    selected={selectedOwner}                                    
                                     disabled={!canEditRegisterItemOwner(authInfo)}
                                     
                                 />
@@ -1144,11 +1065,9 @@ const RegisterItemDetails = () => {
                                          toolbarContents: () => (
                                            <>
                                              {' '}
-                                             <BoldItalicUnderlineToggles />
-                                             
+                                             <BoldItalicUnderlineToggles />                                             
                                              <UndoRedo />  
-                                             <CreateLink />  
-                                                                                                                                            
+                                             <CreateLink />                                                                                                                                              
                                            </>
                                          )
                                        }),
