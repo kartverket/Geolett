@@ -976,11 +976,11 @@ const RegisterItemDetails = () => {
                             </gb-label> : null}
                             <div>
                                 {editable ? (<>
-                                   
+                                    <div className={formsStyle.editorwrapper}>
                                  <MDXEditor 
                                     key={editorKey} 
                                     placeholder=""
-                                    markdown={descriptionMarkdown || ""}                                    
+                                    markdown={descriptionMarkdown || ""}                                                                       
                                     contentEditableClassName={formsStyle.mdxeditor}                                    
                                     onChange={(value) => {
                                         setDescriptionMarkdown(value);
@@ -1005,7 +1005,7 @@ const RegisterItemDetails = () => {
                                         quotePlugin(), 
                                         thematicBreakPlugin()
                                     ]} />
-
+                                    </div>
                                         </>) : (
                                     <MDXEditor 
                                     markdown={descriptionMarkdown || ""}
@@ -1024,7 +1024,7 @@ const RegisterItemDetails = () => {
                         </gn-label> : null}
                         
                         {editable ? (<>
-                                   
+                            <div className={formsStyle.editorwrapper}>
                                    <MDXEditor 
                                    key={editorKey} 
                                       markdown={dialogText || ""}
@@ -1053,7 +1053,7 @@ const RegisterItemDetails = () => {
                                           quotePlugin(), 
                                           thematicBreakPlugin()
                                       ]} />
-  
+                                    </div>
                                           </>) : (
                                       <MDXEditor 
                                       markdown={dialogText || ""}
@@ -1073,6 +1073,7 @@ const RegisterItemDetails = () => {
                             
                             <div data-color-mode="light">
                             {editable ? (<>
+                                <div className={formsStyle.editorwrapper}>
                                 <MDXEditor 
                                 key={editorKey} 
                                     markdown={newRegisterItem.possibleMeasures || ""}                                    
@@ -1101,7 +1102,7 @@ const RegisterItemDetails = () => {
                                         listsPlugin(), 
                                         quotePlugin(), 
                                         thematicBreakPlugin()
-                                    ]} />
+                                    ]} /></div>
                                 </>
                             ) : (
                                 
@@ -1123,7 +1124,7 @@ const RegisterItemDetails = () => {
                                 </label>
                             </gn-label>
 
-                            {editable ? (
+                            {editable ? (<div className={formsStyle.editorwrapper}>
                                  <MDXEditor 
                                  key={editorKey} 
                                  markdown={newRegisterItem.guidance || ""}
@@ -1155,7 +1156,7 @@ const RegisterItemDetails = () => {
                                      quotePlugin(), 
                                      thematicBreakPlugin()
                                  ]} />
-                               
+                               </div>
                             ) : (
                                 <MDXEditor 
                                  markdown={newRegisterItem.guidance || ""}

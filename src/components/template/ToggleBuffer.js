@@ -53,7 +53,7 @@ const [bufferText, setBufferText] = useState(false)
                                     <input
                                         id="datasetBufferText"
                                         name="bufferText"
-                                        placeholder={dispatch(translate("dataSetBufferTextDescription", null, "titleDescription"))}
+                                        placeholder={dispatch(translate("dataSetBufferTextDescription", null, ""))}
                                         defaultValue={item?.dataSet?.bufferText}
                                         onChange={onChange}
                                 />
@@ -70,11 +70,11 @@ const [bufferText, setBufferText] = useState(false)
                             </label>
                         </gn-label>
                         {editable ? (
-                            
+                            <div className={style.editorwrapper}>
                             <MDXEditor 
                             markdown={item?.dataSet?.bufferPossibleMeasures || ""}                           
                             contentEditableClassName={style.mdxeditor}
-                            placeholder={"Legg til beskrivelse"}
+                           
                             onChange={(value) => {
                                 setDescriptionMarkdown(value);
                                 handleChange({ name: "bufferPossibleMeasures", value: value });
@@ -97,7 +97,7 @@ const [bufferText, setBufferText] = useState(false)
                                 listsPlugin(), 
                                 quotePlugin(), 
                                 thematicBreakPlugin()
-                            ]} />
+                            ]} /></div>
                         ) : (
                             
                               <MDXEditor 
@@ -120,7 +120,7 @@ const [bufferText, setBufferText] = useState(false)
                                 <input
                                     id="datasetBufferDistance"
                                     name="bufferDistance"
-                                    placeholder={dispatch(translate("dataSetBufferDistanceDescription", null, "titleDescription"))}
+                                   
                                     defaultValue={item?.dataSet?.bufferDistance || ""}
                                     onChange={onChange}
                                 />

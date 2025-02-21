@@ -411,14 +411,16 @@
       margin-top: 20px;
  }
  :local(.editortoolbar) {
-   border: 1px solid #ccc;
+   border-bottom: 1px solid #ccc;
    background-color: white !important;
    border-radius: 4px 4px 0 0 !important;   
  }
- 
- :local(.mdxeditor) {
+ :local(.editorwrapper) {
    border: 1px solid #ccc;
-   border-top: none;  
+   border-radius: 4px;
+ }
+ :local(.mdxeditor) {
+       
    padding: 10px;
    border-radius: 0 0 4px 4px;
  }
