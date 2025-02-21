@@ -97,11 +97,15 @@ const RegisterItemDetails = () => {
     const [registerItemStatus, setRegisterItemStatus] = useState(savedRegisterItem?.status || "");
     const [risk, setRisk] = useState(savedRegisterItem?.risk || "");
     const [theme, setTheme] = useState(savedRegisterItem?.theme || "");
+    const [editorKey, setEditorKey] = useState(0);
     
     useEffect(() => {
         setEditable(!!params.edit);
     }, [params.edit]);
 
+    useEffect(() => {
+        setEditorKey((prevKey) => prevKey + 1);
+    }, [editable])
   
     // Refs
     const selectedObjectTypeAttributeNameRef = useRef(null);
@@ -972,6 +976,7 @@ const RegisterItemDetails = () => {
                                 {editable ? (<>
                                    
                                  <MDXEditor 
+                                    key={editorKey} 
                                     markdown={descriptionMarkdown || ""}
                                     placeholder={dispatch(translate("descriptionDescription", null, "Hva handler treffet om?"))}
                                     contentEditableClassName={formsStyle.mdxeditor}                                    
@@ -1019,6 +1024,7 @@ const RegisterItemDetails = () => {
                         {editable ? (<>
                                    
                                    <MDXEditor 
+                                   key={editorKey} 
                                       markdown={dialogText || ""}
                                       placeholder={dispatch(translate("descriptionDescription", null, "Legg til beskrivelse"))}
                                       contentEditableClassName={formsStyle.mdxeditor}
@@ -1066,6 +1072,7 @@ const RegisterItemDetails = () => {
                             <div data-color-mode="light">
                             {editable ? (<>
                                 <MDXEditor 
+                                key={editorKey} 
                                     markdown={newRegisterItem.possibleMeasures || ""}
                                     placehoder={dispatch(translate("possibleMeasuresDescription", null, "Tips til hvordan følge opp tiltak?"))}
                                     contentEditableClassName={formsStyle.mdxeditor}
@@ -1118,6 +1125,7 @@ const RegisterItemDetails = () => {
 
                             {editable ? (
                                  <MDXEditor 
+                                 key={editorKey} 
                                  markdown={newRegisterItem.guidance || ""}
                                  placehoder={dispatch(translate("guidanceDescription", null, "Tips til hvordan følge opp tiltak?"))}
                                  contentEditableClassName={formsStyle.mdxeditor}
