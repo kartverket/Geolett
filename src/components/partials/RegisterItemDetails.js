@@ -865,7 +865,7 @@ const RegisterItemDetails = () => {
                         <div className={formsStyle.opendata}>                           
                             <gn-label block>
                             <label htmlFor="owner">
-                                {dispatch(translate("labelOwner", null, "Legg til eier"))}
+                                {editable ? dispatch(translate("labelOwner", null, "Legg til eier")): "Eier"}
                                 <ToggleHelpText resourceKey="ownerDescription" show={editable} />
                             </label>
                             </gn-label>
