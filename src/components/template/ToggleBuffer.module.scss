@@ -1,0 +1,20 @@
+:local(.editortoolbar) {
+    border-bottom: 1px solid #ccc;
+    background-color: white !important;
+    border-radius: 4px 4px 0 0 !important;   
+  }
+  :local(.editornotoolbar) {
+    display: none !important;
+  } 
+  :local(.editorwrapper) {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  :local(.mdxeditor) {
+
+    padding: 10px;
+
+  }
+  :local(.mdxnoeditor) {
+    padding: 0 !important;
+  }

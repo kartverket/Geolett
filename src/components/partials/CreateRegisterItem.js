@@ -46,6 +46,7 @@ const CreateRegisterItem = () => {
     const [registerItem, setRegisterItem] = useState(new RegisterItem());
     const [selectedOwner, setSelectedOwner] = useState({});
     const [validationErrors, setValidationErrors] = useState([]);
+    const [theme, setTheme] = useState(new RegisterItem());
 
     const handleOwnerSelect = (data) => {
         setSelectedOwner(data);
@@ -125,6 +126,7 @@ const CreateRegisterItem = () => {
 
     return dataFetched && showAddRegisterItemContent() ? (
         <React.Fragment>
+           
             <gn-button color="primary">
                 <button onClick={() => openDialog()}>Opprett ny veiledningstekst</button>
             </gn-button>
@@ -133,13 +135,8 @@ const CreateRegisterItem = () => {
                     <h2>Ny veiledningstekst</h2>
                 </heading-text>
                 <ValidationErrors errors={validationErrors} />
-                <div className={formsStyle.introbox}>
-                       
-                        <div className={formsStyle.textcontent}>{dispatch(translate("introGeolettDescription", null, "tittel"))}</div>
-                        
-                        
-                        </div>
-                        <br />
+                
+                      <div className={formsStyle.modalRow}>
                 <gn-label block>
                     <label htmlFor="title">Navn på veiledningstekst (påkrevd felt)</label>
                     <ToggleHelpText expanded="true"  resourceKey="titleDescription" />
@@ -154,7 +151,8 @@ const CreateRegisterItem = () => {
                         required
                     />
                 </gn-input>
-
+                </div>
+                <div className={formsStyle.modalRow}>
                 <gn-label block>
                     <label htmlFor="owner">Eier</label>
                 </gn-label>
@@ -169,6 +167,24 @@ const CreateRegisterItem = () => {
                         placeholder="Legg til eier..."
                     />
                 </gn-input>
+                </div>
+                <div className={formsStyle.modalRow}>
+                <gn-label block>
+                    <label htmlFor="owner">Tema for veiledningsteksten</label>
+                </gn-label>
+                <div className={formsStyle.radioRow}>
+                    <div className={formsStyle.flexradio}>
+                        <input id="plan" name="theme" type="radio" value="Plan" onChange={event => {setTheme("Plan"); handleChange(event)}} defaultChecked={registerItem.theme === "Plan"} />
+                        <label htmlFor="plan">Plan</label>
+                    </div>
+                    
+                    <div className={formsStyle.flexradio}>
+                        <input id="bygg" name="theme" type="radio" value="Bygg" onChange={event => {setTheme("Bygg"); handleChange(event)}} defaultChecked={registerItem.theme === "Bygg"} />
+                        <label htmlFor="bygg">Bygg</label>
+                    </div>  
+                                                
+                </div>
+                </div>
                 <div className={formsStyle.btnGroup}>
                     <gn-button color="default">
                         <button onClick={() => closeDialog()}>Avbryt</button>
@@ -183,6 +199,7 @@ const CreateRegisterItem = () => {
                     </gn-button>
                 </div>
             </gn-dialog>
+     
         </React.Fragment>
     ) : null;
 };

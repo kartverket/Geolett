@@ -20,11 +20,10 @@ const NavigationBar = () => {
     // Redux store
     const oidc = useSelector((state) => state.oidc);
     const authToken = useSelector((state) => state.authToken);
-    const authInfo = useSelector((state) => state.authToken);
-
+    const authInfo = useSelector((state) => state.authToken);    
     useEffect(() => {
         const isLoggedIn = !!authToken?.access_token?.length;
-        const hasAuthInfo = !!authInfo?.organizationNumber?.length;
+        const hasAuthInfo = !!authInfo?.organizationNumber?.length;        
 
         if (isLoggedIn || hasAuthInfo) {
             dispatch(updateOidcCookie(oidc.user));
