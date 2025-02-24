@@ -367,11 +367,7 @@
       border-radius: 4px;
    }
 }
-:local(.screenshot) {
-   height: auto;
-   margin-top: 24px;
-   max-width: 100%;
-}
+
 :local(.caption) {
    font-style: italic;
    font-size: .8em;   
@@ -384,11 +380,19 @@
 }
 :local(.biocontainer) {
    display: flex;
-   flex-direction: row;
+   flex-direction: row;   
+
+   > div:first-of-type {
+    flex: 0 0 40%;
+   }
+   > div:last-of-type {
+    flex: 0 0 60%;
+    overflow: hidden;
+   }
    img {
-      max-width: 50%;
-      margin-top: 16px;
-      margin-left: 16px;
+      width: 100%;
+      height: auto;
+      margin-top: 20px;
    }
 }
 :local(.infotext) {
@@ -402,4 +406,28 @@
  }
  :local(.row) {
    margin-top: 20px;
+ }
+ :local(.modalRow) {
+      margin-top: 20px;
+ }
+ :local(.editortoolbar) {
+   border-bottom: 1px solid #ccc;
+   background-color: white !important;
+   border-radius: 4px 4px 0 0 !important;   
+ }
+ :local(.editorwrapper) {
+   border: 1px solid #ccc;
+   border-radius: 4px;
+ }
+ :local(.mdxeditor) {
+       
+   padding: 10px;
+   border-radius: 0 0 4px 4px;
+ }
+ :local(.mdxnoeditor) {
+   padding: 0 !important;
+ }
+ :local(.ownerselect) {
+  > div > div:nth-child(2) {
+   z-index: 5;}
  }

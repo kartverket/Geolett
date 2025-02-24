@@ -99,13 +99,14 @@ const RegisterItems = () => {
     }, [ownerSelected, selectedTheme, savedRegisterItems]);
 
     const renderThemeFilters = () => {
+        
         const themes = getThemes();
 
         return (
             themes.length > 1 ? (
             <div className={style.theme}>
-                <div className={style.themeLabel}>Vis </div>
-                {themes.map((theme, index) => (
+                <div className={style.themeLabel}>Vis </div>                
+                {themes.map((theme, index) => (                    
                     <div key={index}>
                         <input
                             type="checkbox"
