@@ -14,8 +14,12 @@ import { updateSelectedLanguage } from "actions/SelectedLanguageActions";
 // Helpers
 import { getEnvironmentVariable } from "helpers/environmentVariableHelpers.js";
 
+import Cookies from 'js-cookie';
+import { useNavigate } from "react-router-dom";
+
 const NavigationBar = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // Redux store
     const oidc = useSelector((state) => state.oidc);
@@ -23,7 +27,7 @@ const NavigationBar = () => {
     const authInfo = useSelector((state) => state.authToken);    
     useEffect(() => {
         const isLoggedIn = !!authToken?.access_token?.length;
-        const hasAuthInfo = !!authInfo?.organizationNumber?.length;        
+        const hasAuthInfo = !!authInfo?.organizationNumber?.length;       
 
         if (isLoggedIn || hasAuthInfo) {
             dispatch(updateOidcCookie(oidc.user));
@@ -36,13 +40,35 @@ const NavigationBar = () => {
     const signouturl = getEnvironmentVariable("signouturl");
     const isLoggedIn = !!authToken?.access_token?.length;
 
+    var loggedInCookie = Cookies.get('_loggedIn');
+    console.log("Logged in cookie: " + loggedInCookie);
+    console.log("isLoggedIn: " + isLoggedIn);
+    let autoRedirectPath = null;
+
+    var redirectCookie = Cookies.get('_redirect');
+
+    if(!isLoggedIn && window.location.pathname.length > 1)
+    {
+        Cookies.set('_redirect', window.location.pathname);
+    }
+
     // Redirect to signin page after token expire, todo handle browser reload using localstorage and date
-    if (isLoggedIn){
+    if (isLoggedIn || loggedInCookie === "true") {
         setTimeout(() => 
             {                
                 console.log("Token expires, redirecting to signin page");
                 location.href = signinurl;
             }, 1440000);
+    }
+
+    if (!isLoggedIn && loggedInCookie === "true") {
+        location.href = signinurl;
+    }        
+
+    if(redirectCookie !== undefined && redirectCookie.length > 0 && isLoggedIn){
+        autoRedirectPath = redirectCookie;
+        Cookies.set('_redirect', '');
+        navigate(autoRedirectPath);
     }
 
     return (
