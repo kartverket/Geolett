@@ -50,6 +50,7 @@ const NavigationBar = () => {
     {
         var pathName = window.location.pathname;
         var path = pathName.substring(1); //remove first / from path
+        path = path.replace("geolett", "");
         signinurl = signinurl + path + "?login=true";
         console.log("Redirecting to signin page with return url: " + signinurl);
         window.location.href = signinurl;
