@@ -15,11 +15,11 @@ import { updateSelectedLanguage } from "actions/SelectedLanguageActions";
 import { getEnvironmentVariable } from "helpers/environmentVariableHelpers.js";
 
 import Cookies from 'js-cookie';
-import { useNavigate } from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
 
 const NavigationBar = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    let [searchParams] = useSearchParams();
 
     // Redux store
     const oidc = useSelector((state) => state.oidc);
@@ -36,20 +36,23 @@ const NavigationBar = () => {
     }, [dispatch, authInfo?.organizationNumber, authToken?.access_token, oidc.user]);
 
     const environment = getEnvironmentVariable("environment");
-    const signinurl = getEnvironmentVariable("signinurl");
+    let signinurl = getEnvironmentVariable("signinurl");
     const signouturl = getEnvironmentVariable("signouturl");
     const isLoggedIn = !!authToken?.access_token?.length;
 
     var loggedInCookie = Cookies.get('_loggedIn');
     console.log("Logged in cookie: " + loggedInCookie);
     console.log("isLoggedIn: " + isLoggedIn);
-    let autoRedirectPath = null;
 
-    var redirectCookie = Cookies.get('_redirect');
+    let returnGeoid = searchParams.get("login");
 
-    if(!isLoggedIn && window.location.pathname.length > 1)
+    if(!isLoggedIn && loggedInCookie === "true" && returnGeoid !== "true")
     {
-        Cookies.set('_redirect', window.location.pathname);
+        var pathName = window.location.pathname;
+        var path = pathName.substring(1); //remove first / from path
+        signinurl = signinurl + path + "?login=true";
+        console.log("Redirecting to signin page with return url: " + signinurl);
+        window.location.href = signinurl;
     }
 
     // Redirect to signin page after token expire, todo handle browser reload using localstorage and date
@@ -59,16 +62,6 @@ const NavigationBar = () => {
                 console.log("Token expires, redirecting to signin page");
                 location.href = signinurl;
             }, 1440000);
-    }
-
-    if (!isLoggedIn && loggedInCookie === "true") {
-        location.href = signinurl;
-    }        
-
-    if(redirectCookie !== undefined && redirectCookie.length > 0 && isLoggedIn){
-        autoRedirectPath = redirectCookie;
-        Cookies.set('_redirect', '');
-        navigate(autoRedirectPath);
     }
 
     return (
