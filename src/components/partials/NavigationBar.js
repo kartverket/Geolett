@@ -13,6 +13,7 @@ import { updateSelectedLanguage } from "actions/SelectedLanguageActions";
 
 // Helpers
 import { getEnvironmentVariable } from "helpers/environmentVariableHelpers.js";
+import { authInfo } from "helpers/authorizationHelpers.js";
 
 import Cookies from 'js-cookie';
 import {useSearchParams} from "react-router-dom";
@@ -24,7 +25,7 @@ const NavigationBar = () => {
     // Redux store
     const oidc = useSelector((state) => state.oidc);
     const authToken = useSelector((state) => state.authToken);
-    const authInfo = useSelector((state) => state.authToken);    
+    const authInfo = useSelector((state) => state.authInfo);    
     useEffect(() => {
         const isLoggedIn = !!authToken?.access_token?.length;
         const hasAuthInfo = !!authInfo?.organizationNumber?.length;       
@@ -38,6 +39,7 @@ const NavigationBar = () => {
     const environment = getEnvironmentVariable("environment");
     let signinurl = getEnvironmentVariable("signinurl");
     const signouturl = getEnvironmentVariable("signouturl");
+    const selectedLanguage = useSelector((state) => state.selectedLanguage);
     const isLoggedIn = !!authToken?.access_token?.length;
 
     var loggedInCookie = Cookies.get('_loggedIn');
@@ -65,13 +67,16 @@ const NavigationBar = () => {
             }, 1440000);
     }
 
-    return (
+    return (<>
         <main-navigation
             signinurl={signinurl}
             signouturl={signouturl}
             isLoggedIn={isLoggedIn}
-            environment={environment}
-        ></main-navigation>
+            environment="dev"            
+            language={selectedLanguage}
+            userinfo={JSON.stringify(authInfo)}
+            organization={JSON.stringify(authInfo)}    
+        ></main-navigation></>
     );
 };
 
