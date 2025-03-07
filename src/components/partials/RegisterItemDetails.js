@@ -830,7 +830,6 @@ const RegisterItemDetails = () => {
                                 <div className={formsStyle.smallheader}>Brukereksempel</div>
                                 {dispatch(translate("introGeolettDescriptionDel4Bygg", null, "tittel"))}
                                 
-                                {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
                                 </div>
                                
                                 <div className={formsStyle.screenshot}> 
@@ -849,7 +848,6 @@ const RegisterItemDetails = () => {
                                 {dispatch(translate("introGeolettDescriptionDel3Plan", null, "tittel"))}                              
                                     <div className={formsStyle.smallheader}>Eksempel på bruk av tekstene</div>
                                     {dispatch(translate("introGeolettDescriptionDel4Plan", null, "tittel"))}
-                                    {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
                                     </div>    
                                     <div className={formsStyle.screenshot}>                                                        
                                     <img className={formsStyle.screenshot} src={dibkplanscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                                                                             
