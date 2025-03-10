@@ -72,7 +72,7 @@ const NavigationBar = () => {
             signinurl={signinurl}
             signouturl={signouturl}
             isLoggedIn={isLoggedIn}
-            environment="dev"            
+            environment={environment}           
             language={selectedLanguage}
             userinfo={JSON.stringify(authInfo)}
             organization={JSON.stringify(authInfo)}    
