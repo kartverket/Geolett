@@ -21,7 +21,7 @@ export const canAddRegisterItem = authInfo => {
 }
 
 export const canDeleteRegisterItem = authInfo => {
-  return hasAdminRole(authInfo);
+  return hasAdminRole(authInfo) || hasEditorRole(authInfo);
 }
 
 export const canEditRegisterItem = (authInfo, owner) => {
