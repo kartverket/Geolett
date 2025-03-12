@@ -1189,7 +1189,7 @@ const RegisterItemDetails = () => {
                             </div>
                             
                             <div className={formsStyle.btnGroup}>
-                            {canDeleteRegisterItem(authInfo) && editable ? (
+                            {canDeleteRegisterItem(authInfo, savedRegisterItem?.owner) && editable ? (
                                         <gn-button color="danger">
                                             <button onClick={openDialog}>Slett veiledningstekst</button>
                                         </gn-button>
