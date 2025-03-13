@@ -27,8 +27,7 @@ const [bufferText, setBufferText] = useState(false)
     }
     
     useEffect(() => {
-        const hasBuffertext = item?.dataSet?.bufferText?.length > 0 || item?.dataSet?.bufferPossibleMeasures?.length > 0 || item?.dataSet?.bufferDistance?.length > 0;        
-        debugger
+        const hasBuffertext = item?.dataSet?.bufferText?.length > 0 || item?.dataSet?.bufferPossibleMeasures?.length > 0 || item?.dataSet?.bufferDistance?.length > 0;                
         setBufferText(hasBuffertext);
     } , [])
 
@@ -64,7 +63,6 @@ const [bufferText, setBufferText] = useState(false)
                         ) : (
                             <div id="datasetBufferText">{item?.dataSet?.bufferText}</div>
                         )}
-
                         <gn-label block>
                             <label htmlFor="datasetBufferPossibleMeasures">
                                 {dispatch(translate("labelBufferPossibleMeasures", null, "Hva kan brukeren gjøre ved treff på buffersone"))}
@@ -75,7 +73,7 @@ const [bufferText, setBufferText] = useState(false)
                             <div className={style.editorwrapper}>
                             <MDXEditor 
                             key={userkey}
-                            markdown={item?.dataset?.bufferPossibleMeasures || ""}                           
+                            markdown={item?.dataSet?.bufferPossibleMeasures || ""}                           
                             contentEditableClassName={style.mdxeditor}
                            
                             onChange={value => onChange({name : "bufferPossibleMeasures", value})}
@@ -101,7 +99,7 @@ const [bufferText, setBufferText] = useState(false)
                         ) : (
                             
                               <MDXEditor 
-                             markdown={item?.dataset?.bufferPossibleMeasures || ""}
+                             markdown={item?.dataSet?.bufferPossibleMeasures || ""}
                              contentEditableClassName={style.mdxnoeditor}                                    
                              plugins={[]} readOnly />
                            
