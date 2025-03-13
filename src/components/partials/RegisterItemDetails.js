@@ -84,6 +84,9 @@ const RegisterItemDetails = () => {
     const [objectTypeOptions, setObjectTypeOptions] = useState([]);
 
     const [descriptionMarkdown, setDescriptionMarkdown] = useState(savedRegisterItem?.description || "");
+    const [guidanceMarkdown, setGuidanceMarkdown] = useState(savedRegisterItem?.guidance || "");
+    const [possibleMeasuresMarkdown, setPossibleMeasuresMarkdown] = useState(savedRegisterItem?.possibleMeasures || "");
+
     const [dialogText, setDialogText] = useState(savedRegisterItem?.dialogText || "");
     const [registerItemStatus, setRegisterItemStatus] = useState(savedRegisterItem?.status || "");
     const [risk, setRisk] = useState(savedRegisterItem?.risk || "");
@@ -117,6 +120,7 @@ const RegisterItemDetails = () => {
         const parsed = parseInt(value);
         registerItem.dataSet = registerItem.dataSet || {};
         registerItem.dataSet[name] = isNaN(parsed) ? value : parsed;
+        
         setNewRegisterItem(registerItem);
     };
 
@@ -228,7 +232,6 @@ const RegisterItemDetails = () => {
     const saveRegisterItem = () => {
         const registerItem = newRegisterItem;        
         const token = authToken?.access_token || null;
-
         
         if (!!selectedOwner?.[0]?.organizationId?.toString()?.length) {
             registerItem.owner = {
@@ -934,8 +937,7 @@ const RegisterItemDetails = () => {
                                     contentEditableClassName={formsStyle.mdxnoeditor}                                    
                                     plugins={[]} readOnly />
                                 )}
-                            </div>
-                            <div>
+                            </div>                            <div>
                                 
                         {editable || savedRegisterItem?.dialogText?.length > 0 ?
                         <gn-label block>
@@ -978,7 +980,7 @@ const RegisterItemDetails = () => {
                                     </div>
                                           </>) : (
                                       <MDXEditor 
-                                      markdown={dialogText || ""}
+                                      markdown={savedRegisterItem.dialogText || ""}
                                       contentEditableClassName={formsStyle.mdxnoeditor}                                    
                                       plugins={[]} readOnly />
                                   )}
@@ -998,10 +1000,10 @@ const RegisterItemDetails = () => {
                                 <div className={formsStyle.editorwrapper}>
                                 <MDXEditor 
                                 key={editorKey} 
-                                    markdown={newRegisterItem.possibleMeasures || ""}                                    
+                                    markdown={possibleMeasuresMarkdown || ""}                                    
                                     contentEditableClassName={formsStyle.mdxeditor}                                    
                                     onChange={(value) => {
-                                        setDescriptionMarkdown(value);
+                                        setPossibleMeasuresMarkdown(value);
                                         handleChange({ name: "possibleMeasures", value: value });
                                     }}
                                     plugins={[
@@ -1029,7 +1031,7 @@ const RegisterItemDetails = () => {
                             ) : (
                                 
                                 <MDXEditor 
-                                markdown={newRegisterItem.possibleMeasures || ""}
+                                markdown={possibleMeasuresMarkdown || ""}
                                 contentEditableClassName={formsStyle.mdxnoeditor}                                    
                                 plugins={[]} readOnly />
                                
@@ -1049,12 +1051,12 @@ const RegisterItemDetails = () => {
                             {editable ? (<div className={formsStyle.editorwrapper}>
                                  <MDXEditor 
                                  key={editorKey} 
-                                 markdown={newRegisterItem.guidance || ""}
+                                 markdown={guidanceMarkdown || ""}
                                  
                                  contentEditableClassName={formsStyle.mdxeditor}
                                 
                                  onChange={(value) => {
-                                     setDescriptionMarkdown(value);
+                                     setGuidanceMarkdown(value);
                                      handleChange({ name: "guidance", value: value });
                                  }}
                                  plugins={[
@@ -1079,7 +1081,7 @@ const RegisterItemDetails = () => {
                                </div>
                             ) : (
                                 <MDXEditor 
-                                 markdown={newRegisterItem.guidance || ""}
+                                 markdown={guidanceMarkdown || ""}
                                  contentEditableClassName={formsStyle.mdxnoeditor}                                    
                                  plugins={[]} readOnly/>
                             )}
@@ -1094,7 +1096,7 @@ const RegisterItemDetails = () => {
                         
                         {renderLinks(newRegisterItem.links)} 
                         
-                        { risk === "low" ? '' : <ToggleBuffer tema={theme} onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
+                        { risk === "low" ? '' : <ToggleBuffer tema={theme} key={editorKey} onChange={handleDatasetChange} editable={editable} item={newRegisterItem} setItem={setNewRegisterItem} />}
 
                         </div>
 
@@ -1201,7 +1203,7 @@ const RegisterItemDetails = () => {
                                         disabled={
                                             !newRegisterItem?.title?.length
                                         }
-                                        onClick={publishRegisterItem}                                                    
+                                        onClick={publishRegisterItem}                                                  
                                     >
                                       {registerItemStatus === 1 ? 'Ja publisere teksten' : 'Publisere'} 
                                     </button>

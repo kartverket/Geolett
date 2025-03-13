@@ -19,10 +19,10 @@ import ToggleHelpText from "./ToggleHelpText";
 // Stylesheets
 import style from "components/template/ToggleBuffer.module.scss";
 
-const ToggleBuffer = ({onChange, item, tema, editable}) => {
-    
-const [bufferText, setBufferText] = useState(false)
+const ToggleBuffer = ({onChange, item, setItem, tema, userkey, editable}) => {
 
+const [bufferText, setBufferText] = useState(false)
+console.log(item, "item")
     const toggleBuffertext = () => { 
         setBufferText(!bufferText);
     }  
@@ -72,13 +72,11 @@ const [bufferText, setBufferText] = useState(false)
                         {editable ? (
                             <div className={style.editorwrapper}>
                             <MDXEditor 
-                            markdown={item?.dataSet?.bufferPossibleMeasures || ""}                           
+                            key={userkey}
+                            markdown={item?.dataset?.bufferPossibleMeasures || ""}                           
                             contentEditableClassName={style.mdxeditor}
                            
-                            onChange={(value) => {
-                                setDescriptionMarkdown(value);
-                                handleChange({ name: "bufferPossibleMeasures", value: value });
-                            }}
+                            onChange={value => onChange({name : "bufferPossibleMeasures", value})}
                             plugins={[
                                 toolbarPlugin({
                                     toolbarClassName: style.editortoolbar,
@@ -101,7 +99,7 @@ const [bufferText, setBufferText] = useState(false)
                         ) : (
                             
                               <MDXEditor 
-                             markdown={item?.dataSet?.bufferPossibleMeasures || ""}
+                             markdown={item?.dataset?.bufferPossibleMeasures || ""}
                              contentEditableClassName={style.mdxnoeditor}                                    
                              plugins={[]} readOnly />
                            
@@ -129,10 +127,7 @@ const [bufferText, setBufferText] = useState(false)
                             <div id="datasetBufferDistance">{item?.dataSet?.bufferDistance || ""}</div>
                         )}
                     </div> : '' }
-            </div>
-        
-          
-            
+            </div>                              
         </Fragment>
     );
 };
