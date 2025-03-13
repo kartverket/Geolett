@@ -111,7 +111,7 @@ const RegisterItemDetails = () => {
         const parsed = parseInt(value);
         registerItem[name] = isNaN(parsed) ? value : parsed;
         setNewRegisterItem(registerItem);
-        
+ 
     };
 
     const handleDatasetChange = (data) => {
@@ -120,7 +120,7 @@ const RegisterItemDetails = () => {
         const parsed = parseInt(value);
         registerItem.dataSet = registerItem.dataSet || {};
         registerItem.dataSet[name] = isNaN(parsed) ? value : parsed;
-        
+       
         setNewRegisterItem(registerItem);
     };
 
@@ -1096,7 +1096,7 @@ const RegisterItemDetails = () => {
                         
                         {renderLinks(newRegisterItem.links)} 
                         
-                        { risk === "low" ? '' : <ToggleBuffer tema={theme} key={editorKey} onChange={handleDatasetChange} editable={editable} item={newRegisterItem} setItem={setNewRegisterItem} />}
+                        { risk === "low" ? '' : <ToggleBuffer tema={theme} key={editorKey} onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
 
                         </div>
 
