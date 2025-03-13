@@ -954,7 +954,7 @@ const RegisterItemDetails = () => {
                                       contentEditableClassName={formsStyle.mdxeditor}
                                       onChange={(value) => {
                                           setDialogText(value);
-                                          handleChange({ name: "description", value: value });
+                                          handleChange({ name: "dialogText", value: value });
                                       }}
                                       plugins={[
                                           toolbarPlugin({
