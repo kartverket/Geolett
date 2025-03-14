@@ -101,7 +101,7 @@ const [bufferText, setBufferText] = useState(false)
                               <MDXEditor 
                              markdown={item?.dataSet?.bufferPossibleMeasures || ""}
                              contentEditableClassName={style.mdxnoeditor}                                    
-                             plugins={[]} readOnly />
+                             plugins={[linkPlugin()]} readOnly />
                            
                         )}
 

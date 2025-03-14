@@ -925,19 +925,19 @@ const RegisterItemDetails = () => {
                                           }),
                                         headingsPlugin(),   
                                         linkDialogPlugin(),
-                                        linkPlugin(),                                      
-                                        listsPlugin(), 
+                                        linkPlugin(),                                                                              
                                         quotePlugin(), 
                                         thematicBreakPlugin()
                                     ]} />
                                     </div>
-                                        </>) : (
-                                    <MDXEditor 
-                                    markdown={descriptionMarkdown || ""}
-                                    contentEditableClassName={formsStyle.mdxnoeditor}                                    
-                                    plugins={[]} readOnly />
+                                        </>) : (<>                                            
+                                   <MDXEditor                                   
+                                   markdown={descriptionMarkdown || ""}
+                                   contentEditableClassName={formsStyle.mdxnoeditor}                                    
+                                   plugins={[linkPlugin()]}  readOnly /> </>
                                 )}
-                            </div>                            <div>
+                            </div>                           
+                            <div>
                                 
                         {editable || savedRegisterItem?.dialogText?.length > 0 ?
                         <gn-label block>
@@ -982,7 +982,7 @@ const RegisterItemDetails = () => {
                                       <MDXEditor 
                                       markdown={savedRegisterItem.dialogText || ""}
                                       contentEditableClassName={formsStyle.mdxnoeditor}                                    
-                                      plugins={[]} readOnly />
+                                      plugins={[linkPlugin()]} readOnly />
                                   )}
                                 </div>
                                 <div>
@@ -1033,7 +1033,7 @@ const RegisterItemDetails = () => {
                                 <MDXEditor 
                                 markdown={possibleMeasuresMarkdown || ""}
                                 contentEditableClassName={formsStyle.mdxnoeditor}                                    
-                                plugins={[]} readOnly />
+                                plugins={[linkPlugin()]} readOnly />
                                
                             ) 
                             }
@@ -1083,7 +1083,7 @@ const RegisterItemDetails = () => {
                                 <MDXEditor 
                                  markdown={guidanceMarkdown || ""}
                                  contentEditableClassName={formsStyle.mdxnoeditor}                                    
-                                 plugins={[]} readOnly/>
+                                 plugins={[linkPlugin()]} readOnly/>
                             )}
                         </>}
                          
