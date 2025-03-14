@@ -1,5 +1,5 @@
 // Dependencies
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
 import { MDXEditor, headingsPlugin, listsPlugin,quotePlugin, thematicBreakPlugin, toolbarPlugin, BlockTypeSelect, UndoRedo,BoldItalicUnderlineToggles, CreateLink, ListsToggle, linkDialogPlugin, linkPlugin } from '@mdxeditor/editor'
@@ -19,29 +19,30 @@ import ToggleHelpText from "./ToggleHelpText";
 // Stylesheets
 import style from "components/template/ToggleBuffer.module.scss";
 
-const ToggleBuffer = ({onChange, item, tema, editable}) => {
-    
-const [bufferText, setBufferText] = useState(false)
+const ToggleBuffer = ({onChange, item, tema, userkey, editable}) => {
 
+const [bufferText, setBufferText] = useState(false)
     const toggleBuffertext = () => { 
         setBufferText(!bufferText);
-    }  
-
-    const showBufferValues = () => {
-        const hasBuffertext = item?.dataSet?.bufferText || item?.dataSet?.bufferPossibleMeasures || item?.dataSset?.bufferDistance;        
-       return (editable && bufferText) || (!editable && hasBuffertext);
     }
+    
+    useEffect(() => {
+        const hasBuffertext = item?.dataSet?.bufferText?.length > 0 || item?.dataSet?.bufferPossibleMeasures?.length > 0 || item?.dataSet?.bufferDistance?.length > 0;                
+        setBufferText(hasBuffertext);
+    } , [])
+
+    
     const dispatch = useDispatch();        
     return (
         <Fragment>
             <div className={style.content}>
                
-                         
-                            {editable ? (<gn-input><input id="bufferja" name="buffersone" type="checkbox" onClick={toggleBuffertext} /></gn-input>) : ('')  }
+                        
+                            {editable ? (<gn-input><input id="bufferja" checked={bufferText} name="buffersone" type="checkbox" onClick={toggleBuffertext} /></gn-input>) : ('')  }
                             {editable ? <gn-label><label htmlFor="bufferja">Har treffet en buffersone? Vis innholdet for buffer <ToggleHelpText resourceKey="bufferDescription" /></label></gn-label>  : null }                         
 
 
-                        {showBufferValues() ? <div className={style.buffercontent}>
+                        {bufferText ? <div className={style.buffercontent}>
                             <gn-label block>
                             <label htmlFor="datasetBufferText">
                                 {dispatch(translate("labelDataSetBufferText", null, "Varseltekst ved treff på buffersone"))}
@@ -62,7 +63,6 @@ const [bufferText, setBufferText] = useState(false)
                         ) : (
                             <div id="datasetBufferText">{item?.dataSet?.bufferText}</div>
                         )}
-
                         <gn-label block>
                             <label htmlFor="datasetBufferPossibleMeasures">
                                 {dispatch(translate("labelBufferPossibleMeasures", null, "Hva kan brukeren gjøre ved treff på buffersone"))}
@@ -72,13 +72,11 @@ const [bufferText, setBufferText] = useState(false)
                         {editable ? (
                             <div className={style.editorwrapper}>
                             <MDXEditor 
+                            key={userkey}
                             markdown={item?.dataSet?.bufferPossibleMeasures || ""}                           
                             contentEditableClassName={style.mdxeditor}
                            
-                            onChange={(value) => {
-                                setDescriptionMarkdown(value);
-                                handleChange({ name: "bufferPossibleMeasures", value: value });
-                            }}
+                            onChange={value => onChange({name : "bufferPossibleMeasures", value})}
                             plugins={[
                                 toolbarPlugin({
                                     toolbarClassName: style.editortoolbar,
@@ -129,10 +127,7 @@ const [bufferText, setBufferText] = useState(false)
                             <div id="datasetBufferDistance">{item?.dataSet?.bufferDistance || ""}</div>
                         )}
                     </div> : '' }
-            </div>
-        
-          
-            
+            </div>                              
         </Fragment>
     );
 };
