@@ -187,10 +187,11 @@ const RegisterItemDetails = () => {
         }
     };
 
-    const handleDeleteLink = (linkIndex) => {
-        const registerItem = savedRegisterItem;
-        registerItem.links.splice(linkIndex, 1);
-        setNewRegisterItem({ ...registerItem});
+    const handleDeleteLink = (linkId) => {
+        setNewRegisterItem((prev) => ({
+            ...prev,
+            links: prev.links.filter((linkItem) => linkItem.id !== linkId),
+        }));
     };
 
     const fetchDatasetDetails = (uuid) => {
@@ -530,44 +531,39 @@ const RegisterItemDetails = () => {
     const renderLinks = (links) => {
         const linkListElements = links?.length
             ? links
-                  .filter((linkItem) => {
-                      return linkItem && linkItem.link;
-                  })
+                  .filter((linkItem) => linkItem && linkItem.link)
                   .map((linkItem, linkIndex) => {
                       const link = linkItem.link;
                       return editable ? (
-                          <div key={linkIndex} className={formsStyle.flex}>
+                          <div key={linkItem.id} className={formsStyle.flex}>
                               <div className={formsStyle.flex1}>
                                   <gn-label block>
-                                      <label htmlFor={`linkText-${linkIndex}`}>
+                                      <label htmlFor={`linkText-${linkItem.id}`}>
                                           {dispatch(translate("labelLinkText", null, "Tekst"))}
                                           <ToggleHelpText resourceKey="linkTextDescription" showHelp={editable} />
                                       </label>
                                   </gn-label>
                                   <gn-input block fullWidth>
                                       <input
-                                          id={`linkText-${linkIndex}`}
+                                          id={`linkText-${linkItem.id}`}
                                           name="text"
                                           defaultValue={link.text}
-                                          data-link-index={linkIndex}
                                           onChange={handleChangeLink}
                                       />
                                   </gn-input>
                               </div>
-
                               <div className={formsStyle.flex1}>
                                   <gn-label block>
-                                      <label htmlFor={`linkUrl-${linkIndex}`}>
+                                      <label htmlFor={`linkUrl-${linkItem.id}`}>
                                           {dispatch(translate("labelLinkUrl", null, "URL"))}
                                           <ToggleHelpText resourceKey="linkUrlDescription" showHelp={editable} />
                                       </label>
                                   </gn-label>
                                   <gn-input block fullWidth>
                                       <input
-                                          id={`linkUrl-${linkIndex}`}
+                                          id={`linkUrl-${linkItem.id}`}
                                           name="url"
                                           defaultValue={link.url}
-                                          data-link-index={linkIndex}
                                           onChange={handleChangeLink}
                                       />
                                   </gn-input>
@@ -575,9 +571,7 @@ const RegisterItemDetails = () => {
                               <div>
                                   <gn-button color="danger">
                                       <button
-                                          onClick={() => {
-                                              handleDeleteLink(linkIndex);
-                                          }}
+                                          onClick={() => handleDeleteLink(linkItem.id)}
                                           style={{ marginBottom: "10px" }}
                                       >
                                           Fjern
@@ -586,59 +580,15 @@ const RegisterItemDetails = () => {
                               </div>
                           </div>
                       ) : (
-                          <div key={linkIndex}>
+                          <div key={linkItem.id}>
                               <a href={link.url}>{link.text}</a>
                           </div>
                       );
                   })
-            : null;
+            : null;    
         return (
             <div>
                 {linkListElements?.length ? linkListElements : null}
-                {editable ? (
-                    <Fragment>
-                        
-                        <div key="newLink" className={formsStyle.flex}>
-                            <div className={formsStyle.flex1}>
-                                <gn-label block>
-                                    <label htmlFor="newLinkText">
-                                        {dispatch(translate("labelnewLinkText", null, "Tekst"))}
-                                    </label>
-                                </gn-label>
-                                <gn-input block fullWidth>
-                                    <input
-                                        id="newLinkText"
-                                        name="text"
-                                        defaultValue={newLinkText}
-                                        onChange={(event) => setNewLinkText(event.target.value)}
-                                    />
-                                </gn-input>
-                            </div>
-                            <div className={formsStyle.flex1}>
-                                <gn-label block>
-                                    <label htmlFor="newLinkUrl">
-                                        {dispatch(translate("labelNewLinkUrl", null, "URL"))}
-                                    </label>
-                                </gn-label>
-                                <gn-input block fullWidth>
-                                    <input
-                                        id="newLinkUrl"
-                                        name="url"
-                                        defaultValue={newLinkUrl}
-                                        onChange={(event) => setNewLinkUrl(event.target.value)}
-                                    />
-                                </gn-input>
-                            </div>
-                            <div>
-                                <gn-button color="primary">
-                                    <button onClick={(event) => handleAddLink()} style={{ marginBottom: "10px" }}>
-                                        Legg til
-                                    </button>
-                                </gn-button>
-                            </div>
-                        </div>
-                    </Fragment>
-                ) : null}
             </div>
         );
     };
@@ -646,9 +596,6 @@ const RegisterItemDetails = () => {
     if (!dataFetched) {
         return null;
     }
-
-   
-
     const breadcrumbs = [
         {
             name: "Registrene",
