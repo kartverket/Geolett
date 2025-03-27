@@ -42,7 +42,7 @@ const NavigationBar = () => {
     const selectedLanguage = useSelector((state) => state.selectedLanguage);
     const isLoggedIn = !!authToken?.access_token?.length;
 
-    var loggedInCookie = Cookies.get('_loggedIn');
+    var loggedInCookie = Cookies.get('_loggedInOtherApp');
     console.log("Logged in cookie: " + loggedInCookie);
     console.log("isLoggedIn: " + isLoggedIn);
 
