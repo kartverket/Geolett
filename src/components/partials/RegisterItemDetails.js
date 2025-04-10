@@ -314,7 +314,7 @@ const RegisterItemDetails = () => {
         })
             .then((resp) => resp.json())
             .then((json) => {
-                setDatasetSearchIsLoading(false);
+                setDatasetSearchIsLoading(false);                
                 setDatasetOptions(
                     json.Results.map((dataset) => {
                         return {
@@ -328,7 +328,7 @@ const RegisterItemDetails = () => {
             });
     };
 
-    const handleDatasetSelect = (datasetArray) => {
+    const handleDatasetSelect = (datasetArray) => {        
         const dataset =
             datasetArray?.length && Array.isArray(datasetArray)
                 ? datasetArray[0]
@@ -723,15 +723,15 @@ const RegisterItemDetails = () => {
                             </label>
                         </gn-label>
                         {editable ? (
-                            <AsyncTypeahead
+                           <AsyncTypeahead
                                 id="dataset-search"
                                 isLoading={datasetSearchIsLoading}
                                 labelKey={(option) => `${option.title}`}
                                 onSearch={(query) => handleOnDatasetSearch(query)}
                                 onChange={handleDatasetSelect}
-                                options={datasetOptions}                                
-                                selected={getSelectedDatasetOption()}
-                                
+                                options={datasetOptions}
+                                defaultValue={getSelectedDatasetOption()}
+                                placeholder="Søk etter datasett"
                             />
                         ) : (
                             <a id="datasetTitle" href={newRegisterItem?.dataSet?.urlMetadata || ""}>
