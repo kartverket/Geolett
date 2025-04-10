@@ -722,17 +722,18 @@ const RegisterItemDetails = () => {
                                 <ToggleHelpText resourceKey="dataSetTitleDescription" showHelp={editable}  />
                             </label>
                         </gn-label>
-                        {editable ? (
-                            <AsyncTypeahead
+                        {editable ? (<>
+                           <AsyncTypeahead
                                 id="dataset-search"
                                 isLoading={datasetSearchIsLoading}
                                 labelKey={(option) => `${option.title}`}
                                 onSearch={(query) => handleOnDatasetSearch(query)}
                                 onChange={handleDatasetSelect}
-                                options={datasetOptions}                                
-                                selected={getSelectedDatasetOption()}
-                                
+                                options={datasetOptions}
+                                defaultValue={getSelectedDatasetOption()}
+                                placeholder="Søk etter datasett"
                             />
+                            <br /> {newRegisterItem?.dataSet?.title || ""}</>
                         ) : (
                             <a id="datasetTitle" href={newRegisterItem?.dataSet?.urlMetadata || ""}>
                                 <h3>{newRegisterItem?.dataSet?.title || ""}</h3>
