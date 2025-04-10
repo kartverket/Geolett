@@ -3,7 +3,7 @@ export const hasAdminRole = authInfo => {
 }
 
 export const hasEditorRole = authInfo => {
-  return authInfo?.roles?.includes('nd.geolett');
+  return authInfo?.roles?.includes('nd.geolett') || authInfo?.roles?.includes('nd.metadata_editor');
 }
 
 export const isResponsibleAgency = (authInfo = {}, responsibleAgency = {}) => {

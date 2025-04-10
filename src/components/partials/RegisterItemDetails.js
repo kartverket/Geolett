@@ -84,6 +84,9 @@ const RegisterItemDetails = () => {
     const [objectTypeOptions, setObjectTypeOptions] = useState([]);
 
     const [descriptionMarkdown, setDescriptionMarkdown] = useState(savedRegisterItem?.description || "");
+    const [guidanceMarkdown, setGuidanceMarkdown] = useState(savedRegisterItem?.guidance || "");
+    const [possibleMeasuresMarkdown, setPossibleMeasuresMarkdown] = useState(savedRegisterItem?.possibleMeasures || "");
+
     const [dialogText, setDialogText] = useState(savedRegisterItem?.dialogText || "");
     const [registerItemStatus, setRegisterItemStatus] = useState(savedRegisterItem?.status || "");
     const [risk, setRisk] = useState(savedRegisterItem?.risk || "");
@@ -108,7 +111,7 @@ const RegisterItemDetails = () => {
         const parsed = parseInt(value);
         registerItem[name] = isNaN(parsed) ? value : parsed;
         setNewRegisterItem(registerItem);
-        
+ 
     };
 
     const handleDatasetChange = (data) => {
@@ -117,6 +120,7 @@ const RegisterItemDetails = () => {
         const parsed = parseInt(value);
         registerItem.dataSet = registerItem.dataSet || {};
         registerItem.dataSet[name] = isNaN(parsed) ? value : parsed;
+       
         setNewRegisterItem(registerItem);
     };
 
@@ -183,10 +187,11 @@ const RegisterItemDetails = () => {
         }
     };
 
-    const handleDeleteLink = (linkIndex) => {
-        const registerItem = savedRegisterItem;
-        registerItem.links.splice(linkIndex, 1);
-        setNewRegisterItem({ ...registerItem});
+    const handleDeleteLink = (linkId) => {
+        setNewRegisterItem((prev) => ({
+            ...prev,
+            links: prev.links.filter((linkItem) => linkItem.id !== linkId),
+        }));
     };
 
     const fetchDatasetDetails = (uuid) => {
@@ -228,7 +233,6 @@ const RegisterItemDetails = () => {
     const saveRegisterItem = () => {
         const registerItem = newRegisterItem;        
         const token = authToken?.access_token || null;
-
         
         if (!!selectedOwner?.[0]?.organizationId?.toString()?.length) {
             registerItem.owner = {
@@ -527,44 +531,39 @@ const RegisterItemDetails = () => {
     const renderLinks = (links) => {
         const linkListElements = links?.length
             ? links
-                  .filter((linkItem) => {
-                      return linkItem && linkItem.link;
-                  })
+                  .filter((linkItem) => linkItem && linkItem.link)
                   .map((linkItem, linkIndex) => {
                       const link = linkItem.link;
                       return editable ? (
-                          <div key={linkIndex} className={formsStyle.flex}>
+                          <div key={linkItem.id} className={formsStyle.flex}>
                               <div className={formsStyle.flex1}>
                                   <gn-label block>
-                                      <label htmlFor={`linkText-${linkIndex}`}>
+                                      <label htmlFor={`linkText-${linkItem.id}`}>
                                           {dispatch(translate("labelLinkText", null, "Tekst"))}
                                           <ToggleHelpText resourceKey="linkTextDescription" showHelp={editable} />
                                       </label>
                                   </gn-label>
                                   <gn-input block fullWidth>
                                       <input
-                                          id={`linkText-${linkIndex}`}
+                                          id={`linkText-${linkItem.id}`}
                                           name="text"
                                           defaultValue={link.text}
-                                          data-link-index={linkIndex}
                                           onChange={handleChangeLink}
                                       />
                                   </gn-input>
                               </div>
-
                               <div className={formsStyle.flex1}>
                                   <gn-label block>
-                                      <label htmlFor={`linkUrl-${linkIndex}`}>
+                                      <label htmlFor={`linkUrl-${linkItem.id}`}>
                                           {dispatch(translate("labelLinkUrl", null, "URL"))}
                                           <ToggleHelpText resourceKey="linkUrlDescription" showHelp={editable} />
                                       </label>
                                   </gn-label>
                                   <gn-input block fullWidth>
                                       <input
-                                          id={`linkUrl-${linkIndex}`}
+                                          id={`linkUrl-${linkItem.id}`}
                                           name="url"
                                           defaultValue={link.url}
-                                          data-link-index={linkIndex}
                                           onChange={handleChangeLink}
                                       />
                                   </gn-input>
@@ -572,9 +571,7 @@ const RegisterItemDetails = () => {
                               <div>
                                   <gn-button color="danger">
                                       <button
-                                          onClick={() => {
-                                              handleDeleteLink(linkIndex);
-                                          }}
+                                          onClick={() => handleDeleteLink(linkItem.id)}
                                           style={{ marginBottom: "10px" }}
                                       >
                                           Fjern
@@ -583,59 +580,15 @@ const RegisterItemDetails = () => {
                               </div>
                           </div>
                       ) : (
-                          <div key={linkIndex}>
+                          <div key={linkItem.id}>
                               <a href={link.url}>{link.text}</a>
                           </div>
                       );
                   })
-            : null;
+            : null;    
         return (
             <div>
                 {linkListElements?.length ? linkListElements : null}
-                {editable ? (
-                    <Fragment>
-                        
-                        <div key="newLink" className={formsStyle.flex}>
-                            <div className={formsStyle.flex1}>
-                                <gn-label block>
-                                    <label htmlFor="newLinkText">
-                                        {dispatch(translate("labelnewLinkText", null, "Tekst"))}
-                                    </label>
-                                </gn-label>
-                                <gn-input block fullWidth>
-                                    <input
-                                        id="newLinkText"
-                                        name="text"
-                                        defaultValue={newLinkText}
-                                        onChange={(event) => setNewLinkText(event.target.value)}
-                                    />
-                                </gn-input>
-                            </div>
-                            <div className={formsStyle.flex1}>
-                                <gn-label block>
-                                    <label htmlFor="newLinkUrl">
-                                        {dispatch(translate("labelNewLinkUrl", null, "URL"))}
-                                    </label>
-                                </gn-label>
-                                <gn-input block fullWidth>
-                                    <input
-                                        id="newLinkUrl"
-                                        name="url"
-                                        defaultValue={newLinkUrl}
-                                        onChange={(event) => setNewLinkUrl(event.target.value)}
-                                    />
-                                </gn-input>
-                            </div>
-                            <div>
-                                <gn-button color="primary">
-                                    <button onClick={(event) => handleAddLink()} style={{ marginBottom: "10px" }}>
-                                        Legg til
-                                    </button>
-                                </gn-button>
-                            </div>
-                        </div>
-                    </Fragment>
-                ) : null}
             </div>
         );
     };
@@ -643,9 +596,6 @@ const RegisterItemDetails = () => {
     if (!dataFetched) {
         return null;
     }
-
-   
-
     const breadcrumbs = [
         {
             name: "Registrene",
@@ -920,19 +870,18 @@ const RegisterItemDetails = () => {
                                           }),
                                         headingsPlugin(),   
                                         linkDialogPlugin(),
-                                        linkPlugin(),                                      
-                                        listsPlugin(), 
+                                        linkPlugin(),                                                                              
                                         quotePlugin(), 
                                         thematicBreakPlugin()
                                     ]} />
                                     </div>
-                                        </>) : (
-                                    <MDXEditor 
-                                    markdown={descriptionMarkdown || ""}
-                                    contentEditableClassName={formsStyle.mdxnoeditor}                                    
-                                    plugins={[]} readOnly />
+                                        </>) : (<>                                            
+                                   <MDXEditor                                   
+                                   markdown={descriptionMarkdown || ""}
+                                   contentEditableClassName={formsStyle.mdxnoeditor}                                    
+                                   plugins={[linkPlugin()]}  readOnly /> </>
                                 )}
-                            </div>
+                            </div>                           
                             <div>
                                 
                         {editable || savedRegisterItem?.dialogText?.length > 0 ?
@@ -952,7 +901,7 @@ const RegisterItemDetails = () => {
                                       contentEditableClassName={formsStyle.mdxeditor}
                                       onChange={(value) => {
                                           setDialogText(value);
-                                          handleChange({ name: "description", value: value });
+                                          handleChange({ name: "dialogText", value: value });
                                       }}
                                       plugins={[
                                           toolbarPlugin({
@@ -976,9 +925,9 @@ const RegisterItemDetails = () => {
                                     </div>
                                           </>) : (
                                       <MDXEditor 
-                                      markdown={dialogText || ""}
+                                      markdown={savedRegisterItem.dialogText || ""}
                                       contentEditableClassName={formsStyle.mdxnoeditor}                                    
-                                      plugins={[]} readOnly />
+                                      plugins={[linkPlugin()]} readOnly />
                                   )}
                                 </div>
                                 <div>
@@ -996,10 +945,10 @@ const RegisterItemDetails = () => {
                                 <div className={formsStyle.editorwrapper}>
                                 <MDXEditor 
                                 key={editorKey} 
-                                    markdown={newRegisterItem.possibleMeasures || ""}                                    
+                                    markdown={possibleMeasuresMarkdown || ""}                                    
                                     contentEditableClassName={formsStyle.mdxeditor}                                    
                                     onChange={(value) => {
-                                        setDescriptionMarkdown(value);
+                                        setPossibleMeasuresMarkdown(value);
                                         handleChange({ name: "possibleMeasures", value: value });
                                     }}
                                     plugins={[
@@ -1027,9 +976,9 @@ const RegisterItemDetails = () => {
                             ) : (
                                 
                                 <MDXEditor 
-                                markdown={newRegisterItem.possibleMeasures || ""}
+                                markdown={possibleMeasuresMarkdown || ""}
                                 contentEditableClassName={formsStyle.mdxnoeditor}                                    
-                                plugins={[]} readOnly />
+                                plugins={[linkPlugin()]} readOnly />
                                
                             ) 
                             }
@@ -1047,12 +996,12 @@ const RegisterItemDetails = () => {
                             {editable ? (<div className={formsStyle.editorwrapper}>
                                  <MDXEditor 
                                  key={editorKey} 
-                                 markdown={newRegisterItem.guidance || ""}
+                                 markdown={guidanceMarkdown || ""}
                                  
                                  contentEditableClassName={formsStyle.mdxeditor}
                                 
                                  onChange={(value) => {
-                                     setDescriptionMarkdown(value);
+                                     setGuidanceMarkdown(value);
                                      handleChange({ name: "guidance", value: value });
                                  }}
                                  plugins={[
@@ -1077,9 +1026,9 @@ const RegisterItemDetails = () => {
                                </div>
                             ) : (
                                 <MDXEditor 
-                                 markdown={newRegisterItem.guidance || ""}
+                                 markdown={guidanceMarkdown || ""}
                                  contentEditableClassName={formsStyle.mdxnoeditor}                                    
-                                 plugins={[]} readOnly/>
+                                 plugins={[linkPlugin()]} readOnly/>
                             )}
                         </>}
                          
@@ -1092,7 +1041,7 @@ const RegisterItemDetails = () => {
                         
                         {renderLinks(newRegisterItem.links)} 
                         
-                        { risk === "low" ? '' : <ToggleBuffer tema={theme} onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
+                        { risk === "low" ? '' : <ToggleBuffer tema={theme} key={editorKey} onChange={handleDatasetChange} editable={editable} item={newRegisterItem} />}
 
                         </div>
 
@@ -1199,7 +1148,7 @@ const RegisterItemDetails = () => {
                                         disabled={
                                             !newRegisterItem?.title?.length
                                         }
-                                        onClick={publishRegisterItem}                                                    
+                                        onClick={publishRegisterItem}                                                  
                                     >
                                       {registerItemStatus === 1 ? 'Ja publisere teksten' : 'Publisere'} 
                                     </button>
