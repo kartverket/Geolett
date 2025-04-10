@@ -589,6 +589,50 @@ const RegisterItemDetails = () => {
         return (
             <div>
                 {linkListElements?.length ? linkListElements : null}
+                {editable ? (
+                    <Fragment>
+                        
+                        <div key="newLink" className={formsStyle.flex}>
+                            <div className={formsStyle.flex1}>
+                                <gn-label block>
+                                    <label htmlFor="newLinkText">
+                                        {dispatch(translate("labelnewLinkText", null, "Tekst"))}
+                                    </label>
+                                </gn-label>
+                                <gn-input block fullWidth>
+                                    <input
+                                        id="newLinkText"
+                                        name="text"
+                                        defaultValue={newLinkText}
+                                        onChange={(event) => setNewLinkText(event.target.value)}
+                                    />
+                                </gn-input>
+                            </div>
+                            <div className={formsStyle.flex1}>
+                                <gn-label block>
+                                    <label htmlFor="newLinkUrl">
+                                        {dispatch(translate("labelNewLinkUrl", null, "URL"))}
+                                    </label>
+                                </gn-label>
+                                <gn-input block fullWidth>
+                                    <input
+                                        id="newLinkUrl"
+                                        name="url"
+                                        defaultValue={newLinkUrl}
+                                        onChange={(event) => setNewLinkUrl(event.target.value)}
+                                    />
+                                </gn-input>
+                            </div>
+                            <div>
+                                <gn-button color="primary">
+                                    <button onClick={(event) => handleAddLink()} style={{ marginBottom: "10px" }}>
+                                        Legg til
+                                    </button>
+                                </gn-button>
+                            </div>
+                        </div>
+                    </Fragment>
+                ) : null}
             </div>
         );
     };
@@ -780,7 +824,6 @@ const RegisterItemDetails = () => {
                                 <div className={formsStyle.smallheader}>Brukereksempel</div>
                                 {dispatch(translate("introGeolettDescriptionDel4Bygg", null, "tittel"))}
                                 
-                                {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
                                 </div>
                                
                                 <div className={formsStyle.screenshot}> 
@@ -799,7 +842,6 @@ const RegisterItemDetails = () => {
                                 {dispatch(translate("introGeolettDescriptionDel3Plan", null, "tittel"))}                              
                                     <div className={formsStyle.smallheader}>Eksempel på bruk av tekstene</div>
                                     {dispatch(translate("introGeolettDescriptionDel4Plan", null, "tittel"))}
-                                    {editable ? dispatch(translate('chatAIhelptext', null, 'tittel')): null}
                                     </div>    
                                     <div className={formsStyle.screenshot}>                                                        
                                     <img className={formsStyle.screenshot} src={dibkplanscreenshot} alt="Eksempel på veiledningstekst i kartløsning" />                                                                             
