@@ -589,6 +589,50 @@ const RegisterItemDetails = () => {
         return (
             <div>
                 {linkListElements?.length ? linkListElements : null}
+                {editable ? (
+                    <Fragment>
+                        
+                        <div key="newLink" className={formsStyle.flex}>
+                            <div className={formsStyle.flex1}>
+                                <gn-label block>
+                                    <label htmlFor="newLinkText">
+                                        {dispatch(translate("labelnewLinkText", null, "Tekst"))}
+                                    </label>
+                                </gn-label>
+                                <gn-input block fullWidth>
+                                    <input
+                                        id="newLinkText"
+                                        name="text"
+                                        defaultValue={newLinkText}
+                                        onChange={(event) => setNewLinkText(event.target.value)}
+                                    />
+                                </gn-input>
+                            </div>
+                            <div className={formsStyle.flex1}>
+                                <gn-label block>
+                                    <label htmlFor="newLinkUrl">
+                                        {dispatch(translate("labelNewLinkUrl", null, "URL"))}
+                                    </label>
+                                </gn-label>
+                                <gn-input block fullWidth>
+                                    <input
+                                        id="newLinkUrl"
+                                        name="url"
+                                        defaultValue={newLinkUrl}
+                                        onChange={(event) => setNewLinkUrl(event.target.value)}
+                                    />
+                                </gn-input>
+                            </div>
+                            <div>
+                                <gn-button color="primary">
+                                    <button onClick={(event) => handleAddLink()} style={{ marginBottom: "10px" }}>
+                                        Legg til
+                                    </button>
+                                </gn-button>
+                            </div>
+                        </div>
+                    </Fragment>
+                ) : null}
             </div>
         );
     };
@@ -678,17 +722,18 @@ const RegisterItemDetails = () => {
                                 <ToggleHelpText resourceKey="dataSetTitleDescription" showHelp={editable}  />
                             </label>
                         </gn-label>
-                        {editable ? (
-                            <AsyncTypeahead
+                        {editable ? (<>
+                           <AsyncTypeahead
                                 id="dataset-search"
                                 isLoading={datasetSearchIsLoading}
                                 labelKey={(option) => `${option.title}`}
                                 onSearch={(query) => handleOnDatasetSearch(query)}
                                 onChange={handleDatasetSelect}
-                                options={datasetOptions}                                
-                                selected={getSelectedDatasetOption()}
-                                
+                                options={datasetOptions}
+                                defaultValue={getSelectedDatasetOption()}
+                                placeholder="Søk etter datasett"
                             />
+                            <br /> {newRegisterItem?.dataSet?.title || ""}</>
                         ) : (
                             <a id="datasetTitle" href={newRegisterItem?.dataSet?.urlMetadata || ""}>
                                 <h3>{newRegisterItem?.dataSet?.title || ""}</h3>
