@@ -1005,8 +1005,7 @@ const RegisterItemDetails = () => {
                                                 <BoldItalicUnderlineToggles />
                                                 
                                                 <UndoRedo />  
-                                                <CreateLink />  
-                                                                                                                                                 
+                                                <CreateLink />                                                                                                                                                   
                                               </>
                                             )
                                           }),
@@ -1078,7 +1077,7 @@ const RegisterItemDetails = () => {
                         </>}
                          
                               
-                        {newRegisterItem.links.length > 0 || editable ? <gn-label block>
+                        {newRegisterItem?.links?.length > 0 || editable ? <gn-label block>
                             <label>
                             Lenker<ToggleHelpText resourceKey="guidanceDescriptionLenker" showHelp={editable} />
                             </label>
