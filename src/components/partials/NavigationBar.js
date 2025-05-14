@@ -13,17 +13,22 @@ import { updateSelectedLanguage } from "actions/SelectedLanguageActions";
 
 // Helpers
 import { getEnvironmentVariable } from "helpers/environmentVariableHelpers.js";
+import { authInfo } from "helpers/authorizationHelpers.js";
+
+import Cookies from 'js-cookie';
+import {useSearchParams} from "react-router-dom";
 
 const NavigationBar = () => {
     const dispatch = useDispatch();
+    let [searchParams] = useSearchParams();
 
     // Redux store
     const oidc = useSelector((state) => state.oidc);
     const authToken = useSelector((state) => state.authToken);
-    const authInfo = useSelector((state) => state.authToken);    
+    const authInfo = useSelector((state) => state.authInfo);    
     useEffect(() => {
         const isLoggedIn = !!authToken?.access_token?.length;
-        const hasAuthInfo = !!authInfo?.organizationNumber?.length;        
+        const hasAuthInfo = !!authInfo?.organizationNumber?.length;       
 
         if (isLoggedIn || hasAuthInfo) {
             dispatch(updateOidcCookie(oidc.user));
@@ -32,12 +37,29 @@ const NavigationBar = () => {
     }, [dispatch, authInfo?.organizationNumber, authToken?.access_token, oidc.user]);
 
     const environment = getEnvironmentVariable("environment");
-    const signinurl = getEnvironmentVariable("signinurl");
+    let signinurl = getEnvironmentVariable("signinurl");
     const signouturl = getEnvironmentVariable("signouturl");
+    const selectedLanguage = useSelector((state) => state.selectedLanguage);
     const isLoggedIn = !!authToken?.access_token?.length;
 
+    var loggedInCookie = Cookies.get('_loggedIn');
+    console.log("Logged in cookie: " + loggedInCookie);
+    console.log("isLoggedIn: " + isLoggedIn);
+
+    let returnGeoid = searchParams.get("login");
+
+    if(!isLoggedIn && loggedInCookie === "true" && returnGeoid !== "true")
+    {
+        var pathName = window.location.pathname;
+        var path = pathName.substring(1); //remove first / from path
+        path = path.replace("geolett", "");
+        signinurl = signinurl + path + "?login=true";
+        console.log("Redirecting to signin page with return url: " + signinurl);
+        window.location.href = signinurl;
+    }
+
     // Redirect to signin page after token expire, todo handle browser reload using localstorage and date
-    if (isLoggedIn){
+    if (isLoggedIn || loggedInCookie === "true") {
         setTimeout(() => 
             {                
                 console.log("Token expires, redirecting to signin page");
@@ -45,13 +67,16 @@ const NavigationBar = () => {
             }, 1440000);
     }
 
-    return (
+    return (<>
         <main-navigation
             signinurl={signinurl}
             signouturl={signouturl}
             isLoggedIn={isLoggedIn}
-            environment={environment}
-        ></main-navigation>
+            environment="dev"            
+            language={selectedLanguage}
+            userinfo={JSON.stringify(authInfo)}
+            organization={JSON.stringify(authInfo)}    
+        ></main-navigation></>
     );
 };
 
