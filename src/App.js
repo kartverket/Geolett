@@ -85,12 +85,12 @@ const App = (props) => {
             <Provider store={store}>
                 <OidcProvider userManager={userManager} store={store}>
                     <Router history={history}>
-                        <ShortcutButton userManager={userManager} />                         
+                                               
                         <NavigationBar userManager={userManager} />
                         <Routes>
-                            <Route exact path="/" element={<RegisterItems />} />                            
-                            <Route exact path="/geolett" element={<RegisterItems />} />
-                            <Route exact path="/geolett/:registerItemId/:edit?" element={<RegisterItem />} />
+                            <Route exact path="/" element={<RegisterItems userManager={userManager}/>} />                            
+                            <Route exact path="/geolett" element={<RegisterItems userManager={userManager}/>} />
+                            <Route exact path="/geolett/:registerItemId/:edit?" element={<RegisterItem userManager={userManager} />} />
                             <Route exact path="/signin-oidc" element={<OidcCallback userManager={userManager} />} />
                             <Route
                                 exact

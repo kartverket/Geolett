@@ -18,7 +18,7 @@ body {
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
    font-size: 14px;
-   overflow-y: scroll;
+   overflow-y: scroll;  
 }
 
 .fixed-menu-margin {
@@ -108,4 +108,10 @@ code {
          display: inline-block;
       }
    }
+}
+gn-shortcut-button {
+   position: fixed;
+   top: -10000px;
+   z-index: 10000;
+   
 }

@@ -12,11 +12,12 @@ import RegisterItemDetails from "components/partials/RegisterItemDetails";
 
 // Actions
 import { fetchRegisterItem } from "actions/RegisterItemActions";
+import ShortcutButton from "components/partials/ShortcutButton";
 
-const RegisterItem = () => {
+const RegisterItem = ({userManager}) => {
     const dispatch = useDispatch();
     const params = useParams();
-
+    console.log("RegisterItem : ", userManager);
     // Redux store
     const savedRegisterItem = useSelector((state) => state.selectedRegisterItem);
 
@@ -35,6 +36,7 @@ const RegisterItem = () => {
 
     return savedRegisterItem && Object.keys(savedRegisterItem).length ? (
         <content-container>
+            <ShortcutButton userManager={userManager} />              
             <RegisterItemDetails />
         </content-container>
     ) : null;
