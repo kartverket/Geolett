@@ -14,6 +14,7 @@ import { fetchOptions } from "actions/OptionsActions";
 
 // Stylesheets
 import style from "components/routes/RegisterItems.module.scss";
+import { Helmet } from "react-helmet";
 
 const RegisterItems = (userManager) => {
     const dispatch = useDispatch();
@@ -188,7 +189,8 @@ const RegisterItems = (userManager) => {
 
     return (
         <content-container>
-            <ShortcutButton userManager={userManager} />  
+            <Helmet><title>Geonorge - Veiledningstekster</title></Helmet>
+                        <ShortcutButton userManager={userManager} />  
             <div style={{ position: "relative" }}>
                 <div style={{ position: "absolute", top: "20px", right: "16px" }}>
                     <a href="api/swagger">API</a>

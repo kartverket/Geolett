@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { OidcProvider } from "redux-oidc";
 import ReduxToastr from "react-redux-toastr";
+import { Helmet } from "react-helmet";
 
 
 
@@ -85,7 +86,7 @@ const App = (props) => {
             <Provider store={store}>
                 <OidcProvider userManager={userManager} store={store}>
                     <Router history={history}>
-                                               
+                                
                         <NavigationBar userManager={userManager} />
                         <Routes>
                             <Route exact path="/" element={<RegisterItems userManager={userManager}/>} />                            

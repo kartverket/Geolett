@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { Helmet } from "react-helmet";
 
 // Geonorge WebComponents
 // eslint-disable-next-line no-unused-vars
@@ -37,6 +38,7 @@ const RegisterItem = ({userManager}) => {
     return savedRegisterItem && Object.keys(savedRegisterItem).length ? (
         <content-container>
             <ShortcutButton userManager={userManager} />              
+            <Helmet><title>{'Geonorge.no - veiledningstekster for ' + savedRegisterItem.title}</title></Helmet>
             <RegisterItemDetails />
         </content-container>
     ) : null;
