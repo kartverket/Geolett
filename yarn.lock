@@ -1977,10 +1977,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@kartverket/geonorge-web-components@^4.0.0":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@kartverket/geonorge-web-components/-/geonorge-web-components-4.0.4.tgz#1a7bead0863d5606778669250187b6975af7518a"
-  integrity sha512-JyhIq1aRGmJFb7NyxthfKGwuHlDRbZnABmwT1khkWINRaWYeqotCL26u3zQ6hZSqdEcDcZeJeaewwMAojl86og==
+"@kartverket/geonorge-web-components@^4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@kartverket/geonorge-web-components/-/geonorge-web-components-4.0.5.tgz#0241b2d485c500d6363d1dc491ce4552e427e7b4"
+  integrity sha512-YVc8wZ2Db87etBcikoskbmnjX/fl7nKXMndctbf4Drsg+mG8uECgrRUwKJ+EJavldv1Dr8NxoovWg8CVZjHg/A==
 
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.5"
