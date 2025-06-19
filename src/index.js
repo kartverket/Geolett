@@ -12,6 +12,7 @@ import ConfigLoader from "components/ConfigLoader";
 
 // Stylesheets
 import "index.scss";
+import "@kartverket/geonorge-web-components/index.css";
 
 
 const Main = () => {

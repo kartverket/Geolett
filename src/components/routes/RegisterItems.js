@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
+import ShortcutButton from "components/partials/ShortcutButton";
 // Geonorge WebComponents
 import { BreadcrumbList, ContentContainer, HeadingText } from "@kartverket/geonorge-web-components";
 
@@ -14,8 +14,9 @@ import { fetchOptions } from "actions/OptionsActions";
 
 // Stylesheets
 import style from "components/routes/RegisterItems.module.scss";
+import { Helmet } from "react-helmet";
 
-const RegisterItems = () => {
+const RegisterItems = (userManager) => {
     const dispatch = useDispatch();
 
     // Redux store
@@ -188,6 +189,8 @@ const RegisterItems = () => {
 
     return (
         <content-container>
+            <Helmet><title>Geonorge - Veiledningstekster</title></Helmet>
+                        <ShortcutButton userManager={userManager} />  
             <div style={{ position: "relative" }}>
                 <div style={{ position: "absolute", top: "20px", right: "16px" }}>
                     <a href="api/swagger">API</a>
