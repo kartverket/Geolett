@@ -38,7 +38,7 @@ const RegisterItem = ({userManager}) => {
     return savedRegisterItem && Object.keys(savedRegisterItem).length ? (
         <content-container>
             <ShortcutButton userManager={userManager} />              
-            <Helmet><title>{'Geonorge.no - veiledningstekster for ' + savedRegisterItem.title}</title></Helmet>
+            <Helmet><title>{'Veiledningstekster for ' + savedRegisterItem.title}</title></Helmet>
             <RegisterItemDetails />
         </content-container>
     ) : null;
