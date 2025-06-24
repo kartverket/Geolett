@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { Helmet } from "react-helmet";
 
 // Geonorge WebComponents
 // eslint-disable-next-line no-unused-vars
@@ -12,11 +13,12 @@ import RegisterItemDetails from "components/partials/RegisterItemDetails";
 
 // Actions
 import { fetchRegisterItem } from "actions/RegisterItemActions";
+import ShortcutButton from "components/partials/ShortcutButton";
 
-const RegisterItem = () => {
+const RegisterItem = ({userManager}) => {
     const dispatch = useDispatch();
     const params = useParams();
-
+    console.log("RegisterItem : ", userManager);
     // Redux store
     const savedRegisterItem = useSelector((state) => state.selectedRegisterItem);
 
@@ -35,6 +37,8 @@ const RegisterItem = () => {
 
     return savedRegisterItem && Object.keys(savedRegisterItem).length ? (
         <content-container>
+            <ShortcutButton userManager={userManager} />              
+            <Helmet><title>{'Veiledningstekster for ' + savedRegisterItem.title}</title></Helmet>
             <RegisterItemDetails />
         </content-container>
     ) : null;

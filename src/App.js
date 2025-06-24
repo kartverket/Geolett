@@ -5,6 +5,9 @@ import { Route, Routes } from "react-router";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { OidcProvider } from "redux-oidc";
 import ReduxToastr from "react-redux-toastr";
+import { Helmet } from "react-helmet";
+
+
 
 // Utils
 import configureStore, { history } from "utils/configureStore";
@@ -24,6 +27,7 @@ import { fetchAuthToken } from "actions/AuthenticationActions";
 // Partials
 import NavigationBar from "components/partials/NavigationBar";
 import Footer from "components/partials/Footer";
+import ShortcutButton from "components/partials/ShortcutButton";
 
 // font awesome
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -44,8 +48,11 @@ library.add(fab, faCheckSquare, faTrashAlt, faEdit, faPlusCircle, faMinusCircle,
 
 const initialState = {};
 const storePromise = configureStore(initialState, userManagerPromise);
+
 let store = null;
 let userManager = null;
+
+
 
 const App = (props) => {
 
@@ -54,6 +61,7 @@ const App = (props) => {
     const [storeIsLoaded, setStoreIsLoaded] = useState(false);
     const [userManagerIsLoaded, setUserManagerIsLoaded] = useState(false);
 
+   
     useEffect(() => {
         if (!configIsLoaded) {
             setConfigIsLoaded(true);
@@ -70,16 +78,20 @@ const App = (props) => {
         }
     }, [configIsLoaded, props]);
 
+    
+
+
     if (userManager && userManagerIsLoaded && storeIsLoaded) {
         return (
             <Provider store={store}>
                 <OidcProvider userManager={userManager} store={store}>
                     <Router history={history}>
+                                
                         <NavigationBar userManager={userManager} />
                         <Routes>
-                            <Route exact path="/" element={<RegisterItems />} />                            
-                            <Route exact path="/geolett" element={<RegisterItems />} />
-                            <Route exact path="/geolett/:registerItemId/:edit?" element={<RegisterItem />} />
+                            <Route exact path="/" element={<RegisterItems userManager={userManager}/>} />                            
+                            <Route exact path="/geolett" element={<RegisterItems userManager={userManager}/>} />
+                            <Route exact path="/geolett/:registerItemId/:edit?" element={<RegisterItem userManager={userManager} />} />
                             <Route exact path="/signin-oidc" element={<OidcCallback userManager={userManager} />} />
                             <Route
                                 exact
