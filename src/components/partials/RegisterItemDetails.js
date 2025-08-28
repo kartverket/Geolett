@@ -1079,7 +1079,7 @@ const RegisterItemDetails = () => {
                         </>}
                          
                               
-                        {newRegisterItem?.links?.length > 0 || editable ? <gn-label block>
+                        {(newRegisterItem.links && Array.isArray(newRegisterItem.links) && newRegisterItem.links.length > 0) || editable ? <gn-label block>
                             <label>
                             Lenker<ToggleHelpText resourceKey="guidanceDescriptionLenker" showHelp={editable} />
                             </label>
