@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { Route, Routes } from "react-router";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
-import { OidcProvider } from "redux-oidc";
 import ReduxToastr from "react-redux-toastr";
 import { Helmet } from "react-helmet";
 
@@ -73,6 +72,17 @@ const App = (props) => {
             });
             userManagerPromise.then((userManagerConfig) => {
                 userManager = userManagerConfig;
+
+                // Listen for silent renew and update Redux state when user is loaded
+                userManager.events.addUserLoaded(function(user) {
+                    dispatch(userLoaded(user)); // <-- update Redux state
+                });
+
+                userManager.events.addAccessTokenExpiring(function(){
+                    console.log("token expiring...");
+                    userManager.startSilentRenew(); 
+                });
+
                 setUserManagerIsLoaded(true);
             });
         }
@@ -84,9 +94,7 @@ const App = (props) => {
     if (userManager && userManagerIsLoaded && storeIsLoaded) {
         return (
             <Provider store={store}>
-                <OidcProvider userManager={userManager} store={store}>
-                    <Router history={history}>
-                                
+                    <Router history={history}>       
                         <NavigationBar userManager={userManager} />
                         <Routes>
                             <Route exact path="/" element={<RegisterItems userManager={userManager}/>} />                            
@@ -113,7 +121,6 @@ const App = (props) => {
                             closeOnToastrClick
                         />
                     </Router>
-                </OidcProvider>
             </Provider>
         );
     } else {

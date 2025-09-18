@@ -1,5 +1,5 @@
 // Dependencies
-import { createUserManager } from 'redux-oidc';
+import { UserManager } from 'oidc-client-ts';
 
 // Config
 import { config } from 'components/config';
@@ -18,7 +18,7 @@ const configIsLoaded = () => {
 
 const getUserManagerConfigWhenReady = configIsLoaded().then((config) => {
   const userManagerConfig = config.oidc;
-  return createUserManager(userManagerConfig);
+  return new UserManager(userManagerConfig);
 })
 
 export default getUserManagerConfigWhenReady;

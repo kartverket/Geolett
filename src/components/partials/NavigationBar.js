@@ -10,6 +10,7 @@ import { MainNavigation } from "@kartverket/geonorge-web-components/MainNavigati
 import { updateOidcCookie } from "actions/AuthenticationActions";
 import { updateAuthInfo } from "actions/AuthorizationActions";
 import { updateSelectedLanguage } from "actions/SelectedLanguageActions";
+import { userLoaded } from "reducers/authActions";
 
 // Helpers
 import { getEnvironmentVariable } from "helpers/environmentVariableHelpers.js";
@@ -23,7 +24,7 @@ const NavigationBar = () => {
     let [searchParams] = useSearchParams();
 
     // Redux store
-    const oidc = useSelector((state) => state.oidc);
+    const auth = useSelector((state) => state.auth);
     const authToken = useSelector((state) => state.authToken);
     const authInfo = useSelector((state) => state.authInfo);    
     useEffect(() => {
@@ -31,10 +32,10 @@ const NavigationBar = () => {
         const hasAuthInfo = !!authInfo?.organizationNumber?.length;       
 
         if (isLoggedIn || hasAuthInfo) {
-            dispatch(updateOidcCookie(oidc.user));
+            dispatch(updateOidcCookie(auth.user));
             dispatch(updateAuthInfo());
         }
-    }, [dispatch, authInfo?.organizationNumber, authToken?.access_token, oidc.user]);
+    }, [dispatch, authInfo?.organizationNumber, authToken?.access_token, auth.user]);
 
     const environment = getEnvironmentVariable("environment");
     let signinurl = getEnvironmentVariable("signinurl");
@@ -81,7 +82,7 @@ const NavigationBar = () => {
 };
 
 const mapStateToProps = (state) => ({
-    oidc: state.oidc,
+    auth: state.auth,
     config: state.config,
     authInfo: state.authInfo,
     authToken: state.authToken,
