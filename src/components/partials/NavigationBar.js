@@ -19,7 +19,7 @@ import { authInfo } from "helpers/authorizationHelpers.js";
 import Cookies from 'js-cookie';
 import {useSearchParams} from "react-router-dom";
 
-const NavigationBar = () => {
+const NavigationBar = (props) => {
     const dispatch = useDispatch();
     let [searchParams] = useSearchParams();
 
@@ -35,6 +35,24 @@ const NavigationBar = () => {
             dispatch(updateOidcCookie(auth.user));
             dispatch(updateAuthInfo());
         }
+        if(MainNavigation != null && props.userManager != null)
+        {
+            MainNavigation.setup("main-navigation", {
+                onSignInClick: () => {
+                    props.userManager.signinRedirect();
+                },
+                onSignOutClick: () => {
+                    if(auth != null && auth.user != null && auth.user.id_token != null){
+                    props.userManager.signoutRedirect({ id_token_hint: auth.user.id_token });
+                    Cookies.set('_loggedIn', 'false', { domain: 'geonorge.no' });
+                    props.userManager.signoutRedirect({ id_token_hint: auth.id_token });
+                    props.userManager.removeUser();
+                    }
+                }
+            });
+        }
+
+
     }, [dispatch, authInfo?.organizationNumber, authToken?.access_token, auth.user]);
 
     const environment = getEnvironmentVariable("environment");
