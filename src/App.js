@@ -73,16 +73,6 @@ const App = (props) => {
             userManagerPromise.then((userManagerConfig) => {
                 userManager = userManagerConfig;
 
-                // Listen for silent renew and update Redux state when user is loaded
-                userManager.events.addUserLoaded(function(user) {
-                    dispatch(userLoaded(user)); // <-- update Redux state
-                });
-
-                userManager.events.addAccessTokenExpiring(function(){
-                    console.log("token expiring...");
-                    userManager.startSilentRenew(); 
-                });
-
                 setUserManagerIsLoaded(true);
             });
         }

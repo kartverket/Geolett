@@ -25,10 +25,12 @@ const NavigationBar = (props) => {
 
     // Redux store
     const auth = useSelector((state) => state.auth);
+    //todo check authToken and authInfo
     const authToken = useSelector((state) => state.authToken);
     const authInfo = useSelector((state) => state.authInfo);    
     useEffect(() => {
         const isLoggedIn = !!authToken?.access_token?.length;
+        console.log("authToken: " + authToken);
         const hasAuthInfo = !!authInfo?.organizationNumber?.length;       
 
         if (isLoggedIn || hasAuthInfo) {
@@ -50,6 +52,18 @@ const NavigationBar = (props) => {
                     }
                 }
             });
+
+                // Listen for silent renew and update Redux state when user is loaded
+                props.userManager.events.addUserLoaded(function(user) {
+                    dispatch(userLoaded(user)); // <-- update Redux state
+                });
+
+                props.userManager.events.addAccessTokenExpiring(function(){
+                    console.log("token expiring...");
+                    props.userManager.startSilentRenew(); 
+                });
+
+
         }
 
 
@@ -75,15 +89,6 @@ const NavigationBar = (props) => {
         signinurl = signinurl + path + "?login=true";
         console.log("Redirecting to signin page with return url: " + signinurl);
         window.location.href = signinurl;
-    }
-
-    // Redirect to signin page after token expire, todo handle browser reload using localstorage and date
-    if (isLoggedIn || loggedInCookie === "true") {
-        setTimeout(() => 
-            {                
-                console.log("Token expires, redirecting to signin page");
-                location.href = signinurl;
-            }, 1440000);
     }
 
     return (<>
