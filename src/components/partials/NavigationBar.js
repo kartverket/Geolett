@@ -10,6 +10,7 @@ import { MainNavigation } from "@kartverket/geonorge-web-components/MainNavigati
 import { updateOidcCookie } from "actions/AuthenticationActions";
 import { updateAuthInfo } from "actions/AuthorizationActions";
 import { updateSelectedLanguage } from "actions/SelectedLanguageActions";
+import { userLoaded } from "reducers/authActions";
 
 // Helpers
 import { getEnvironmentVariable } from "helpers/environmentVariableHelpers.js";
@@ -18,29 +19,61 @@ import { authInfo } from "helpers/authorizationHelpers.js";
 import Cookies from 'js-cookie';
 import {useSearchParams} from "react-router-dom";
 
-const NavigationBar = () => {
+const NavigationBar = (props) => {
     const dispatch = useDispatch();
     let [searchParams] = useSearchParams();
 
     // Redux store
-    const oidc = useSelector((state) => state.oidc);
+    const auth = useSelector((state) => state.auth);
+    //todo check authToken and authInfo
     const authToken = useSelector((state) => state.authToken);
     const authInfo = useSelector((state) => state.authInfo);    
     useEffect(() => {
-        const isLoggedIn = !!authToken?.access_token?.length;
+        const isLoggedIn = !!auth.user?.access_token?.length;
+        console.log("authToken: " + authToken);
         const hasAuthInfo = !!authInfo?.organizationNumber?.length;       
 
         if (isLoggedIn || hasAuthInfo) {
-            dispatch(updateOidcCookie(oidc.user));
+            dispatch(updateOidcCookie(auth.user));
             dispatch(updateAuthInfo());
         }
-    }, [dispatch, authInfo?.organizationNumber, authToken?.access_token, oidc.user]);
+        if(MainNavigation != null && props.userManager != null)
+        {
+            MainNavigation.setup("main-navigation", {
+                onSignInClick: () => {
+                    props.userManager.signinRedirect();
+                },
+                onSignOutClick: () => {
+                    if(auth != null && auth.user != null && auth.user.id_token != null){
+                    props.userManager.signoutRedirect({ id_token_hint: auth.user.id_token });
+                    Cookies.set('_loggedIn', 'false', { domain: 'geonorge.no' });
+                    props.userManager.signoutRedirect({ id_token_hint: auth.id_token });
+                    props.userManager.removeUser();
+                    }
+                }
+            });
+
+                // Listen for silent renew and update Redux state when user is loaded
+                props.userManager.events.addUserLoaded(function(user) {
+                    dispatch(userLoaded(user)); // <-- update Redux state
+                });
+
+                props.userManager.events.addAccessTokenExpiring(function(){
+                    console.log("token expiring...");
+                    props.userManager.startSilentRenew(); 
+                });
+
+
+        }
+
+
+    }, [dispatch, authInfo?.organizationNumber, authToken?.access_token, auth.user]);
 
     const environment = getEnvironmentVariable("environment");
     let signinurl = getEnvironmentVariable("signinurl");
     const signouturl = getEnvironmentVariable("signouturl");
     const selectedLanguage = useSelector((state) => state.selectedLanguage);
-    const isLoggedIn = !!authToken?.access_token?.length;
+    const isLoggedIn = !!auth.user?.access_token?.length;
 
     var loggedInCookie = Cookies.get('_loggedInOtherApp');
     console.log("Logged in cookie: " + loggedInCookie);
@@ -52,19 +85,14 @@ const NavigationBar = () => {
     {
         var pathName = window.location.pathname;
         var path = pathName.substring(1); //remove first / from path
+        if(path === null || path === undefined)
+            path = "";
+        if(signinurl === undefined || signinurl === null)
+            signinurl = "";
         path = path.replace("geolett", "");
         signinurl = signinurl + path + "?login=true";
         console.log("Redirecting to signin page with return url: " + signinurl);
         window.location.href = signinurl;
-    }
-
-    // Redirect to signin page after token expire, todo handle browser reload using localstorage and date
-    if (isLoggedIn || loggedInCookie === "true") {
-        setTimeout(() => 
-            {                
-                console.log("Token expires, redirecting to signin page");
-                location.href = signinurl;
-            }, 1440000);
     }
 
     return (<>
@@ -81,7 +109,7 @@ const NavigationBar = () => {
 };
 
 const mapStateToProps = (state) => ({
-    oidc: state.oidc,
+    auth: state.auth,
     config: state.config,
     authInfo: state.authInfo,
     authToken: state.authToken,

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { Route, Routes } from "react-router";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
-import { OidcProvider } from "redux-oidc";
 import ReduxToastr from "react-redux-toastr";
 import { Helmet } from "react-helmet";
 
@@ -73,29 +72,33 @@ const App = (props) => {
             });
             userManagerPromise.then((userManagerConfig) => {
                 userManager = userManagerConfig;
+
                 setUserManagerIsLoaded(true);
             });
         }
     }, [configIsLoaded, props]);
 
     
-
+    var pathSigninOidc = "/geolett/signin-oidc";
+    var pathSignOutOidc = "/geolett/signout-callback-oidc";
+    if(isLocalhost()){
+        pathSigninOidc = "/signin-oidc";
+        pathSignOutOidc = "/signout-callback-oidc";
+    }
 
     if (userManager && userManagerIsLoaded && storeIsLoaded) {
         return (
             <Provider store={store}>
-                <OidcProvider userManager={userManager} store={store}>
-                    <Router history={history}>
-                                
+                    <Router history={history}>       
                         <NavigationBar userManager={userManager} />
                         <Routes>
-                            <Route exact path="/" element={<RegisterItems userManager={userManager}/>} />                            
+                            <Route exact path="/" element={<RegisterItems userManager={userManager}/>} /> 
+                            <Route exact path={pathSigninOidc} element={<OidcCallback userManager={userManager} />} />                           
                             <Route exact path="/geolett" element={<RegisterItems userManager={userManager}/>} />
                             <Route exact path="/geolett/:registerItemId/:edit?" element={<RegisterItem userManager={userManager} />} />
-                            <Route exact path="/signin-oidc" element={<OidcCallback userManager={userManager} />} />
                             <Route
                                 exact
-                                path="/signout-callback-oidc"
+                                path={pathSignOutOidc}
                                 element={<OidcSignoutCallback userManager={userManager} />}
                             />
                             <Route path="*" element={<NotFound />} />
@@ -113,7 +116,6 @@ const App = (props) => {
                             closeOnToastrClick
                         />
                     </Router>
-                </OidcProvider>
             </Provider>
         );
     } else {
