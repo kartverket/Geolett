@@ -16,6 +16,7 @@
         "metadata": {
             "issuer": "https://test.geoid.no/realms/geoid",
             "authorization_endpoint": "https://test.geoid.no/realms/geoid/protocol/openid-connect/auth",
+            "token_endpoint": "https://test2.geoid.no/realms/geoid/protocol/openid-connect/token",
             "userinfo_endpoint": "https://test.geoid.no/realms/geoid/protocol/openid-connect/userinfo",
             "end_session_endpoint": "https://test.geoid.no/realms/geoid/protocol/openid-connect/logout",
             "jwks_uri": "https://test.geoid.no/realms/geoid/protocol/openid-connect/certs"
@@ -30,8 +31,10 @@
                 "n": "s5epmLylnTebyW2FuPy5DlThGZB9iIMEoQM2GUgt8xFJ2TZMcxY0FdDPSYknshUghDBm05gxw6VcAF6GmbHM3AhcgXoQNofvMpZaH5sQnNb_953ChucBtnhijsv3gk0rj9_Rj8TLR08HTmOB7ETE9gIeihwfJ_qDZeutkxLb9sSHUxpicCSjOa9G-xYcwNUbcb3N5QIovQ4KVZXW7vtha945hQGt53ss0t4-ZevcFqbedkVl5LGAvZwLe0d8G5odYgqPTphq_8vGMQsN9V50cBHwJSIetTmPMspdvZuV5D4zA96OPxAtWfbPkorbrAHOSOiS0tThO9RDNVXVr8_4Kw"
             }
         ],
-        "response_type": "id_token token",
+        "response_type": "code",
         "scope": "openid profile",
-        "loadUserInfo": false
+        "pkceMethod": "S256",
+        "automaticSilentRenew": true,
+        "loadUserInfo": true
     }
 }

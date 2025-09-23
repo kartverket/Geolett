@@ -36,7 +36,7 @@
     "cross-env": "^7.0.3",
     "history": "^5.3.0",
     "js-cookie": "^3.0.1",
-    "oidc-client": "^1.11.5",
+    "oidc-client-ts": "^3.3.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-app-rewired": "^2.1.8",
@@ -50,7 +50,6 @@
     "react-scripts": "^5.0.1",
     "redux": "^4.0.5",
     "redux-first-history": "^5.0.12",
-    "redux-oidc": "^4.0.0-beta1",
     "redux-thunk": "^2.3.0",
     "sass": "^1.32.8"
   },
