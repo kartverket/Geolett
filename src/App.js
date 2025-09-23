@@ -79,7 +79,10 @@ const App = (props) => {
     }, [configIsLoaded, props]);
 
     
-
+    var pathSigninOidc = "/geolett/signin-oidc";
+    if(isLocalhost()){
+        pathSigninOidc = "/signin-oidc";
+    }
 
     if (userManager && userManagerIsLoaded && storeIsLoaded) {
         return (
@@ -88,7 +91,7 @@ const App = (props) => {
                         <NavigationBar userManager={userManager} />
                         <Routes>
                             <Route exact path="/" element={<RegisterItems userManager={userManager}/>} /> 
-                            <Route exact path="/signin-oidc" element={<OidcCallback userManager={userManager} />} />                           
+                            <Route exact path={pathSigninOidc} element={<OidcCallback userManager={userManager} />} />                           
                             <Route exact path="/geolett" element={<RegisterItems userManager={userManager}/>} />
                             <Route exact path="/geolett/:registerItemId/:edit?" element={<RegisterItem userManager={userManager} />} />
                             <Route
