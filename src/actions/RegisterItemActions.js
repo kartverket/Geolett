@@ -9,9 +9,11 @@ export const fetchRegisterItems = (token) => async (dispatch) => {
 }
 
 export const fetchRegisterItem = id => async (dispatch) => {
+   if(id !== "signin-oidc" ){
    const apiUrl = apiUrls.registerItem.get.format({ id })
    const response = await appApi().get(apiUrl);
    dispatch({ type: FETCH_REGISTER_ITEM, payload: response.data });
+   }
 }
 
 export const createRegisterItem = (registerItem, token) => async (dispatch) => {
