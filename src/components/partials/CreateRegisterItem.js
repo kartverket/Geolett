@@ -36,8 +36,9 @@ const CreateRegisterItem = () => {
 
     // Redux store
     const organizations = useSelector((state) => state.organizations);
+    const auth = useSelector((state) => state.auth);
     const authInfo = useSelector((state) => state.authInfo);
-    const authToken = useSelector((state) => state.authToken);
+    const authToken = auth?.user || null;
 
     // State
     const [dataFetched, setDataFetched] = useState(false);
