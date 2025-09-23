@@ -80,8 +80,10 @@ const App = (props) => {
 
     
     var pathSigninOidc = "/geolett/signin-oidc";
+    var pathSignOutOidc = "/geolett/signout-callback-oidc";
     if(isLocalhost()){
         pathSigninOidc = "/signin-oidc";
+        pathSignOutOidc = "/signout-callback-oidc";
     }
 
     if (userManager && userManagerIsLoaded && storeIsLoaded) {
@@ -96,7 +98,7 @@ const App = (props) => {
                             <Route exact path="/geolett/:registerItemId/:edit?" element={<RegisterItem userManager={userManager} />} />
                             <Route
                                 exact
-                                path="/signout-callback-oidc"
+                                path={pathSignOutOidc}
                                 element={<OidcSignoutCallback userManager={userManager} />}
                             />
                             <Route path="*" element={<NotFound />} />
