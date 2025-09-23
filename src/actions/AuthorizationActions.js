@@ -3,11 +3,13 @@ import { UPDATE_AUTH_INFO } from 'constants/types';
 
 export const updateAuthInfo = () => (dispatch, getState) => {
   const store = getState();
-  const token = store.auth && store.auth.access_token ? store.auth.access_token : null;
+  const token = store.auth && store.auth.user.access_token ? store.auth.user.access_token : null;
   const savedAuthInfo = store && store.authInfo && Object.keys(store.authInfo).length
     ? store.authInfo
     : null;
   if (token && !savedAuthInfo) {
+
+    console.log("token: " + token);
     const authInfoApiUrl = store && store.config && store.config.apiBaseURL ? `${store.config.apiBaseURL}/Authzinfo` : null;
     fetch(authInfoApiUrl, {
       method: 'GET',

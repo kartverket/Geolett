@@ -29,7 +29,7 @@ const NavigationBar = (props) => {
     const authToken = useSelector((state) => state.authToken);
     const authInfo = useSelector((state) => state.authInfo);    
     useEffect(() => {
-        const isLoggedIn = !!authToken?.access_token?.length;
+        const isLoggedIn = !!auth.user?.access_token?.length;
         console.log("authToken: " + authToken);
         const hasAuthInfo = !!authInfo?.organizationNumber?.length;       
 
@@ -73,7 +73,7 @@ const NavigationBar = (props) => {
     let signinurl = getEnvironmentVariable("signinurl");
     const signouturl = getEnvironmentVariable("signouturl");
     const selectedLanguage = useSelector((state) => state.selectedLanguage);
-    const isLoggedIn = !!authToken?.access_token?.length;
+    const isLoggedIn = !!auth.user?.access_token?.length;
 
     var loggedInCookie = Cookies.get('_loggedInOtherApp');
     console.log("Logged in cookie: " + loggedInCookie);
