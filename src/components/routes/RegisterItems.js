@@ -22,7 +22,8 @@ const RegisterItems = (userManager) => {
     // Redux store
     const savedRegisterItems = useSelector((state) => state.registerItems);
     const statuses = useSelector((state) => state.options.statuses);
-    const authToken = useSelector((state) => state.authToken);
+    const auth = useSelector((state) => state.auth);
+    const authToken = auth?.user || null;
     const config = useSelector((state) => state.config);
 
     // State
