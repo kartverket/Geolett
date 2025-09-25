@@ -1,6 +1,6 @@
-export const SET_USER = "SET_USER";
+export const USER_LOADED = "SET_USER";
 
 export const userLoaded = (user) => ({
-  type: SET_USER,
+  type: USER_LOADED,
   payload: user,
 });
